@@ -1,11 +1,12 @@
 package pentasnake.client;
 
-import pentasnake.client.Screen.MenuScreen;
+import com.badlogic.gdx.Game;
+import pentasnake.client.screen.MenuScreen;
 
-public class SnakeGame extends BaseGame{
-
-    public void create()
-    {
-        setActiveScreen( new MenuScreen() );
+public class SnakeGame extends Game {
+    @Override
+    public void create () {
+        setScreen(new MenuScreen());
     }
+
 }
