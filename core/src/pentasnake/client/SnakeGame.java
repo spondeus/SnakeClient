@@ -6,7 +6,7 @@ import pentasnake.client.screen.MenuScreen;
 public class SnakeGame extends Game {
     @Override
     public void create () {
-        setScreen(new MenuScreen());
+        setScreen(new MenuScreen(this));
     }
 
 }
