@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class PlayScreen implements Screen {
+public class ScoreboardScreen implements Screen {
 
     private Texture snake;
     private SpriteBatch spriteBatch;
-
     @Override
     public void show() {
         snake = new Texture(Gdx.files.internal("badlogic.jpg"));
@@ -19,13 +18,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.3f, 0, 1, 1);
+        Gdx.gl.glClearColor(0.7f, 0.7f, 0.7f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         spriteBatch.begin();
-        spriteBatch.draw(snake,100,100);
+        spriteBatch.draw(snake,400,200);
         spriteBatch.end();
-
     }
 
     @Override
