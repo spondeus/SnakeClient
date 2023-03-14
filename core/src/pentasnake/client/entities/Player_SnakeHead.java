@@ -25,7 +25,7 @@ public class Player_SnakeHead extends Actor {
     int rotation;
 
     int rotationSpeed = 240;
-    public float speed = 100;
+    public float speed = 40;
 
     public int points;
 
@@ -39,7 +39,7 @@ public class Player_SnakeHead extends Actor {
 
     public Player_SnakeHead() {
         sprite.setScale(1f);
-        position = new Vector2(0,Gdx.graphics.getHeight()/2);
+        position = new Vector2(Gdx.graphics.getWidth() /2,Gdx.graphics.getHeight() / 2);
         rotation = 0;
         handler = new InputHandler(this);
     }
@@ -68,9 +68,9 @@ public class Player_SnakeHead extends Actor {
         sprite.setPosition(position.x, position.y);
         sprite.setRotation(rotation);
 //        sprite.draw(batch);
-        batch.draw(new TextureRegion(sprite.getTexture(), 0, 0, 64, 64),sprite.getX(),sprite.getY(),0,0,
-                sprite.getWidth()*sprite.getScaleX(),sprite.getHeight()*sprite.getScaleY(),1,1,sprite.getRotation()
-                );
+        batch.draw(new TextureRegion(sprite.getTexture(), 0, 0, 64, 64), sprite.getX(), sprite.getY(), 0, 0,
+                sprite.getWidth() * sprite.getScaleX(), sprite.getHeight() * sprite.getScaleY(), 1, 1, sprite.getRotation()
+        );
     }
 
     public void setLeftMove(boolean b) {
@@ -92,6 +92,7 @@ public class Player_SnakeHead extends Actor {
         if (rightMove) {
             rotation -= rotationSpeed * dt;
         }
+
         if (rotation >= 360 || rotation <= -360)
             rotation = 0;
     }

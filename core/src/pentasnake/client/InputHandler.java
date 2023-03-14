@@ -48,9 +48,10 @@ public class InputHandler extends InputAdapter {
             head.turning=new Vector2(screenX-head.position.x,screenY-head.position.y);
             float radians = (float)Math.atan2(head.turning.y - head.position.y, head.turning.x - head.position.x);
             head.setRotation((float)Math.toDegrees(radians));
-            System.out.println(head.getRotation());
+            head.position.add(new Vector2(head.turning.x/10, head.turning.y/10).setAngle(180));
         }
         return false;
     }
+
 
 }
