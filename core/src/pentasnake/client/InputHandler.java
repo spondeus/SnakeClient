@@ -17,7 +17,7 @@ public class InputHandler extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         SnakePart head = snake.getHead();
-        SnakePart neck = snake.get(1);
+        SnakePart neck = snake.getParts().get(1);
         if (head.getDirection()!=neck.getDirection() && Math.abs(head.x - neck.x) <= head.radius * 2) return false;
         if (head.getDirection()!=neck.getDirection() && Math.abs(head.y - neck.y) <= head.radius * 2) return false;
         if (keycode == Input.Keys.A) snake.turnLeft();
