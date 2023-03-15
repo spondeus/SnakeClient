@@ -12,13 +12,13 @@ public class Snake extends SnapshotArray<SnakePart> {
 
     private final SnakePart head;
 
-    private int speed=120;
+    private int speed = 120;
 
     private Circle eye1, eye2;
     private Circle innerEye1, innerEye2;
 
     private Color eyeColor = Color.WHITE;
-    private Color innerEyeColor=Color.BLACK;
+    private Color innerEyeColor = Color.BLACK;
 
     private final ShapeRenderer sr = new ShapeRenderer();
 
@@ -41,9 +41,9 @@ public class Snake extends SnapshotArray<SnakePart> {
         eye1 = new Circle();
         eye2 = new Circle();
         eye1.radius = eye2.radius = head.radius / 4;
-        innerEye1=new Circle();
-        innerEye2=new Circle();
-        innerEye1.radius= innerEye2.radius=eye1.radius/2;
+        innerEye1 = new Circle();
+        innerEye2 = new Circle();
+        innerEye1.radius = innerEye2.radius = eye1.radius / 2;
     }
 
     public void draw() {
@@ -96,9 +96,9 @@ public class Snake extends SnapshotArray<SnakePart> {
     }
 
     private void update() {
-        float dt = Gdx.graphics.getDeltaTime();
-
-        float movement = dt * speed;
+//        float dt = Gdx.graphics.getDeltaTime();
+//        dt=0.016f;
+        float movement = 1/60f * speed;
 
         for (int i = 0; i < this.size; i++) {
             SnakePart part = this.get(i);
@@ -131,6 +131,10 @@ public class Snake extends SnapshotArray<SnakePart> {
                     part.x += movement;
                     break;
             }
+            if (part.x < 0 ) part.x = Gdx.graphics.getWidth();
+            if (part.x > Gdx.graphics.getWidth() ) part.x = 0;
+            if (part.y < 0 ) part.y = Gdx.graphics.getHeight();
+            if (part.y > Gdx.graphics.getHeight() ) part.y = 0;
         }
 
     }
@@ -170,7 +174,7 @@ public class Snake extends SnapshotArray<SnakePart> {
         }
     }
 
-    enum SnakeDirection {N, E, S, W;}
+    enum SnakeDirection {N, E, S, W}
 
     public SnakePart getHead() {
         return head;
