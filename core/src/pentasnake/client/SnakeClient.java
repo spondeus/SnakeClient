@@ -12,7 +12,7 @@ public class SnakeClient extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("blackscreen.jpg");
+		img = new Texture("badlogic.jpg");
 	}
 
 	@Override
