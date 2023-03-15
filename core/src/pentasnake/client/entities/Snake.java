@@ -3,6 +3,7 @@ package pentasnake.client.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
@@ -10,6 +11,14 @@ import static pentasnake.client.entities.Snake.SnakeDirection.*;
 public class Snake extends SnapshotArray<SnakePart> {
 
     private final SnakePart head;
+
+    private int speed=120;
+
+    private Circle eye1, eye2;
+    private Circle innerEye1, innerEye2;
+
+    private Color eyeColor = Color.WHITE;
+    private Color innerEyeColor=Color.BLACK;
 
     private final ShapeRenderer sr = new ShapeRenderer();
 
@@ -29,6 +38,12 @@ public class Snake extends SnapshotArray<SnakePart> {
         y = y;
         SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, W);
         this.add(tail);
+        eye1 = new Circle();
+        eye2 = new Circle();
+        eye1.radius = eye2.radius = head.radius / 4;
+        innerEye1=new Circle();
+        innerEye2=new Circle();
+        innerEye1.radius= innerEye2.radius=eye1.radius/2;
     }
 
     public void draw() {
@@ -38,6 +53,34 @@ public class Snake extends SnapshotArray<SnakePart> {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
             sr.circle(part.x, part.y, part.radius, 100);
+            if (part == head) {
+                switch (head.getDirection()) {
+                    case N:
+                    case S:
+                        eye1.x = head.x - eye1.radius - 2;
+                        eye1.y = eye2.y = head.y + (head.getDirection() == N ? 3 : -3);
+                        eye2.x = head.x + eye2.radius + 2;
+                        innerEye1.x = eye1.x;
+                        innerEye2.x = eye2.x;
+                        innerEye1.y = innerEye2.y = eye1.y;
+                        break;
+                    case E:
+                    case W:
+                        eye1.x = eye2.x = head.x + (head.getDirection() == E ? -3 : 3);
+                        eye1.y = head.y - eye1.radius - 2;
+                        eye2.y = head.y + eye2.radius + 2;
+                        innerEye1.x = innerEye2.x = eye1.x;
+                        innerEye1.y = eye1.y;
+                        innerEye2.y = eye2.y;
+                        break;
+                }
+                sr.setColor(eyeColor);
+                sr.circle(eye1.x, eye1.y, eye1.radius);
+                sr.circle(eye2.x, eye2.y, eye2.radius);
+                sr.setColor(innerEyeColor);
+                sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
+                sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
+            }
             sr.end();
         }
     }
@@ -55,7 +98,7 @@ public class Snake extends SnapshotArray<SnakePart> {
     private void update() {
         float dt = Gdx.graphics.getDeltaTime();
 
-        float movement = head.radius * 2 * dt * 3;
+        float movement = dt * speed;
 
         for (int i = 0; i < this.size; i++) {
             SnakePart part = this.get(i);
@@ -95,16 +138,16 @@ public class Snake extends SnapshotArray<SnakePart> {
     public void turnLeft() {
         switch (head.getDirection()) {
             case N:
-                head.setDirection(SnakeDirection.E);
+                head.setDirection(E);
                 break;
             case E:
-                head.setDirection(SnakeDirection.S);
+                head.setDirection(S);
                 break;
             case S:
                 head.setDirection(W);
                 break;
             case W:
-                head.setDirection(SnakeDirection.N);
+                head.setDirection(N);
                 break;
         }
     }
