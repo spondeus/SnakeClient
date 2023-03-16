@@ -4,11 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
-public class Snake extends SnapshotArray<SnakePart> {
+public class Snake extends Actor {
+
+    public SnapshotArray<SnakePart> getParts() {
+        return parts;
+    }
+
+    SnapshotArray<SnakePart> parts;
 
     private final SnakePart head;
 
@@ -21,7 +28,6 @@ public class Snake extends SnapshotArray<SnakePart> {
 
     private Color eyeColor = Color.WHITE;
     private Color innerEyeColor = Color.BLACK;
-
     private final ShapeRenderer sr = new ShapeRenderer();
 
     private final float angle = (float) (360.0 / 4.0);
@@ -29,17 +35,18 @@ public class Snake extends SnapshotArray<SnakePart> {
 
     public Snake(int x, int y, int radius, Color bodyColor) {
         head = new SnakePart(x, y, radius, Color.ORANGE, W);
-        this.add(head);
+        this.parts = new SnapshotArray<>();
+        this.parts.add(head);
         for (int i = 1; i <= 4; i++) {
             x -= 2 * radius;
             y = y;
             SnakePart body = new SnakePart(x, y, radius, bodyColor, W);
-            this.add(body);
+            this.parts.add(body);
         }
         x -= 1.5 * radius;
         y = y;
         SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, W);
-        this.add(tail);
+        this.parts.add(tail);
         eye1 = new Circle();
         eye2 = new Circle();
         eye1.radius = eye2.radius = head.radius / 4;
@@ -49,10 +56,11 @@ public class Snake extends SnapshotArray<SnakePart> {
         points=0;
     }
 
-    public void draw() {
-        if (!selfCollision()) update();
+
+    public void  draw() {
+        if (!selfCollision()) act();
         sr.setAutoShapeType(true);
-        for (SnakePart part : this) {
+        for (SnakePart part : this.parts) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
             sr.circle(part.x, part.y, part.radius, 100);
@@ -89,23 +97,23 @@ public class Snake extends SnapshotArray<SnakePart> {
     }
 
     private boolean selfCollision() {
-        for (int i = 0; i < this.size; i++) {
-            for (int j = 0; j < this.size; j++) {
+        for (int i = 0; i < this.parts.size; i++) {
+            for (int j = 0; j < this.parts.size; j++) {
                 if (Math.abs(i - j) < 2) continue;
-                if (this.get(i).overlaps(this.get(j))) return true;
+                if (this.parts.get(i).overlaps(this.parts.get(j))) return true;
             }
         }
         return false;
     }
 
-    private void update() {
+    private void act() {
 //        float dt = Gdx.graphics.getDeltaTime();
 //        dt=0.016f;
         float movement = 1/60f * speed;
 
-        for (int i = 0; i < this.size; i++) {
-            SnakePart part = this.get(i);
-            SnakePart prev = (i == 0) ? null : this.get(i - 1);
+        for (int i = 0; i < this.parts.size; i++) {
+            SnakePart part = this.parts.get(i);
+            SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             if (prev != null) {
                 SnakeDirection prevDir = prev.getDirection();
                 if (prevDir == N || prevDir == S) {
