@@ -1,5 +1,11 @@
 package pentasnake.pointsystem;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.*;
@@ -12,6 +18,8 @@ public abstract class PickupItems extends BaseActorTEMP {
     // Need to come up with more pickup types for end product
     private int points;
     boolean collected;
+
+    TextureRegion region;
 
     public PickupItems(float x, float y, Stage stage){
         super(x,y,stage);
@@ -40,6 +48,10 @@ public abstract class PickupItems extends BaseActorTEMP {
         if (collected) {
             long updatedPlayerScore = getPlayerScore() + (long) getPoints();
         }
+    }
+
+    public void draw(Batch batch, float parentAlpha){
+        batch.draw(region, getX(), getY(), 100, 100 );
     }
 
 }

@@ -18,13 +18,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BaseActorTEMP extends Actor {
 
-    private Animation<TextureRegion> animation;
+    protected Animation<TextureRegion> animation;
     private long playerScore;
 
     public long getPlayerScore(){
         return this.playerScore;
     }
-    private float elapsedTime;
+   // private float elapsedTime;
     private Polygon boundaryPolygon;
 
     private static Rectangle worldBounds;
@@ -34,14 +34,14 @@ public class BaseActorTEMP extends Actor {
         setPosition(x, y);
         stage.addActor(this);
         animation = null;
-        elapsedTime = 0;
+       // elapsedTime = 0;
         this.playerScore = 0;
     }
 
     public Animation<TextureRegion> loadTexture(String fileName) {
         String[] fileNames = new String[1];
         fileNames[0] = fileName;
-        return loadAnimationFromFiles(fileNames, 1, false);
+        return loadAnimationFromFiles(fileNames, 1, true);
     }
 
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop) {
