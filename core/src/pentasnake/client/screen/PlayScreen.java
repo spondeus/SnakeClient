@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PlayScreen implements Screen { //InputProcessor
+public class PlayScreen implements Screen {
 
     private AssetManager assetManager;
     public Label.LabelStyle labelStyle;

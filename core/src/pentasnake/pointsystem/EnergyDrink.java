@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.Getter;
 import lombok.Setter;
+import pentasnake.client.entities.Snake;
 
 @Getter
 @Setter
@@ -16,15 +17,14 @@ public class EnergyDrink extends PickupItems {
         super(x,y,stage);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("energydrink.png")));
         float drinkSize = 32;
-        TextureRegion drinkRegion = new TextureRegion(region);
-        drinkRegion.setRegionWidth( (int) drinkSize);
-        drinkRegion.setRegionHeight( (int) drinkSize);
-        loadTexture("energydrink.png");
+        region.setRegionWidth( (int) drinkSize);
+        region.setRegionHeight( (int) drinkSize);
+//        loadTexture("energydrink.png");
         setBoundaryPolygon(8);
     }
 
     @Override
-    public void applyEffect(/*Snake snake*/) {
-        // snake.speedUp(); - Speeds up snake movement
+    public void applyEffect(Snake snake) {
+        snake.speedUp();
     }
 }

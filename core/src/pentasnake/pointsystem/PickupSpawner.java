@@ -13,7 +13,7 @@ public class PickupSpawner implements PickupHandler {
 
     private List<PickupItems> pickups;
 
-    Stage mainStage;
+    private Stage mainStage;
 
     public PickupSpawner(Stage mainStage){
         this.mainStage = mainStage;
@@ -33,7 +33,7 @@ public class PickupSpawner implements PickupHandler {
 
         // Should spawn pickups in the game world randomly
 
-        List<PickupItems> pickups = new ArrayList<>();
+        pickups = new ArrayList<>();
 
 
         pickups.add(new Food(500,300,new Stage(),50));

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pentasnake.client.entities.Snake;
 
 @Getter
 @Setter
@@ -20,12 +21,12 @@ public class Food extends PickupItems {
         float foodSize = 32;
         region.setRegionWidth( (int) foodSize);
         region.setRegionHeight( (int) foodSize);
-        loadTexture("assets/food.png");
+//        loadTexture("assets/food.png");
         setBoundaryPolygon(8);
     }
 
     @Override
-    public void applyEffect(/*Snake snake*/) {
-        // snake.grow(); - Increases the length of the snake
+    public void applyEffect(Snake snake) {
+        snake.grow();
     }
 }

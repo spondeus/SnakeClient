@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.Getter;
 import lombok.Setter;
+import pentasnake.client.entities.Snake;
 
 @Getter
 @Setter
@@ -16,15 +17,14 @@ public class SpiderWeb extends PickupItems {
         super(x,y,stage);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("spiderweb.png")));
         float webSize = 32;
-        TextureRegion webRegion = new TextureRegion(region);
-        webRegion.setRegionWidth( (int) webSize);
-        webRegion.setRegionHeight( (int) webSize);
-        loadTexture("spiderweb.png");
+        region.setRegionWidth( (int) webSize);
+        region.setRegionHeight( (int) webSize);
+//        loadTexture("spiderweb.png");
         setBoundaryPolygon(8);
     }
 
     @Override
-    public void applyEffect(/*Snake snake*/) {
-        // snake.slowDown(); - Slows down snake movement
+    public void applyEffect(Snake snake) {
+        snake.slowDown();
     }
 }
