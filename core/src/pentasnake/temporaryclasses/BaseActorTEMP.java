@@ -1,4 +1,4 @@
-package pentasnake.pointsystem;
+package pentasnake.temporaryclasses;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,21 +15,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 public class BaseActorTEMP extends Actor {
 
     private Animation<TextureRegion> animation;
     private long playerScore;
 
+    public long getPlayerScore(){
+        return this.playerScore;
+    }
     private float elapsedTime;
-    private boolean animationPaused;
-    private Vector2 velocityVec;
-    private Vector2 accelerationVec;
-    private float acceleration;
-    private float maxSpeed;
-    private float deceleration;
     private Polygon boundaryPolygon;
 
     private static Rectangle worldBounds;
@@ -40,19 +35,13 @@ public class BaseActorTEMP extends Actor {
         stage.addActor(this);
         animation = null;
         elapsedTime = 0;
-        animationPaused = false;
-        velocityVec = new Vector2(0, 0);
-        accelerationVec = new Vector2(0, 0);
-        acceleration = 0;
-        maxSpeed = 1000;
-        deceleration = 0;
         this.playerScore = 0;
     }
 
     public Animation<TextureRegion> loadTexture(String fileName) {
         String[] fileNames = new String[1];
         fileNames[0] = fileName;
-        return loadAnimationFromFiles(fileNames, 1, true);
+        return loadAnimationFromFiles(fileNames, 1, false);
     }
 
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop) {

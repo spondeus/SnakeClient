@@ -1,8 +1,10 @@
-package pentasnake.pointsystem;
+package pentasnake.temporaryclasses;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.awt.*;
@@ -19,12 +21,12 @@ public abstract class BaseScreenTEMP implements Screen {
         initialize();
     }
     public abstract void initialize();
-    public abstract void update(float dt);
+    public abstract void update(float delta);
 
-    public void render(float dt) {
-        uiStage.act(dt);
-        mainStage.act(dt);
-        update(dt);
+    public void render(float delta) {
+        uiStage.act(delta);
+        mainStage.act(delta);
+        update(delta);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();
