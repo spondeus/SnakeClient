@@ -11,6 +11,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import pentasnake.client.InputHandler;
+import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.pointsystem.Food;
 
@@ -19,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PlayScreen extends Game implements Screen,InputProcessor  { //InputProcessor
+
     private AssetManager assetManager;
     public Label.LabelStyle labelStyle;
     protected Stage mainStage;
@@ -41,6 +44,7 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
         Snake snake = new  Snake(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,20, Color.GREEN);
         snakeList.add(snake);
         mainStage.addActor(snake);
+        Gdx.input.setInputProcessor(new InputHandler(snake));
         labelInitialize();
     }
     public void labelInitialize(){
