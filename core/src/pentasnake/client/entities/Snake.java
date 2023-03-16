@@ -185,6 +185,22 @@ public class Snake extends Actor {
         }
     }
 
+    public void slowDown() {
+        if(speed>20) speed-=20;
+    }
+
+    public void speedUp() {
+        speed+=20;
+    }
+
+    public void grow() {
+        this.parts.add( new SnakePart(parts.get(0).x, parts.get(0).y+parts.get(0).radius/2, parts.get(0).radius, parts.get(0).getColor(), W));
+    }
+
+    public void shrink() {
+        this.parts.removeIndex(1);
+    }
+
     enum SnakeDirection {N, E, S, W}
 
     public SnakePart getHead() {
