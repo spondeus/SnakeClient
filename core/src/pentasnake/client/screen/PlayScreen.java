@@ -10,20 +10,23 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import pentasnake.client.entities.Snake;
 import pentasnake.pointsystem.Food;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PlayScreen extends Game implements Screen,InputProcessor  { //InputProcessor
     private AssetManager assetManager;
     public Label.LabelStyle labelStyle;
     protected Stage mainStage;
     protected Stage uiStage;
-
+    private Label myPoints;
+    private List<Label> pointsLabel;
     private ArrayList<Snake> snakeList;
-
+    private Table table;
 
     public PlayScreen()
     {
@@ -31,18 +34,44 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
         uiStage = new Stage();
         initialize();
     }
-    public void initialize()
-    {
+    public void initialize() {
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor( im );
-        labelStyle = new Label.LabelStyle();
-        labelStyle.font = new BitmapFont();
-        AssetManager assetManager = new AssetManager();
         snakeList = new ArrayList<Snake>();
         Snake snake = new  Snake(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,20, Color.BLUE);
         snakeList.add(snake);
+        labelInitialize();
         mainStage.addActor(snake);
-        System.out.println( mainStage.getActors().size);
+    }
+    public void labelInitialize(){
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font= new BitmapFont();
+        table =new Table();
+        labelStyle.fontColor=Color.GOLD;
+       // pointsLabel= new Label(snakeList.get(0).getPoints()+" p",labelStyle);
+        pointsLabel = new LinkedList<>();
+        myPoints = new Label(snakeList.get(0).getPoints()+"p",labelStyle);
+        pointsLabel.add(myPoints);
+        pointsLabel.add(new Label ("10 p",labelStyle));
+        pointsLabel.add(new Label ("20 p",labelStyle));
+        pointsLabel.add(new Label ("30 p",labelStyle));
+        // pointsLabel.setPosition(Gdx.graphics.getWidth()-40,Gdx.graphics.getHeight()-30);
+        table.add(myPoints);
+        table.add().expandX();
+        table.add(pointsLabel.get(0)).row();
+        table.add();
+        table.add();
+        table.add(pointsLabel.get(1)).row();
+        table.add();
+        table.add();
+        table.add(pointsLabel.get(2)).row();
+        table.add();
+        table.add();
+        table.add(pointsLabel.get(3)).row();
+        table.add();
+        table.add();
+        table.setFillParent(true);
+       uiStage.addActor(table);
     }
 
     public AssetManager getAssetManager() {
@@ -51,9 +80,8 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
     public  void update(float dt){}
     public void render(float dt)
     {
-        uiStage.act(dt); // actorokat frissiti és update
-        mainStage.act(dt); // -.-
-       // update(dt); //
+        uiStage.act(dt);
+        mainStage.act(dt);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();
