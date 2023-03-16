@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PlayScreen extends Game implements Screen, InputProcessor { //InputProcessor
+public class PlayScreen implements Screen { //InputProcessor
 
     private AssetManager assetManager;
     public Label.LabelStyle labelStyle;
@@ -87,58 +87,14 @@ public class PlayScreen extends Game implements Screen, InputProcessor { //Input
         uiStage.draw();
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
-    }
 
     @Override
     public void show() {
         //  InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
         InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(this);
         im.addProcessor(uiStage);
         im.addProcessor(mainStage);
-    }
-
-    @Override
-    public void create() {
-
     }
 
     @Override
@@ -157,7 +113,6 @@ public class PlayScreen extends Game implements Screen, InputProcessor { //Input
     @Override
     public void hide() {
         InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
-        im.removeProcessor(this);
         im.removeProcessor(uiStage);
         im.removeProcessor(mainStage);
     }
