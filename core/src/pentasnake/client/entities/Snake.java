@@ -2,6 +2,7 @@ package pentasnake.client.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -57,8 +58,8 @@ public class Snake extends Actor {
     }
 
 
-    public void  draw() {
-        if (!selfCollision()) act();
+    public void draw (Batch batch, float parentAlpha) {
+        batch.end();
         sr.setAutoShapeType(true);
         for (SnakePart part : this.parts) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -94,6 +95,7 @@ public class Snake extends Actor {
             }
             sr.end();
         }
+        batch.begin();
     }
 
     private boolean selfCollision() {
@@ -106,11 +108,9 @@ public class Snake extends Actor {
         return false;
     }
 
-    private void act() {
-//        float dt = Gdx.graphics.getDeltaTime();
-//        dt=0.016f;
+    public void act (float delta) {
+        if(selfCollision()) return;
         float movement = 1/60f * speed;
-
         for (int i = 0; i < this.parts.size; i++) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);

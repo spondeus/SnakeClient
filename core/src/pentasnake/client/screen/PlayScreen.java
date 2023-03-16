@@ -38,10 +38,10 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor( im );
         snakeList = new ArrayList<Snake>();
-        Snake snake = new  Snake(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,20, Color.BLUE);
+        Snake snake = new  Snake(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,20, Color.GREEN);
         snakeList.add(snake);
-        labelInitialize();
         mainStage.addActor(snake);
+        labelInitialize();
     }
     public void labelInitialize(){
         labelStyle = new Label.LabelStyle();
@@ -132,11 +132,6 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
     public void create() {
         
     }
-
-    //    @Override
-//    public void render(float delta) {
-//
-//    }
     @Override
     public void resize(int width, int height) {}
     @Override
