@@ -50,7 +50,7 @@ public class PlayScreen extends Game implements Screen,InputProcessor  { //Input
         labelStyle.fontColor=Color.GOLD;
        // pointsLabel= new Label(snakeList.get(0).getPoints()+" p",labelStyle);
         pointsLabel = new LinkedList<>();
-        myPoints = new Label(snakeList.get(0).getPoints()+"p",labelStyle);
+        myPoints = new Label(snakeList.get(0).getPoints()+" p",labelStyle);
         pointsLabel.add(myPoints);
         pointsLabel.add(new Label ("10 p",labelStyle));
         pointsLabel.add(new Label ("20 p",labelStyle));
