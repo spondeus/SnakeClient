@@ -44,19 +44,19 @@ public class MenuScreen implements Screen {
         stage.addActor(table);
         stage.addActor(image);
 
-        addButton("Start").addListener(new ClickListener(){
+        addButton("START (Press S)").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                game.setScreen(new PlayScreen());
             }
         });
-        addButton("Settings").addListener(new ClickListener(){
+        addButton("SETTINGS (Press T)").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                game.setScreen(new SettingsScreen());
             }
         });
-        addButton("Score").addListener(new ClickListener(){
+        addButton("SCOREBOARD (Press B)").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                game.setScreen(new ScoreboardScreen());
