@@ -3,7 +3,7 @@ package pentasnake.client.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import pentasnake.client.SnakeClient;
+import pentasnake.client.SnakeGame;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -17,6 +17,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new SnakeClient();
+                return new SnakeGame();
         }
 }
