@@ -7,29 +7,33 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.SnapshotArray;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class PickupSpawner implements PickupHandler {
 
-    private List<PickupItems> pickups;
+    private SnapshotArray<PickupItems> pickups;
 
     private Stage mainStage;
 
 
     public PickupSpawner(Stage mainStage){
         this.mainStage = mainStage;
-        pickups = new ArrayList<>();
+        pickups = new SnapshotArray<>();
         float height= Gdx.graphics.getHeight();
         float width= Gdx.graphics.getWidth();
-        pickups.add(new Food(MathUtils.random(0,width),MathUtils.random(0,height),mainStage,50));
-        pickups.add(new Poison(MathUtils.random(0,width),MathUtils.random(0,height),mainStage, -100));
+//        pickups.add(new Food(MathUtils.random(0,width),MathUtils.random(0,height),mainStage,50));
+//        pickups.add(new Poison(MathUtils.random(0,width),MathUtils.random(0,height),mainStage, -100));
         pickups.add(new EnergyDrink(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
+        pickups.add(new EnergyDrink(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
+        pickups.add(new SpiderWeb(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
         pickups.add(new SpiderWeb(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
     }
 
-    public List<PickupItems> getPickups(){
+    public SnapshotArray<PickupItems> getPickups(){
         return pickups;
     }
 
@@ -38,7 +42,7 @@ public class PickupSpawner implements PickupHandler {
 
         // Should spawn pickups in the game world randomly
 
-        pickups = new ArrayList<>();
+//        pickups = new ArrayList<>();
 
 
         pickups.add(new Food(500,300,new Stage(),50));

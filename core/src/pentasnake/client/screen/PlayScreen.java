@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
@@ -16,6 +17,7 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.pointsystem.Food;
+import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
 
 import java.util.ArrayList;
@@ -80,11 +82,19 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
+        for (PickupItems pickup: pickupSpawner.getPickups()  ) {
+            if(Intersector.overlaps(snakeList.get(0).getHead(),pickup.getBoundaryRectangle())){
+                pickup.collectItem(snakeList.get(0));
+                pickup.applyEffect(snakeList.get(0));
+                pickupSpawner.getPickups().removeValue(pickup,true);
+            }
+        }
     }
 
     public void render(float dt) {
         uiStage.act(dt);
         mainStage.act(dt);
+        update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();

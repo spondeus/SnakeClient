@@ -20,7 +20,7 @@ public class SpiderWeb extends PickupItems {
 //        region.setRegionWidth( (int) webSize);
 //        region.setRegionHeight( (int) webSize);
 //        loadTexture("spiderweb.png");
-        setBoundaryPolygon(8);
+        setBoundaryRectangle();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.*;
@@ -20,7 +21,9 @@ public abstract class PickupItems extends BaseActorTEMP {
     private int points;
     boolean collected;
 
-    TextureRegion region;
+    private int size=40;
+
+    protected TextureRegion region;
 
     public PickupItems(float x, float y, Stage stage){
         super(x,y,stage);
@@ -38,21 +41,25 @@ public abstract class PickupItems extends BaseActorTEMP {
 
     public abstract void applyEffect(Snake snake);
 
-    public void collectItem() {
+    public void collectItem(Snake snake) {
         collected = true;
         clearActions();
         addAction(Actions.after(Actions.removeActor()));
-        updatePlayerScore();
+        updatePlayerScore(snake);
     }
 
-    public void updatePlayerScore(){
+    public void updatePlayerScore(Snake snake){
         if (collected) {
-            long updatedPlayerScore = getPlayerScore() + (long) getPoints();
+            snake.setPoints(snake.getPoints()+getPoints());
         }
     }
 
     public void draw(Batch batch, float parentAlpha){
-        batch.draw(region, getX(), getY(), 40, 40 );
+        batch.draw(region, getX(), getY(), size, size );
+    }
+
+    public void setBoundaryRectangle(){
+        boundaryRectangle=new Rectangle(getX(),getY(),getX()+size,getY()+size);;
     }
 
 }

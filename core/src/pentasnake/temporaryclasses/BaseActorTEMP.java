@@ -26,6 +26,11 @@ public class BaseActorTEMP extends Actor {
     }
    // private float elapsedTime;
     private Polygon boundaryPolygon;
+    protected Rectangle boundaryRectangle;
+
+    public Rectangle getBoundaryRectangle() {
+        return boundaryRectangle;
+    }
 
     private static Rectangle worldBounds;
 
@@ -77,7 +82,7 @@ public class BaseActorTEMP extends Actor {
         float w = getWidth();
         float h = getHeight();
         float[] vertices = {0, 0, w, 0, w, h, 0, h};
-        boundaryPolygon = new Polygon(vertices);
+        boundaryRectangle = new Rectangle(0,0,w,h);
     }
 
     public void setBoundaryPolygon(int numSides) {

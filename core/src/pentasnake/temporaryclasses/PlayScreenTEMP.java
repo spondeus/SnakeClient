@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.compression.lzma.Base;
 import lombok.Data;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class PlayScreenTEMP extends Game implements Screen, InputProcessor {
 
     private SpriteBatch batch;
 
-    private List<PickupItems> pickups;
+    private SnapshotArray<PickupItems> pickups;
 
     public PlayScreenTEMP() {
         mainStage = new Stage();

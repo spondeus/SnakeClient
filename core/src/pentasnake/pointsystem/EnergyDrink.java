@@ -20,7 +20,7 @@ public class EnergyDrink extends PickupItems {
 //        region.setRegionWidth( (int) drinkSize);
 //        region.setRegionHeight( (int) drinkSize);
 //        loadTexture("energydrink.png");
-        setBoundaryPolygon(8);
+        setBoundaryRectangle();
     }
 
     @Override

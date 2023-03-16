@@ -194,11 +194,14 @@ public class Snake extends Actor {
     }
 
     public void grow() {
-        this.parts.add( new SnakePart(parts.get(0).x, parts.get(0).y+parts.get(0).radius/2, parts.get(0).radius, parts.get(0).getColor(), W));
+        this.parts.add( new SnakePart(parts.get(0).x, parts.get(0).y+parts.get(0).radius/2, parts.get(0).radius, parts.get(1).getColor(), W));
     }
 
     public void shrink() {
-        this.parts.removeIndex(1);
+        for (int i = 1; i < parts.size-1; i++) {
+            parts.set(i,parts.get(i+1));
+        }
+        parts.removeIndex(parts.size-1);
     }
 
     enum SnakeDirection {N, E, S, W}

@@ -14,7 +14,7 @@ public class Poison extends PickupItems {
 //        region.setRegionWidth( (int) poisonSize);
 //        region.setRegionHeight( (int) poisonSize);
 //        loadTexture("assets/poison.png");
-        setBoundaryPolygon(8);
+        setBoundaryRectangle();
     }
 
     @Override

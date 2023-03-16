@@ -22,7 +22,7 @@ public class Food extends PickupItems {
 //        region.setRegionWidth( (int) foodSize);
 //        region.setRegionHeight( (int) foodSize);
 //        loadTexture("assets/food.png");
-        setBoundaryPolygon(8);
+        setBoundaryRectangle();
     }
 
     @Override
