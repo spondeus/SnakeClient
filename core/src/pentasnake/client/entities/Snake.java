@@ -14,6 +14,8 @@ public class Snake extends SnapshotArray<SnakePart> {
 
     private int speed = 120;
 
+    private int points;
+
     private Circle eye1, eye2;
     private Circle innerEye1, innerEye2;
 
@@ -44,6 +46,7 @@ public class Snake extends SnapshotArray<SnakePart> {
         innerEye1 = new Circle();
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
+        points=0;
     }
 
     public void draw() {
@@ -178,6 +181,14 @@ public class Snake extends SnapshotArray<SnakePart> {
 
     public SnakePart getHead() {
         return head;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }
 
