@@ -10,9 +10,9 @@ public class Poison extends PickupItems {
     public Poison(float x, float y, Stage stage, int points) {
         super(x, y, stage, -100);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("poison.png")));
-        float poisonSize = 32;
-        region.setRegionWidth( (int) poisonSize);
-        region.setRegionHeight( (int) poisonSize);
+//        float poisonSize = 100;
+//        region.setRegionWidth( (int) poisonSize);
+//        region.setRegionHeight( (int) poisonSize);
 //        loadTexture("assets/poison.png");
         setBoundaryPolygon(8);
     }

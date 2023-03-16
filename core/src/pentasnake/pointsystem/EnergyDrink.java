@@ -16,9 +16,9 @@ public class EnergyDrink extends PickupItems {
     public EnergyDrink(float x, float y, Stage stage) {
         super(x,y,stage);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("energydrink.png")));
-        float drinkSize = 32;
-        region.setRegionWidth( (int) drinkSize);
-        region.setRegionHeight( (int) drinkSize);
+//        float drinkSize = 100;
+//        region.setRegionWidth( (int) drinkSize);
+//        region.setRegionHeight( (int) drinkSize);
 //        loadTexture("energydrink.png");
         setBoundaryPolygon(8);
     }

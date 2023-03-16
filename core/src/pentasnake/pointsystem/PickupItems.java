@@ -52,7 +52,7 @@ public abstract class PickupItems extends BaseActorTEMP {
     }
 
     public void draw(Batch batch, float parentAlpha){
-        batch.draw(region, getX(), getY(), 100, 100 );
+        batch.draw(region, getX(), getY(), 40, 40 );
     }
 
 }

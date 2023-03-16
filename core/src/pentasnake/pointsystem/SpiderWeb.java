@@ -16,9 +16,9 @@ public class SpiderWeb extends PickupItems {
     public SpiderWeb(float x, float y, Stage stage){
         super(x,y,stage);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("spiderweb.png")));
-        float webSize = 32;
-        region.setRegionWidth( (int) webSize);
-        region.setRegionHeight( (int) webSize);
+//        float webSize = 100;
+//        region.setRegionWidth( (int) webSize);
+//        region.setRegionHeight( (int) webSize);
 //        loadTexture("spiderweb.png");
         setBoundaryPolygon(8);
     }

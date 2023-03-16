@@ -16,6 +16,7 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.pointsystem.Food;
+import pentasnake.pointsystem.PickupSpawner;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,6 +33,8 @@ public class PlayScreen implements Screen {
     private ArrayList<Snake> snakeList;
     private Table table;
 
+    private PickupSpawner pickupSpawner;
+
     public PlayScreen() {
         mainStage = new Stage();
         uiStage = new Stage();
@@ -46,6 +49,7 @@ public class PlayScreen implements Screen {
         snakeList.add(snake);
         mainStage.addActor(snake);
         Gdx.input.setInputProcessor(new InputHandler(snake));
+        pickupSpawner=new PickupSpawner(mainStage);
         labelInitialize();
     }
 
