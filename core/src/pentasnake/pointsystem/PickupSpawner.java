@@ -1,9 +1,11 @@
 package pentasnake.pointsystem;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +17,16 @@ public class PickupSpawner implements PickupHandler {
 
     private Stage mainStage;
 
+
     public PickupSpawner(Stage mainStage){
         this.mainStage = mainStage;
         pickups = new ArrayList<>();
-        pickups.add(new Food(0,0,mainStage,50));
-        pickups.add(new Poison(0,0,mainStage, -100));
-        pickups.add(new EnergyDrink(0,0,mainStage));
-        pickups.add(new SpiderWeb(0,0,mainStage));
+        float height= Gdx.graphics.getHeight();
+        float width= Gdx.graphics.getWidth();
+        pickups.add(new Food(MathUtils.random(0,width),MathUtils.random(0,height),mainStage,50));
+        pickups.add(new Poison(MathUtils.random(0,width),MathUtils.random(0,height),mainStage, -100));
+        pickups.add(new EnergyDrink(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
+        pickups.add(new SpiderWeb(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
     }
 
     public List<PickupItems> getPickups(){
@@ -41,8 +46,8 @@ public class PickupSpawner implements PickupHandler {
         pickups.add(new EnergyDrink(0,0,new Stage()));
         pickups.add(new SpiderWeb(0,0,new Stage()));
 
-        Random random = new Random();
-        PickupItems item = pickups.get(random.nextInt(pickups.size()));
+
+//        PickupItems item = pickups.get(random.nextInt(pickups.size()));
 
 
         // Gdx.graphics.getWidth/height
