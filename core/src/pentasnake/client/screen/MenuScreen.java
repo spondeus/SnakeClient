@@ -42,16 +42,16 @@ public class MenuScreen implements Screen {
                 game.setScreen(new PlayScreen());
             }
         });
-        addButton("SETTINGS (Press T)").addListener(new ClickListener() {
+        addButton("TUTORIAL (Press T)").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new EmptyScreen(game));
+                game.setScreen(new TutorialScreen(game));
             }
         });
         addButton("SCOREBOARD (Press B)").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new EmptyScreen(game));
+                game.setScreen(new ScoreboardScreen(game));
             }
         });
 
