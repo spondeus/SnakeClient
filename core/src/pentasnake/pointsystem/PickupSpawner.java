@@ -26,7 +26,7 @@ public class PickupSpawner implements PickupHandler {
         float height= Gdx.graphics.getHeight();
         float width= Gdx.graphics.getWidth();
 //        pickups.add(new Food(MathUtils.random(0,width),MathUtils.random(0,height),mainStage,50));
-//        pickups.add(new Poison(MathUtils.random(0,width),MathUtils.random(0,height),mainStage, -100));
+        pickups.add(new Poison(MathUtils.random(0,width),MathUtils.random(0,height),mainStage, -100));
         pickups.add(new EnergyDrink(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
         pickups.add(new EnergyDrink(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
         pickups.add(new SpiderWeb(MathUtils.random(0,width),MathUtils.random(0,height),mainStage));
