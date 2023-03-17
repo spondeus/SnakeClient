@@ -38,7 +38,7 @@ public class MenuScreen implements Screen {
         addButton("START (Press S)").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen());
+//                game.setScreen(new PlayScreen());
             }
         });
         addButton("SETTINGS (Press T)").addListener(new ClickListener() {
@@ -96,7 +96,7 @@ public class MenuScreen implements Screen {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new PlayScreen());
+//        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new PlayScreen());
 //        if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new ScoreboardScreen());
 //        if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new SettingsScreen());
     }
