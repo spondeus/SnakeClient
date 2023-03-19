@@ -198,10 +198,16 @@ public class Snake extends Actor {
     }
 
     public void shrink() {
-        for (int i = 1; i < parts.size-1; i++) {
-            parts.set(i,parts.get(i+1));
+        SnakePart beforeTail=parts.get(parts.size-2);
+        SnakePart tail=parts.get(parts.size-1);
+        beforeTail.radius=tail.radius;
+        switch(beforeTail.getDirection()){
+            case N:beforeTail.y+= beforeTail.radius;break;
+            case S:beforeTail.y-= beforeTail.radius;break;
+            case E:beforeTail.x-= beforeTail.radius;break;
+            case W:beforeTail.x+= beforeTail.radius;break;
         }
-        parts.removeIndex(parts.size-1);
+        parts.removeValue(tail,true);
     }
 
     enum SnakeDirection {N, E, S, W}
