@@ -59,7 +59,7 @@ public abstract class PickupItems extends BaseActorTEMP {
     }
 
     public void setBoundaryRectangle(){
-        boundaryRectangle=new Rectangle(getX(),getY(),getX()+size,getY()+size);;
+        boundaryRectangle=new Rectangle(getX(),getY(),size,size);
     }
 
 }

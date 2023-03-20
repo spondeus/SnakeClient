@@ -24,6 +24,8 @@ public class Snake extends Actor {
 
     private int points;
 
+    private final int initialParts=4;
+
     private Circle eye1, eye2;
     private Circle innerEye1, innerEye2;
 
@@ -33,12 +35,15 @@ public class Snake extends Actor {
 
     private final float angle = (float) (360.0 / 4.0);
 
+    private SnapshotArray<SnakePart> colliders=new SnapshotArray<SnakePart>();
+
 
     public Snake(int x, int y, int radius, Color bodyColor) {
         head = new SnakePart(x, y, radius, Color.ORANGE, W);
         this.parts = new SnapshotArray<>();
+        this.parts.begin();
         this.parts.add(head);
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= initialParts; i++) {
             x -= 2 * radius;
             y = y;
             SnakePart body = new SnakePart(x, y, radius, bodyColor, W);
@@ -48,22 +53,24 @@ public class Snake extends Actor {
         y = y;
         SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, W);
         this.parts.add(tail);
+        this.parts.end();
         eye1 = new Circle();
         eye2 = new Circle();
         eye1.radius = eye2.radius = head.radius / 4;
         innerEye1 = new Circle();
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
-        points=0;
+        points = 0;
     }
 
 
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
         for (SnakePart part : this.parts) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
+            if(colliders.contains(part,true)) sr.setColor(Color.RED);
             sr.circle(part.x, part.y, part.radius, 100);
             if (part == head) {
                 switch (head.getDirection()) {
@@ -102,15 +109,19 @@ public class Snake extends Actor {
         for (int i = 0; i < this.parts.size; i++) {
             for (int j = 0; j < this.parts.size; j++) {
                 if (Math.abs(i - j) < 2) continue;
-                if (this.parts.get(i).overlaps(this.parts.get(j))) return true;
+                if (this.parts.get(i).overlaps(this.parts.get(j))){
+                    colliders.add(parts.get(i));
+                    colliders.add(parts.get(j));
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public void act (float delta) {
-        if(selfCollision()) return;
-        float movement = 1/60f * speed;
+    public void act(float delta) {
+        if (selfCollision()) return;
+        float movement = 1 / 60f * speed;
         for (int i = 0; i < this.parts.size; i++) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
@@ -142,10 +153,10 @@ public class Snake extends Actor {
                     part.x += movement;
                     break;
             }
-            if (part.x < 0 ) part.x = Gdx.graphics.getWidth();
-            if (part.x > Gdx.graphics.getWidth() ) part.x = 0;
-            if (part.y < 0 ) part.y = Gdx.graphics.getHeight();
-            if (part.y > Gdx.graphics.getHeight() ) part.y = 0;
+            if (part.x < 0) part.x = Gdx.graphics.getWidth();
+            if (part.x > Gdx.graphics.getWidth()) part.x = 0;
+            if (part.y < 0) part.y = Gdx.graphics.getHeight();
+            if (part.y > Gdx.graphics.getHeight()) part.y = 0;
         }
 
     }
@@ -186,28 +197,66 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if(speed>20) speed-=20;
+        if (speed > 20) speed -= 20;
     }
 
     public void speedUp() {
-        speed+=20;
+        speed += 20;
     }
 
     public void grow() {
-        this.parts.add( new SnakePart(parts.get(0).x, parts.get(0).y+parts.get(0).radius/2, parts.get(0).radius, parts.get(1).getColor(), W));
+        parts.begin();
+        SnakePart beforeTail = parts.get(parts.size - 2);
+        SnakePart tail = parts.get(parts.size - 1);
+        SnakePart newBeforeTail = new SnakePart(
+                parts.get(parts.size - 2).x,
+                parts.get(parts.size - 2).y,
+                parts.get(parts.size - 2).radius,
+                parts.get(parts.size - 2).getColor(),
+                parts.get(parts.size - 2).getDirection());
+        switch (newBeforeTail.getDirection()) {
+            case N:
+                beforeTail.y -= 2 * beforeTail.radius;
+                tail.y -= 2 * beforeTail.radius;
+                break;
+            case S:
+                beforeTail.y += 2 * beforeTail.radius;
+                tail.y += 2 * beforeTail.radius;
+                break;
+            case E:
+                beforeTail.x += 2 * beforeTail.radius;
+                tail.x += 2 * beforeTail.radius;
+                break;
+            case W:
+                beforeTail.x -= 2 * beforeTail.radius;
+                tail.x -= 2 * beforeTail.radius;
+                break;
+        }
+        this.parts.insert(parts.size-2,newBeforeTail );
+        parts.end();
     }
 
     public void shrink() {
-        SnakePart beforeTail=parts.get(parts.size-2);
-        SnakePart tail=parts.get(parts.size-1);
-        beforeTail.radius=tail.radius;
-        switch(beforeTail.getDirection()){
-            case N:beforeTail.y+= beforeTail.radius;break;
-            case S:beforeTail.y-= beforeTail.radius;break;
-            case E:beforeTail.x-= beforeTail.radius;break;
-            case W:beforeTail.x+= beforeTail.radius;break;
+        parts.begin();
+        SnakePart beforeTail = parts.get(parts.size - 2);
+        SnakePart tail = parts.get(parts.size - 1);
+        beforeTail.radius = tail.radius;
+        switch (beforeTail.getDirection()) {
+            case N:
+                beforeTail.y += beforeTail.radius;
+                break;
+            case S:
+                beforeTail.y -= beforeTail.radius;
+                break;
+            case E:
+                beforeTail.x -= beforeTail.radius;
+                break;
+            case W:
+                beforeTail.x += beforeTail.radius;
+                break;
         }
-        parts.removeValue(tail,true);
+        parts.removeValue(tail, true);
+        parts.end();
     }
 
     enum SnakeDirection {N, E, S, W}
