@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
         snakeList.add(snake);
         mainStage.addActor(snake);
         Gdx.input.setInputProcessor(new InputHandler(snake));
-        pickupSpawner=new PickupSpawner(mainStage);
+        pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
     }
 
@@ -82,11 +82,11 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-        for (PickupItems pickup: pickupSpawner.getPickups()  ) {
-            if(Intersector.overlaps(snakeList.get(0).getHead(),pickup.getBoundaryRectangle())){
+        for (PickupItems pickup : pickupSpawner.getPickups()) {
+            if (Intersector.overlaps(snakeList.get(0).getHead(), pickup.getBoundaryRectangle())) {
                 pickup.collectItem(snakeList.get(0));
                 pickup.applyEffect(snakeList.get(0));
-                pickupSpawner.getPickups().removeValue(pickup,true);
+                pickupSpawner.getPickups().removeValue(pickup, true);
             }
         }
         myPoints.setText(snakeList.get(0).getPoints() + " p");
@@ -101,7 +101,6 @@ public class PlayScreen implements Screen {
         mainStage.draw();
         uiStage.draw();
     }
-
 
 
     @Override
