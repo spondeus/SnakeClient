@@ -20,6 +20,5 @@ public class Poison extends PickupItems {
     @Override
     public void applyEffect(Snake snake) {
         snake.shrink();
-        snake.addPoints(this.getPoints());
     }
 }

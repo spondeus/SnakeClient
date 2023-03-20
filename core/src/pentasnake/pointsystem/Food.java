@@ -28,6 +28,5 @@ public class Food extends PickupItems {
     @Override
     public void applyEffect(Snake snake) {
         snake.grow();
-        snake.addPoints(this.getPoints());
     }
 }
