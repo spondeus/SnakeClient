@@ -259,6 +259,9 @@ public class Snake extends Actor {
         parts.end();
     }
 
+    public void addPoints(int points) {
+    }
+
     enum SnakeDirection {N, E, S, W}
 
     public SnakePart getHead() {
