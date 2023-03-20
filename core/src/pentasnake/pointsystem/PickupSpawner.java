@@ -20,12 +20,12 @@ public class PickupSpawner implements PickupHandler {
     @Getter
     private final SnapshotArray<PickupItems> pickups;
     private final Stage mainStage;
-    private final float foodSpawnRate = 0.5f; // 0.5 item per second
-    private final float poisonSpawnRate = 0.4f;
-    private final float energyDrinkSpawnRate = 0.25f;
-    private final float spiderWebSpawnRate = 0.25f;
-    private final float iceBlockSpawnRate = 0.25f;
-    private final float ghostSpawnRate = 0.1f; // 0.1 items per second
+    private final float foodSpawnRate = 0.001f;
+    private final float poisonSpawnRate = 0.001f;
+    private final float energyDrinkSpawnRate = 0.001f;
+    private final float spiderWebSpawnRate = 0.001f;
+    private final float iceBlockSpawnRate = 0.001f;
+    private final float ghostSpawnRate = 0.001f;
 
     public PickupSpawner(Stage mainStage){
         this.mainStage = mainStage;
@@ -49,7 +49,7 @@ public class PickupSpawner implements PickupHandler {
         int numPickups = 0;
 
         // check if the number of pickups is below the threshold
-        final int MAX_PICKUPS = 12;
+        final int MAX_PICKUPS = 10;
         if (numPickups < MAX_PICKUPS) {
             // spawn a new pickup with a random type and position
         }
@@ -58,9 +58,9 @@ public class PickupSpawner implements PickupHandler {
             final float width = Gdx.graphics.getWidth();
             @Override
             public void run() {
-                if (MathUtils.randomBoolean(foodSpawnRate)) {
+                /*if (MathUtils.randomBoolean(foodSpawnRate)) {
                     pickups.add(new Food(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                }
+                }*/
                 if (MathUtils.randomBoolean(poisonSpawnRate)) {
                     pickups.add(new Poison(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
                 }
