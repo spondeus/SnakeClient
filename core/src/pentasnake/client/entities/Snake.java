@@ -8,6 +8,10 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
+import java.util.concurrent.*;
+
+import java.util.concurrent.ScheduledExecutorService;
+
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
 public class Snake extends Actor {
@@ -15,18 +19,14 @@ public class Snake extends Actor {
     public SnapshotArray<SnakePart> getParts() {
         return parts;
     }
-
     SnapshotArray<SnakePart> parts;
-
     private final SnakePart head;
-
-    private int speed = 120;
-
+    private int speed;
+    private static final int DEFAULT_SPEED = 120;
+    ScheduledExecutorService executor;
     private int points;
-
     private Circle eye1, eye2;
     private Circle innerEye1, innerEye2;
-
     private Color eyeColor = Color.WHITE;
     private Color innerEyeColor = Color.BLACK;
     private final ShapeRenderer sr = new ShapeRenderer();
@@ -55,6 +55,8 @@ public class Snake extends Actor {
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points=0;
+        this.speed = DEFAULT_SPEED;
+        this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
 
@@ -186,11 +188,11 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if(speed>20) speed-=20;
+        if(speed>80) speed-=50;
     }
 
     public void speedUp() {
-        speed+=20;
+        speed+=100;
     }
 
     public void grow() {
@@ -202,6 +204,20 @@ public class Snake extends Actor {
             parts.set(i,parts.get(i+1));
         }
         parts.removeIndex(parts.size-1);
+    }
+
+    public void freeze() {
+        speed = 0;
+            executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    speed = DEFAULT_SPEED;
+                }
+            }, 5, TimeUnit.SECONDS);
+    }
+
+    public void ghostMode() {
+        // enables snake to go through obstacles, walls, other snakes, but not itself (?)
     }
 
     enum SnakeDirection {N, E, S, W}

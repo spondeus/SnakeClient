@@ -23,6 +23,8 @@ import pentasnake.pointsystem.PickupSpawner;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayScreen implements Screen {
 
@@ -37,10 +39,13 @@ public class PlayScreen implements Screen {
 
     private PickupSpawner pickupSpawner;
 
+    ScheduledExecutorService executor;
+
     public PlayScreen() {
         mainStage = new Stage();
         uiStage = new Stage();
         initialize();
+        this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void initialize() {
@@ -51,7 +56,8 @@ public class PlayScreen implements Screen {
         snakeList.add(snake);
         mainStage.addActor(snake);
         Gdx.input.setInputProcessor(new InputHandler(snake));
-        pickupSpawner=new PickupSpawner(mainStage);
+        pickupSpawner = new PickupSpawner(mainStage);
+        pickupSpawner.spawnPickups();
         labelInitialize();
     }
 
@@ -126,12 +132,16 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
-        InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
-        im.removeProcessor(uiStage);
-        im.removeProcessor(mainStage);
+        InputProcessor inputProcessor = Gdx.input.getInputProcessor();
+        if (inputProcessor instanceof InputMultiplexer) {
+            InputMultiplexer inputMultiplexer = (InputMultiplexer) inputProcessor;
+            inputMultiplexer.removeProcessor(uiStage);
+            inputMultiplexer.removeProcessor(mainStage);
+        }
     }
 
     @Override
     public void dispose() {
+        executor.shutdown();
     }
 }
