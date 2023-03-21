@@ -320,12 +320,10 @@ public class Snake extends Actor {
                 break;
             case E:
             case W:
-
                 if (deltaY < 1) {
                     part.y = prev.y;
                     part.setDirection(prevDir);
                 }
-
                 break;
             case NE:
                 if (radius2 / deltaX > sqrt2) {
@@ -334,10 +332,9 @@ public class Snake extends Actor {
                     part.setDirection(prevDir);
                 }
                 break;
-
             case SW:
                 if (radius2 / deltaX > sqrt2) {
-                    part.y = prev.y - side;
+                    part.y = prev.y + side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
@@ -352,7 +349,7 @@ public class Snake extends Actor {
             case SE:
                 if (radius2 / deltaX > sqrt2) {
                     part.y = prev.y + side;
-                    part.x = prev.x + side;
+                    part.x = prev.x - side;
                     part.setDirection(prevDir);
                 }
                 break;
