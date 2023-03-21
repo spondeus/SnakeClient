@@ -121,74 +121,49 @@ public class Snake extends Actor {
 
     public void act(float delta) {
         if (selfCollision()) return;
+        float sqrt2 = (float) Math.pow(2, 0.5);
         float movement = 1 / 60f * speed;
         for (int i = 0; i < this.parts.size; i++) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
-            if (prev != null) {
-                SnakeDirection prevDir = prev.getDirection();
-                float deltaX = Math.abs(part.x - prev.x);
-                float deltaY = Math.abs(part.y - prev.y);
-                float radius2=part.radius+ prev.radius;
-                if (prevDir == N || prevDir == S) {         // ha elkanyarodott felfele
-                    if (deltaX < 1) {                       // ha egy vonalba kerülnek
-                        part.x = prev.x;                    // legyenek teljesen egy vonalban
-                        part.setDirection(prevDir);         // és váltson irányt a hátsó tag is
-                    }
-                } else if (prevDir == E || prevDir == W) {
-                    if (deltaY < 1) {
-                        part.y = prev.y;
-                        part.setDirection(prevDir);
-                    }
-                } else if (prevDir == NE || prevDir == SW) {
-                    if (deltaX*deltaX + deltaY*deltaY > radius2*radius2) {
-                        part.y = prev.y - (radius2) / (float) Math.pow(2, 0.5);
-                        part.x = prev.x - (radius2) / (float) Math.pow(2, 0.5);
-                        part.setDirection(prevDir);
-                    }
-                } else if (prevDir == NW || prevDir == SE) {
-                    if (Math.abs(part.y - prev.y) < 1) {
-                        part.y = prev.y;
-                        part.setDirection(prevDir);
-                    }
-                }
-            }
+            if (prev != null) changeDirection(part, prev);
+            float diagonal = movement / sqrt2;
             switch (part.getDirection()) {
                 case N:
                     part.y += movement;
                     break;
                 case NE:
-                    part.x += movement / 2;
-                    part.y += movement / 2;
+                    part.x += diagonal;
+                    part.y += diagonal;
                     break;
                 case E:
                     part.x += movement;
                     break;
                 case SE:
-                    part.x += movement / 2;
-                    part.y -= movement / 2;
+                    part.x += diagonal;
+                    part.y -= diagonal;
                     break;
                 case S:
                     part.y -= movement;
                     break;
                 case SW:
-                    part.x -= movement / 2;
-                    part.y -= movement / 2;
+                    part.x -= diagonal;
+                    part.y -= diagonal;
                     break;
                 case W:
                     part.x -= movement;
                     break;
                 case NW:
-                    part.x -= movement / 2;
-                    part.y += movement / 2;
+                    part.x -= diagonal;
+                    part.y += diagonal;
                     break;
             }
             if (part.x < 0) part.x = Gdx.graphics.getWidth();
             if (part.x > Gdx.graphics.getWidth()) part.x = 0;
             if (part.y < 0) part.y = Gdx.graphics.getHeight();
             if (part.y > Gdx.graphics.getHeight()) part.y = 0;
-        }
 
+        }
     }
 
     public void turnRight() {
@@ -325,6 +300,63 @@ public class Snake extends Actor {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+
+    private void changeDirection(SnakePart part, SnakePart prev) {
+        float sqrt2 = (float) Math.pow(2, 0.5);
+        SnakeDirection prevDir = prev.getDirection();
+        float deltaX = Math.abs(part.x - prev.x);
+        float deltaY = Math.abs(part.y - prev.y);
+        float radius2 = part.radius + prev.radius;
+        float side = (radius2) / sqrt2;
+        switch (prevDir) {
+            case N:
+            case S:         // ha elkanyarodott felfele
+                if (deltaX < 1) {                       // ha egy vonalba kerülnek
+                    part.x = prev.x;                    // legyenek teljesen egy vonalban
+                    part.setDirection(prevDir);         // és váltson irányt a hátsó tag is
+                }
+                break;
+            case E:
+            case W:
+
+                if (deltaY < 1) {
+                    part.y = prev.y;
+                    part.setDirection(prevDir);
+                }
+
+                break;
+            case NE:
+                if (radius2 / deltaX > sqrt2) {
+                    part.y = prev.y - side;
+                    part.x = prev.x - side;
+                    part.setDirection(prevDir);
+                }
+                break;
+
+            case SW:
+                if (radius2 / deltaX > sqrt2) {
+                    part.y = prev.y - side;
+                    part.x = prev.x + side;
+                    part.setDirection(prevDir);
+                }
+                break;
+            case NW:
+                if (radius2 / deltaX > sqrt2) {
+                    part.y = prev.y - side;
+                    part.x = prev.x + side;
+                    part.setDirection(prevDir);
+                }
+                break;
+            case SE:
+                if (radius2 / deltaX > sqrt2) {
+                    part.y = prev.y + side;
+                    part.x = prev.x + side;
+                    part.setDirection(prevDir);
+                }
+                break;
+        }
     }
 }
 
