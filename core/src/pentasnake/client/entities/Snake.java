@@ -74,34 +74,57 @@ public class Snake extends Actor {
             sr.setColor(part.getColor());
             if (colliders.contains(part, true)) sr.setColor(Color.RED);
             sr.circle(part.x, part.y, part.radius, 100);
-//            if (part == head) {
-//                switch (head.getDirection()) {
-//                    case N:
-//                    case S:
-//                        eye1.x = head.x - eye1.radius - 2;
-//                        eye1.y = eye2.y = head.y + (head.getDirection() == N ? 3 : -3);
-//                        eye2.x = head.x + eye2.radius + 2;
-//                        innerEye1.x = eye1.x;
-//                        innerEye2.x = eye2.x;
-//                        innerEye1.y = innerEye2.y = eye1.y;
-//                        break;
-//                    case E:
-//                    case W:
-//                        eye1.x = eye2.x = head.x + (head.getDirection() == E ? -3 : 3);
-//                        eye1.y = head.y - eye1.radius - 2;
-//                        eye2.y = head.y + eye2.radius + 2;
-//                        innerEye1.x = innerEye2.x = eye1.x;
-//                        innerEye1.y = eye1.y;
-//                        innerEye2.y = eye2.y;
-//                        break;
-//                }
-//                sr.setColor(eyeColor);
-//                sr.circle(eye1.x, eye1.y, eye1.radius);
-//                sr.circle(eye2.x, eye2.y, eye2.radius);
-//                sr.setColor(innerEyeColor);
-//                sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
-//                sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
-//            }
+            if (part == head) {
+                switch (head.getDirection()) {
+                    case N:
+                    case S:
+                        eye1.x = head.x - eye1.radius - 2;
+                        eye1.y = eye2.y = head.y + (head.getDirection() == N ? 3 : -3);
+                        eye2.x = head.x + eye2.radius + 2;
+                        innerEye1.x = eye1.x;
+                        innerEye2.x = eye2.x;
+                        innerEye1.y = innerEye2.y = eye1.y;
+                        break;
+                    case NE:
+                    case SW:
+                        eye1.x = head.x - eye1.radius / sqrt2 -1;
+                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
+                        eye2.x = head.x + eye2.radius / sqrt2 + 1;
+                        eye2.y = head.y - eye2.radius / sqrt2 -1;
+                        innerEye1.x = eye1.x;
+                        innerEye2.x = eye2.x;
+                        innerEye1.y = eye1.y;
+                        innerEye2.y = eye2.y;
+                        break;
+                    case E:
+                    case W:
+                        eye1.x = eye2.x = head.x + (head.getDirection() == E ? -3 : 3);
+                        eye1.y = head.y - eye1.radius - 2;
+                        eye2.y = head.y + eye2.radius + 2;
+                        innerEye1.x = innerEye2.x = eye1.x;
+                        innerEye1.y = eye1.y;
+                        innerEye2.y = eye2.y;
+                        break;
+                    case NW:
+                    case SE:
+                        eye1.x = head.x + eye1.radius / sqrt2 +1;
+                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
+                        eye2.x = head.x - eye2.radius / sqrt2 - 1;
+                        eye2.y = head.y - eye2.radius / sqrt2 -1;
+                        innerEye1.x = eye1.x;
+                        innerEye2.x = eye2.x;
+                        innerEye1.y = eye1.y;
+                        innerEye2.y = eye2.y;
+                        break;
+
+                }
+                sr.setColor(eyeColor);
+                sr.circle(eye1.x, eye1.y, eye1.radius);
+                sr.circle(eye2.x, eye2.y, eye2.radius);
+                sr.setColor(innerEyeColor);
+                sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
+                sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
+            }
             sr.end();
         }
         batch.begin();
@@ -244,22 +267,48 @@ public class Snake extends Actor {
                 parts.get(parts.size - 2).radius,
                 parts.get(parts.size - 2).getColor(),
                 parts.get(parts.size - 2).getDirection());
+        float radius2 = 2 * beforeTail.radius;
+        float radiusSqrt = sqrt2 * beforeTail.radius;
         switch (newBeforeTail.getDirection()) {
             case N:
-                beforeTail.y -= 2 * beforeTail.radius;
-                tail.y -= 2 * beforeTail.radius;
+                beforeTail.y -= radius2;
+                tail.y -= radius2;
                 break;
-            case S:
-                beforeTail.y += 2 * beforeTail.radius;
-                tail.y += 2 * beforeTail.radius;
+            case NE:
+                beforeTail.y -= radiusSqrt;
+                beforeTail.x -= radiusSqrt;
+                tail.y -= radiusSqrt;
+                tail.x -= radiusSqrt;
                 break;
             case E:
-                beforeTail.x += 2 * beforeTail.radius;
-                tail.x += 2 * beforeTail.radius;
+                beforeTail.x -= radius2;
+                tail.x -= radius2;
+                break;
+            case SE:
+                beforeTail.y += radiusSqrt;
+                beforeTail.x -= radiusSqrt;
+                tail.y += radiusSqrt;
+                tail.x -= radiusSqrt;
+                break;
+            case S:
+                beforeTail.y += radius2;
+                tail.y += radius2;
+                break;
+            case SW:
+                beforeTail.x += radiusSqrt;
+                beforeTail.y -= radiusSqrt;
+                tail.x += radiusSqrt;
+                tail.y -= radiusSqrt;
                 break;
             case W:
-                beforeTail.x -= 2 * beforeTail.radius;
-                tail.x -= 2 * beforeTail.radius;
+                beforeTail.x += radius2;
+                tail.x += radius2;
+                break;
+            case NW:
+                beforeTail.x += radiusSqrt;
+                beforeTail.y += radiusSqrt;
+                tail.x += radius2;
+                tail.y += radiusSqrt;
                 break;
         }
         this.parts.insert(parts.size - 2, newBeforeTail);
@@ -267,23 +316,37 @@ public class Snake extends Actor {
     }
 
     public void shrink() {
+        if (parts.size < 3) return;
         parts.begin();
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
         beforeTail.radius = tail.radius;
+        float radiusSqrt = sqrt2 * beforeTail.radius;
         switch (beforeTail.getDirection()) {
             case N:
                 beforeTail.y += beforeTail.radius;
                 break;
+            case NE:
+                beforeTail.y += beforeTail.radius;
+                beforeTail.x += beforeTail.radius;
             case S:
                 beforeTail.y -= beforeTail.radius;
                 break;
+            case SE:
+                beforeTail.y -= beforeTail.radius;
+                beforeTail.x += beforeTail.radius;
             case E:
                 beforeTail.x -= beforeTail.radius;
                 break;
+            case SW:
+                beforeTail.x -= beforeTail.radius;
+                beforeTail.y -= beforeTail.radius;
             case W:
                 beforeTail.x += beforeTail.radius;
                 break;
+            case NW:
+                beforeTail.x -= beforeTail.radius;
+                beforeTail.y += beforeTail.radius;
         }
         parts.removeValue(tail, true);
         parts.end();
@@ -311,7 +374,7 @@ public class Snake extends Actor {
         float deltaY = Math.abs(part.y - prev.y);
         float radius2 = part.radius + prev.radius;
         float side = (radius2) / sqrt2;
-        delta=(part.getDirection()==N ||part.getDirection()==S)?deltaY:deltaX;
+        delta = (part.getDirection() == N || part.getDirection() == S) ? deltaY : deltaX;
         switch (prevDir) {
             case N:
             case S:                                     // ha elkanyarodott felfele
