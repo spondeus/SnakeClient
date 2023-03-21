@@ -37,6 +37,8 @@ public class Snake extends Actor {
 
     private SnapshotArray<SnakePart> colliders = new SnapshotArray<SnakePart>();
 
+    private static final float sqrt2 = (float) Math.pow(2, 0.5);
+
 
     public Snake(int x, int y, int radius, Color bodyColor) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -121,7 +123,6 @@ public class Snake extends Actor {
 
     public void act(float delta) {
         if (selfCollision()) return;
-        float sqrt2 = (float) Math.pow(2, 0.5);
         float movement = 1 / 60f * speed;
         for (int i = 0; i < this.parts.size; i++) {
             SnakePart part = this.parts.get(i);
@@ -304,15 +305,16 @@ public class Snake extends Actor {
 
 
     private void changeDirection(SnakePart part, SnakePart prev) {
-        float sqrt2 = (float) Math.pow(2, 0.5);
+        float delta;
         SnakeDirection prevDir = prev.getDirection();
         float deltaX = Math.abs(part.x - prev.x);
         float deltaY = Math.abs(part.y - prev.y);
         float radius2 = part.radius + prev.radius;
         float side = (radius2) / sqrt2;
+        delta=(part.getDirection()==N ||part.getDirection()==S)?deltaY:deltaX;
         switch (prevDir) {
             case N:
-            case S:         // ha elkanyarodott felfele
+            case S:                                     // ha elkanyarodott felfele
                 if (deltaX < 1) {                       // ha egy vonalba kerülnek
                     part.x = prev.x;                    // legyenek teljesen egy vonalban
                     part.setDirection(prevDir);         // és váltson irányt a hátsó tag is
@@ -326,28 +328,28 @@ public class Snake extends Actor {
                 }
                 break;
             case NE:
-                if (radius2 / deltaX > sqrt2) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SW:
-                if (radius2 / deltaX > sqrt2) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case NW:
-                if (radius2 / deltaX > sqrt2) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SE:
-                if (radius2 / deltaX > sqrt2) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
