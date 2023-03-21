@@ -18,8 +18,8 @@ public class InputHandler extends InputAdapter {
     public boolean keyDown(int keycode) {
         SnakePart head = snake.getHead();
         SnakePart neck = snake.getParts().get(1);
-        if (head.getDirection()!=neck.getDirection() && Math.abs(head.x - neck.x) <= head.radius * 2) return false;
-        if (head.getDirection()!=neck.getDirection() && Math.abs(head.y - neck.y) <= head.radius * 2) return false;
+        if (isTurning(head,neck) && tooCloseX(head,neck)) return false;  // ha most kanyarodott, ne tudjon kanyarodni, csak ha már megtett egy fejnyi távot
+        if (isTurning(head,neck) && tooCloseY(head,neck)) return false;
         if (keycode == Input.Keys.A) snake.turnLeft();
         else if (keycode == Input.Keys.D) snake.turnRight();
         return false;
