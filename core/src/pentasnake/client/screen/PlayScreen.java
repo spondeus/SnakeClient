@@ -95,6 +95,7 @@ public class PlayScreen implements Screen {
                 pickupSpawner.getPickups().removeValue(pickup,true);
             }
         }
+        myPoints.setText(snakeList.get(0).getPoints() + " p");
     }
 
     public void render(float dt) {

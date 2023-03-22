@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.Timer;
 import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
