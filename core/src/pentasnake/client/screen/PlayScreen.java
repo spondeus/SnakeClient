@@ -1,28 +1,32 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import lombok.Getter;
+import lombok.val;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
-import pentasnake.pointsystem.Food;
+import pentasnake.client.socket.ClientSocket;
+import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 
 public class PlayScreen implements Screen {
 
@@ -37,10 +41,15 @@ public class PlayScreen implements Screen {
 
     private PickupSpawner pickupSpawner;
 
-    public PlayScreen() {
+    private final SnakeGame game;
+
+    public PlayScreen(SnakeGame game) {
         mainStage = new Stage();
         uiStage = new Stage();
         initialize();
+
+        this.game = game;
+
     }
 
     public void initialize() {
@@ -109,6 +118,8 @@ public class PlayScreen implements Screen {
         InputMultiplexer im = new InputMultiplexer();
         im.addProcessor(uiStage);
         im.addProcessor(mainStage);
+
+        val com = new Communication(game);
     }
 
     @Override
@@ -129,6 +140,7 @@ public class PlayScreen implements Screen {
         InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
         im.removeProcessor(uiStage);
         im.removeProcessor(mainStage);
+
     }
 
     @Override

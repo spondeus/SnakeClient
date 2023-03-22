@@ -151,6 +151,7 @@ public class Snake extends Actor {
     }
 
     public void turnLeft() {
+
         switch (head.getDirection()) {
             case N:
                 head.setDirection(E);
