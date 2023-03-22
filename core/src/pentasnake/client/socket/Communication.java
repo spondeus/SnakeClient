@@ -12,7 +12,13 @@ import java.util.Set;
 
 public class Communication extends ApplicationAdapter{
 
+    @Getter
+    private static ClientSocket websocketClient;
+
     private SnakeGame game;
+
+    @Getter
+    private Snake snake;
 
     public Communication(SnakeGame game) {
         this.game = game;
@@ -20,14 +26,13 @@ public class Communication extends ApplicationAdapter{
         try{
             URI uri = new URI("ws://192.168.18.8:8080");
             websocketClient = new ClientSocket(uri, game);
+            snake = websocketClient.getSnake();
         } catch (URISyntaxException e){
             throw new RuntimeException(e);
         }
         this.create();
     }
 
-    @Getter
-    private static ClientSocket websocketClient;
 
     @Override
     public void create(){

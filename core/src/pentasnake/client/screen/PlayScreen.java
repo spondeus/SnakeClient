@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public class PlayScreen implements Screen {
@@ -43,23 +44,32 @@ public class PlayScreen implements Screen {
 
     private final SnakeGame game;
 
-    public PlayScreen(SnakeGame game) {
+    public PlayScreen(SnakeGame game, List<Snake> snakes) {
         mainStage = new Stage();
         uiStage = new Stage();
-        initialize();
 
         this.game = game;
+        snakeList = new ArrayList<>(snakes);
+        if(snakeList.size() == 0)
+            Gdx.app.error("Server", "No snake found");
+
+        initialize();
+        for(Snake snake : snakeList)
+            Gdx.input.setInputProcessor(new InputHandler(snake));
 
     }
 
     public void initialize() {
+        /*
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor(im);
-        snakeList = new ArrayList<>();
-        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 1);
-        snakeList.add(snake);
-        mainStage.addActor(snake);
-        Gdx.input.setInputProcessor(new InputHandler(snake));
+
+         */
+
+        for(Snake x: snakeList){
+            mainStage.addActor(x);
+        }
+
         pickupSpawner=new PickupSpawner(mainStage);
         labelInitialize();
     }
@@ -119,7 +129,6 @@ public class PlayScreen implements Screen {
         im.addProcessor(uiStage);
         im.addProcessor(mainStage);
 
-        val com = new Communication(game);
     }
 
     @Override
