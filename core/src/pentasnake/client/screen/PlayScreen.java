@@ -1,16 +1,12 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import pentasnake.client.InputHandler;
@@ -83,10 +79,6 @@ public class PlayScreen implements Screen {
         uiStage.addActor(table);
     }
 
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-
     public void update(float dt) {
         for (PickupItems pickup: pickupSpawner.getPickups()  ) {
             if(Intersector.overlaps(snakeList.get(0).getHead(),pickup.getBoundaryRectangle())){
@@ -128,7 +120,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override

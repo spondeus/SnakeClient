@@ -21,6 +21,7 @@ public abstract class PickupItems extends BaseActorTEMP {
     @Setter
     private int points;
     protected boolean collected;
+    @Getter
     private final int SIZE = 60;
 
     @Getter

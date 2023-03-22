@@ -360,10 +360,12 @@ public class Snake extends Actor {
 
     public void freeze() {
         speed = 0;
+        head.setColor(Color.CYAN);
             executor.schedule(new Runnable() {
                 @Override
                 public void run() {
                     speed = DEFAULT_SPEED;
+                    head.setColor(Color.ORANGE);
                 }
             }, 5, TimeUnit.SECONDS);
     }
