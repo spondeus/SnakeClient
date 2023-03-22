@@ -40,7 +40,7 @@ public class ScoreboardScreen implements Screen {
             TextButton labelName = new TextButton("Anonymus"+(i+1),skin);
             tableName.add(labelName).width(300).height(60).padBottom(5);
             tableName.row();
-            TextButton labelScore = new TextButton(String.valueOf(10000/(i+1)), skin);
+            TextButton labelScore = new TextButton(String.valueOf(10000-(i*1000)), skin);
             tableScore.add(labelScore).width(300).height(60).padBottom(5);
             tableScore.row();
             TextButton labelTime = new TextButton("01.01.1970 00:00:00" ,skin);

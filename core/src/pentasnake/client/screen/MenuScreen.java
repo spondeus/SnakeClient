@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import pentasnake.client.SnakeGame;
@@ -82,6 +84,20 @@ public class MenuScreen implements Screen {
         textureToImgGetInStage(new Texture(Gdx.files.internal("temp/headYBr.png")), x * 0.625f - SNAKE_HEAD_WIDTH / 2f, y * 0.20f - SNAKE_HEAD_HEIGHT / 2f);
     }
 
+    private void addSettingsButton(){
+        ImageButton settingsButton = new ImageButton(skin);
+        settingsButton.setSize(100f,100f);
+        settingsButton.setPosition(Gdx.graphics.getWidth()/2f - settingsButton.getWidth()/2,Gdx.graphics.getHeight()/5f);
+        settingsButton.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings_icon.png"))));
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new EmptyScreen(game));
+            }
+        });
+        stage.addActor(settingsButton);
+    }
+
 
     @Override
     public void render(float delta) {
@@ -107,6 +123,8 @@ public class MenuScreen implements Screen {
         viewport.update(width, height, true);
         stageSnakes.clear();
         snakesPrint(width, height);
+        if (stage.getActors().size > 1) stage.getActors().get(1).remove(); //stage.getActors().get(1) = settingsButton
+        addSettingsButton();
     }
 
     @Override
