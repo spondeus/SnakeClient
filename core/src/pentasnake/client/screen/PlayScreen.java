@@ -55,8 +55,8 @@ public class PlayScreen implements Screen {
     public void initialize() {
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor(im);
-        snakeList = new ArrayList<Snake>();
-        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN);
+        snakeList = new ArrayList<>();
+        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 1);
         snakeList.add(snake);
         mainStage.addActor(snake);
         Gdx.input.setInputProcessor(new InputHandler(snake));

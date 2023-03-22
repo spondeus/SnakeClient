@@ -18,7 +18,7 @@ public class Communication extends ApplicationAdapter{
         this.game = game;
 
         try{
-            URI uri = new URI("ws://localhost:8080");
+            URI uri = new URI("ws://192.168.18.8:8080");
             websocketClient = new ClientSocket(uri, game);
         } catch (URISyntaxException e){
             throw new RuntimeException(e);

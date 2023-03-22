@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Random;
+import java.util.Set;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -33,8 +38,10 @@ public class Snake extends Actor {
 
     private final float angle = (float) (360.0 / 4.0);
 
+    @Getter @Setter
+    private int id;
 
-    public Snake(int x, int y, int radius, Color bodyColor) {
+    public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, W);
         this.parts = new SnapshotArray<>();
         this.parts.add(head);
@@ -55,6 +62,9 @@ public class Snake extends Actor {
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points=0;
+
+        this.id = id;
+
     }
 
 
