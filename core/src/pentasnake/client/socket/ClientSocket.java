@@ -13,14 +13,15 @@ import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.MenuScreen;
 
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class ClientSocket extends WebSocketClient{
 
     private final SnakeGame game;
     public static Set<Integer> ids = new HashSet<>();
+
+    @Getter
+    private List<String> snakeConstruct = new ArrayList<>();
 
     @Getter
     private Snake snake;
@@ -47,14 +48,24 @@ public class ClientSocket extends WebSocketClient{
 
     @Override
     public void onOpen(ServerHandshake serverHandshake){
-        send("xd");
         System.out.println("connected");
-
     }
 
     @Override
     public void onMessage(String s){
         Gdx.app.log("server",s);
+        {
+            val msg = s.split(",");
+            if("cons".equals(msg[0])){
+                StringBuilder string = new StringBuilder();
+                for(String x: msg){
+                    if(!"cons".equals(x))
+                        string.append(x);
+                }
+                snakeConstruct.add(String.valueOf(string));
+            }
+
+        }
     }
 
     @Override

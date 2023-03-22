@@ -12,8 +12,12 @@ import java.util.Set;
 
 public class Communication extends ApplicationAdapter{
 
+    public void send(String message){
+        websocketClient.send(message);
+    }
+
     @Getter
-    private static ClientSocket websocketClient;
+    private ClientSocket websocketClient;
 
     private SnakeGame game;
 
@@ -37,8 +41,8 @@ public class Communication extends ApplicationAdapter{
     @Override
     public void create(){
         super.create();
-
         websocketClient.connect();
+
 
     }
 }

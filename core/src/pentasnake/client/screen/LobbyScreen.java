@@ -13,6 +13,7 @@ import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.socket.Communication;
 
+import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class LobbyScreen implements Screen{
 
     Label waiting;
 
+    private Communication com;
+
     public LobbyScreen(SnakeGame game){
         this.game = game;
     }
@@ -35,10 +38,15 @@ public class LobbyScreen implements Screen{
     public void show(){
          waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
          waiting.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-         Communication com = new Communication(game);
-         val snake = com.getSnake();
-         snakes.add(snake);
 
+        com = new Communication(game);
+        val snake = com.getSnake();
+        snakes.add(snake);
+        try{
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -50,7 +58,23 @@ public class LobbyScreen implements Screen{
             waiting.draw(batch, 1);
         batch.end();
 
+
         if(snakes != null && snakes.size() == 2){
+            System.out.println(com.getWebsocketClient().getReadyState());
+            if(com.getWebsocketClient().isOpen())
+                com.send("0,0,20,ORANGE,"+com.getWebsocketClient().getId());
+
+            val snakeConstruct = com.getWebsocketClient().getSnakeConstruct();
+            for(String x: snakeConstruct){
+                val string = x.split(",");
+                snakes.add(new Snake(
+                        Integer.parseInt(string[0]),
+                        Integer.parseInt(string[1]),
+                        Integer.parseInt(string[2]),
+                        Color.ORANGE,
+                        Integer.parseInt(string[4])));
+            }
+
             game.setScreen(new PlayScreen(game, snakes));
         }
     }
