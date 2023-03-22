@@ -11,6 +11,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.MenuScreen;
+import pentasnake.client.screen.PlayScreen;
 
 import java.net.URI;
 import java.util.*;
@@ -54,6 +55,13 @@ public class ClientSocket extends WebSocketClient{
     @Override
     public void onMessage(String s){
         Gdx.app.log("server",s);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(game.getScreen());
+        if(game.getScreen() instanceof PlayScreen) ((PlayScreen)game.getScreen()).setSnake(s);
         {
             val msg = s.split(",");
             if("cons".equals(msg[0])){

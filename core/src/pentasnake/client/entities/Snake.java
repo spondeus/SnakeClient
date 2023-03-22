@@ -215,6 +215,29 @@ public class Snake extends Actor {
         parts.removeIndex(parts.size-1);
     }
 
+    public void setSnakeFromData(String s) {
+        String[] data=s.split("#");
+        this.id=Integer.parseInt(data[0]);
+        this.speed=Integer.parseInt(data[1]);
+        this.points=Integer.parseInt(data[2]);
+        String[] snakeParts=data[3].split("_");
+        for (int i = 0; i < getParts().size; i++) {
+            String[] snakePartItems=snakeParts[i].split(":");
+            getParts().get(i).x=Float.parseFloat(snakePartItems[0]);
+            getParts().get(i).y=Float.parseFloat(snakePartItems[1]);
+            getParts().get(i).radius=Float.parseFloat(snakePartItems[2]);
+            String[] colorParts=snakePartItems[3].split(",");
+            int[] rgb=new int[3];
+            for (int j = 0; j < 3; j++) {
+                rgb[i]=Integer.parseInt(colorParts[i].split("=")[1]);
+            }
+            getParts().get(i).setColor(new Color(rgb[0],rgb[1],rgb[2],1));
+            getParts().get(i).setDirection(SnakeDirection.valueOf(snakePartItems[4]));
+        }
+
+
+    }
+
     enum SnakeDirection {N, E, S, W}
 
     public SnakePart getHead() {

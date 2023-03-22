@@ -57,6 +57,8 @@ public class LobbyScreen implements Screen{
         batch.begin();
             waiting.draw(batch, 1);
         batch.end();
+        PlayScreen playScreen=new PlayScreen(game, snakes);
+        game.setScreen(playScreen);
 
 
         if(snakes != null && snakes.size() == 2){

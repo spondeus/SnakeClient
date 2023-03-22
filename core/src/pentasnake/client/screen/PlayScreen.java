@@ -66,6 +66,8 @@ public class PlayScreen implements Screen {
 
          */
 
+
+
         for(Snake x: snakeList){
             mainStage.addActor(x);
         }
@@ -154,5 +156,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
+    }
+
+    public void setSnake(String s) {
+        Snake snake=new Snake(0,0,0,Color.BLACK,1);
+        snake.setSnakeFromData(s);
+        System.out.println(":::"+snake.toString());
     }
 }
