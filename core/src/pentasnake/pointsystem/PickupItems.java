@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -16,27 +17,20 @@ import pentasnake.temporaryclasses.BaseActorTEMP;
 @NoArgsConstructor
 public abstract class PickupItems extends BaseActorTEMP {
 
-    // For the MVP, only 4 pickup types, food and poison for score, energy drink and spider web for speed change
-    // Need to come up with more pickup types for end product
+    @Getter
+    @Setter
     private int points;
-    boolean collected;
+    protected boolean collected;
+    @Getter
+    private final int SIZE = 60;
 
-    private int size=40;
-
+    @Getter
+    @Setter
+    private float spawnRate;
     protected TextureRegion region;
 
     public PickupItems(float x, float y, Stage stage){
         super(x,y,stage);
-        points = 0; // default value
-    }
-
-    public PickupItems(float x, float y, Stage stage, int points){
-        super(x,y,stage);
-        this.points = points;
-    }
-
-    public int getPoints(){
-        return this.points;
     }
 
     public abstract void applyEffect(Snake snake);
@@ -55,11 +49,10 @@ public abstract class PickupItems extends BaseActorTEMP {
     }
 
     public void draw(Batch batch, float parentAlpha){
-        batch.draw(region, getX(), getY(), size, size );
+        batch.draw(region, getX(), getY(), SIZE, SIZE );
     }
 
     public void setBoundaryRectangle(){
-        boundaryRectangle=new Rectangle(getX(),getY(),getX()+size,getY()+size);;
+        boundaryRectangle=new Rectangle(getX(),getY(),SIZE,SIZE);;
     }
-
 }

@@ -13,13 +13,14 @@ import pentasnake.client.entities.Snake;
 @Setter
 public class SpiderWeb extends PickupItems {
 
+    @Getter
+    Type type = Type.WEB;
+
     public SpiderWeb(float x, float y, Stage stage){
         super(x,y,stage);
+        setPoints(0);
+        setSpawnRate(0.5f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("spiderweb.png")));
-//        float webSize = 100;
-//        region.setRegionWidth( (int) webSize);
-//        region.setRegionHeight( (int) webSize);
-//        loadTexture("spiderweb.png");
         setBoundaryRectangle();
     }
 

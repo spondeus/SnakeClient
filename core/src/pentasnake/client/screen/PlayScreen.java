@@ -1,16 +1,12 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import pentasnake.client.InputHandler;
@@ -23,6 +19,8 @@ import pentasnake.pointsystem.PickupSpawner;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayScreen implements Screen {
 
@@ -36,6 +34,7 @@ public class PlayScreen implements Screen {
     private Table table;
 
     private PickupSpawner pickupSpawner;
+
 
     public PlayScreen() {
         mainStage = new Stage();
@@ -51,7 +50,8 @@ public class PlayScreen implements Screen {
         snakeList.add(snake);
         mainStage.addActor(snake);
         Gdx.input.setInputProcessor(new InputHandler(snake));
-        pickupSpawner=new PickupSpawner(mainStage);
+        pickupSpawner = new PickupSpawner(mainStage);
+        pickupSpawner.spawnPickups();
         labelInitialize();
     }
 
@@ -77,10 +77,6 @@ public class PlayScreen implements Screen {
         uiStage.addActor(table);
     }
 
-    public AssetManager getAssetManager() {
-        return assetManager;
-    }
-
     public void update(float dt) {
         for (PickupItems pickup: pickupSpawner.getPickups()  ) {
             if(Intersector.overlaps(snakeList.get(0).getHead(),pickup.getBoundaryRectangle())){
@@ -89,6 +85,8 @@ public class PlayScreen implements Screen {
                 pickupSpawner.getPickups().removeValue(pickup,true);
             }
         }
+        pickupSpawner.spawnPickups();
+        myPoints.setText(snakeList.get(0).getPoints() + " p");
     }
 
     public void render(float dt) {
@@ -121,14 +119,16 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-        InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
-        im.removeProcessor(uiStage);
-        im.removeProcessor(mainStage);
+        InputProcessor inputProcessor = Gdx.input.getInputProcessor();
+        if (inputProcessor instanceof InputMultiplexer) {
+            InputMultiplexer inputMultiplexer = (InputMultiplexer) inputProcessor;
+            inputMultiplexer.removeProcessor(uiStage);
+            inputMultiplexer.removeProcessor(mainStage);
+        }
     }
 
     @Override

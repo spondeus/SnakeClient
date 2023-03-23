@@ -7,27 +7,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import lombok.Getter;
 import pentasnake.client.entities.Snake;
 
-public class Food extends PickupItems {
+public class Ghost extends PickupItems{
 
     @Getter
-    Type type = Type.FOOD;
+    Type type = Type.GHOST;
 
-    public final int MAX_FOOD = 6;
-
-    public int getMAX_FOOD(){
-        return MAX_FOOD;
-    }
-
-    public Food(float x, float y, Stage stage){
+    public Ghost(float x, float y, Stage stage){
         super(x,y,stage);
-        setPoints(50);
-        setSpawnRate(1f);
-        this.region = new TextureRegion(new Texture(Gdx.files.internal("food.png")));
+        setPoints(0);
+        setSpawnRate(0.1f);
+        this.region = new TextureRegion(new Texture(Gdx.files.internal("ghost.png")));
         setBoundaryRectangle();
     }
-
     @Override
     public void applyEffect(Snake snake) {
-        snake.grow();
+        snake.ghostMode();
     }
 }

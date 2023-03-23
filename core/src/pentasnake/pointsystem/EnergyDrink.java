@@ -13,13 +13,14 @@ import pentasnake.client.entities.Snake;
 @Setter
 public class EnergyDrink extends PickupItems {
 
+    @Getter
+    Type type = Type.DRINK;
+
     public EnergyDrink(float x, float y, Stage stage) {
         super(x,y,stage);
+        setPoints(0);
+        setSpawnRate(0.75f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("energydrink.png")));
-//        float drinkSize = 100;
-//        region.setRegionWidth( (int) drinkSize);
-//        region.setRegionHeight( (int) drinkSize);
-//        loadTexture("energydrink.png");
         setBoundaryRectangle();
     }
 
