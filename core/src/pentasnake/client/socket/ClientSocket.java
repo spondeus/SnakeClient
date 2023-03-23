@@ -60,7 +60,7 @@ public class ClientSocket extends WebSocketClient{
 
     @Override
     public void onMessage(String s){
-        Gdx.app.log("server",s);
+        Gdx.app.log("Server",s);
 
         if(s.startsWith("cons")){
             constMsg = s;

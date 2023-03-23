@@ -50,9 +50,7 @@ public class LobbyScreen implements Screen{
         }
 
         if(com.getWebsocketClient().isOpen()){
-            int x = new Random().nextInt(100,300);
-            int y = new Random().nextInt(100,300);
-            com.send(x+","+ y +",20,ORANGE,"+com.getWebsocketClient().getId());
+            com.send("cons?1,?2,20,ORANGE,"+com.getWebsocketClient().getId());
         }
     }
 
@@ -66,14 +64,13 @@ public class LobbyScreen implements Screen{
         batch.end();
 
         if(com.getWebsocketClient().isCons()){
-            System.out.println(com.getWebsocketClient().getReadyState());
+            Gdx.app.log("Client-state" , String.valueOf(com.getWebsocketClient().getReadyState()));
 
             String s = com.getWebsocketClient().getConstMsg();
             String[] msg = s.split("#");
             for (String value : msg){
                 if (!value.equals("cons")){
                     String[] parts = value.split(",");
-                    System.out.println(Arrays.toString(parts));
                     snakes.add(
                             new Snake(
                                     Integer.parseInt(parts[0]),
@@ -84,8 +81,6 @@ public class LobbyScreen implements Screen{
                             ));
                 }
             }
-            System.out.println(snakes.toString());
-
             com.getWebsocketClient().setCons(false);
             game.setScreen(new PlayScreen(game, snakes));
         }

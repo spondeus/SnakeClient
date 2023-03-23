@@ -38,8 +38,13 @@ public class Snake extends Actor {
 
     private final float angle = (float) (360.0 / 4.0);
 
-    @Getter @Setter
     private int id;
+        public int getId(){
+            return id;
+        }
+        public void setId(int id){
+            this.id = id;
+        }
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, W);
