@@ -2,7 +2,6 @@ package pentasnake.client.screen;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -115,7 +114,7 @@ public class MenuScreen implements Screen {
     public void update() {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new PlayScreen());
         if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new ScoreboardScreen(game));
-        if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new EmptyScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new TutorialScreen(game));
     }
 
     @Override
