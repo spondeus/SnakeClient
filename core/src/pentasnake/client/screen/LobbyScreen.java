@@ -18,6 +18,7 @@ import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class LobbyScreen implements Screen{
@@ -51,8 +52,11 @@ public class LobbyScreen implements Screen{
             throw new RuntimeException(e);
         }
 
-        if(com.getWebsocketClient().isOpen())
-            com.send("0,0,20,ORANGE,"+com.getWebsocketClient().getId());
+        if(com.getWebsocketClient().isOpen()){
+            int x = new Random().nextInt(1,10);
+            int y = new Random().nextInt(1,10);
+            com.send(x+","+ y +",20,ORANGE,"+com.getWebsocketClient().getId());
+        }
     }
 
     @Override
