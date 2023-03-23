@@ -18,7 +18,7 @@ public class PickupSpawner implements PickupHandler {
     public final int MAX_ICE = 3;
     public final int MAX_WEB = 3;
     public final int MAX_GHOST = 2;
-    public int numFood = 0;
+    public static int numFood = 0;
     public static int numPoison = 0;
     public static int numEnergyDrink = 0;
     public static int numSpiderWeb = 0;
@@ -48,7 +48,6 @@ public class PickupSpawner implements PickupHandler {
                 pickups.add(new Food(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
                 currentPickupsOnScreen++;
                 numFood++;
-
             }
             if (numPoison < MAX_POISON && MathUtils.randomBoolean(poisonSpawnRate)) {
                 pickups.add(new Poison(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
