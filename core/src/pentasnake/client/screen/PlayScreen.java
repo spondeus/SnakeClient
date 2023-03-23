@@ -78,6 +78,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
+        pickupSpawner.getPickups().begin();
         for (PickupItems pickup: pickupSpawner.getPickups()  ) {
             if(Intersector.overlaps(snakeList.get(0).getHead(),pickup.getBoundaryRectangle())){
                 pickup.collectItem(snakeList.get(0));
@@ -87,6 +88,7 @@ public class PlayScreen implements Screen {
         }
         pickupSpawner.spawnPickups();
         myPoints.setText(snakeList.get(0).getPoints() + " p");
+        pickupSpawner.getPickups().end();
     }
 
     public void render(float dt) {

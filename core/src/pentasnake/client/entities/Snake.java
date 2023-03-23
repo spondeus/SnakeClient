@@ -150,11 +150,11 @@ public class Snake extends Actor {
     public void act(float delta) {
         if (selfCollision()) return;
         float movement = 1 / 60f * speed;
+        float diagonal = movement / sqrt2;
         for (int i = 0; i < this.parts.size; i++) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             if (prev != null) changeDirection(part, prev);
-            float diagonal = movement / sqrt2;
             switch (part.getDirection()) {
                 case N:
                     part.y += movement;
@@ -189,7 +189,14 @@ public class Snake extends Actor {
             if (part.x > Gdx.graphics.getWidth()) part.x = 0;
             if (part.y < 0) part.y = Gdx.graphics.getHeight();
             if (part.y > Gdx.graphics.getHeight()) part.y = 0;
-
+//            if(prev!=null){
+//                if(part.getDirection()==prev.getDirection() &&
+//                        Math.abs(part.x-prev.x)
+//                                +Math.abs(part.y-prev.y)<part.radius+prev.radius)
+//                part.setColor(Color.PURPLE);
+//                prev.setColor(Color.PURPLE);
+//                speed=0;
+//            };
         }
     }
 
