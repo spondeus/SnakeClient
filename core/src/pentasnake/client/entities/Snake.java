@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
+import java.util.Random;
 import java.util.concurrent.*;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +26,6 @@ public class Snake extends Actor {
     private final SnakePart head;
     private int speed;
     private static final int DEFAULT_SPEED = 120;
-    ScheduledExecutorService executor;
     private int points;
 
     private final int initialParts = 4;
@@ -68,7 +68,6 @@ public class Snake extends Actor {
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points=0;
         this.speed = DEFAULT_SPEED;
-        this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
 
@@ -359,7 +358,7 @@ public class Snake extends Actor {
     }
 
     public void freeze() {
-        speed = 0;
+        /*speed = 0;
         head.setColor(Color.CYAN);
             executor.schedule(new Runnable() {
                 @Override
@@ -367,11 +366,11 @@ public class Snake extends Actor {
                     speed = DEFAULT_SPEED;
                     head.setColor(Color.ORANGE);
                 }
-            }, 5, TimeUnit.SECONDS);
+            }, 5, TimeUnit.SECONDS);*/
     }
 
     public void ghostMode() {
-        // enables snake to go through obstacles, walls, other snakes, but not itself (?)
+        // enables snake to go through obstacles, walls, other snakes, but not itself
     }
 
     enum SnakeDirection {N, NE, E, SE, S, SW, W, NW}

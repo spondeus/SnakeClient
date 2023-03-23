@@ -35,13 +35,11 @@ public class PlayScreen implements Screen {
 
     private PickupSpawner pickupSpawner;
 
-    ScheduledExecutorService executor;
 
     public PlayScreen() {
         mainStage = new Stage();
         uiStage = new Stage();
         initialize();
-        this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void initialize() {
@@ -87,6 +85,7 @@ public class PlayScreen implements Screen {
                 pickupSpawner.getPickups().removeValue(pickup,true);
             }
         }
+        pickupSpawner.spawnPickups();
         myPoints.setText(snakeList.get(0).getPoints() + " p");
     }
 
@@ -134,6 +133,5 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        executor.shutdown();
     }
 }

@@ -12,6 +12,12 @@ public class Food extends PickupItems {
     @Getter
     Type type = Type.FOOD;
 
+    public final int MAX_FOOD = 6;
+
+    public int getMAX_FOOD(){
+        return MAX_FOOD;
+    }
+
     public Food(float x, float y, Stage stage){
         super(x,y,stage);
         setPoints(50);

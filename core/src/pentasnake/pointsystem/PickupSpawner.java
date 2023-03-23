@@ -2,10 +2,8 @@ package pentasnake.pointsystem;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.badlogic.gdx.utils.Timer;
 import lombok.Getter;
 
 public class PickupSpawner implements PickupHandler {
@@ -20,18 +18,18 @@ public class PickupSpawner implements PickupHandler {
     public final int MAX_ICE = 3;
     public final int MAX_WEB = 3;
     public final int MAX_GHOST = 2;
-    public static int numFood = 0;
+    public int numFood = 0;
     public static int numPoison = 0;
     public static int numEnergyDrink = 0;
     public static int numSpiderWeb = 0;
     public static int numIceBlock = 0;
     public static int numGhost = 0;
     public int currentPickupsOnScreen;
-    private final float foodSpawnRate = 0.0005f;
-    private final float poisonSpawnRate = 0.0003f;
-    private final float energyDrinkSpawnRate = 0.0003f;
-    private final float spiderWebSpawnRate = 0.0003f;
-    private final float iceBlockSpawnRate = 0.0002f;
+    private final float foodSpawnRate = 0.0002f;
+    private final float poisonSpawnRate = 0.0001f;
+    private final float energyDrinkSpawnRate = 0.0001f;
+    private final float spiderWebSpawnRate = 0.0001f;
+    private final float iceBlockSpawnRate = 0.0001f;
     private final float ghostSpawnRate = 0.0001f;
 
     public PickupSpawner(Stage mainStage) {
@@ -42,51 +40,46 @@ public class PickupSpawner implements PickupHandler {
     @Override
     public void spawnPickups() {
 
-        Timer.schedule(new Timer.Task() {
-            final float height = Gdx.graphics.getHeight();
-            final float width = Gdx.graphics.getWidth();
+        final float height = Gdx.graphics.getHeight();
+        final float width = Gdx.graphics.getWidth();
 
-            @Override
-            public void run() {
+        do {
+            if (numFood < MAX_FOOD && MathUtils.randomBoolean(foodSpawnRate)) {
+                pickups.add(new Food(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                currentPickupsOnScreen++;
+                numFood++;
 
-                Vector2 newLocation;
-                boolean locationOccupied;
-
-                do {
-                    if (numFood < MAX_FOOD && MathUtils.randomBoolean(foodSpawnRate)) {
-                        pickups.add(new Food(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        currentPickupsOnScreen++;
-                        numFood++;
-
-                    }
-                    if (numPoison < MAX_POISON && MathUtils.randomBoolean(poisonSpawnRate)) {
-                        pickups.add(new Poison(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        numPoison++;
-                        currentPickupsOnScreen++;
-                    }
-                    if (numEnergyDrink < MAX_DRINK && MathUtils.randomBoolean(energyDrinkSpawnRate)) {
-                        pickups.add(new EnergyDrink(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        numEnergyDrink++;
-                        currentPickupsOnScreen++;
-                    }
-                    if (numSpiderWeb < MAX_WEB && MathUtils.randomBoolean(spiderWebSpawnRate)) {
-                        pickups.add(new SpiderWeb(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        numSpiderWeb++;
-                        currentPickupsOnScreen++;
-                    }
-                    if (numIceBlock < MAX_ICE && MathUtils.randomBoolean(iceBlockSpawnRate)) {
-                        pickups.add(new IceBlock(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        numIceBlock++;
-                        currentPickupsOnScreen++;
-                    }
-                    if (numGhost < MAX_GHOST && MathUtils.randomBoolean(ghostSpawnRate)) {
-                        pickups.add(new Ghost(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
-                        numGhost++;
-                        currentPickupsOnScreen++;
-                    }
-                } while (currentPickupsOnScreen <= MAX_TOTAL_PICKUPS);
             }
-        }, 0, 1f / 60); // Spawn pickups at 60 frames per second
+            if (numPoison < MAX_POISON && MathUtils.randomBoolean(poisonSpawnRate)) {
+                pickups.add(new Poison(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                numPoison++;
+                currentPickupsOnScreen++;
+            }
+            if (numEnergyDrink < MAX_DRINK && MathUtils.randomBoolean(energyDrinkSpawnRate)) {
+                pickups.add(new EnergyDrink(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                numEnergyDrink++;
+                currentPickupsOnScreen++;
+            }
+            if (numSpiderWeb < MAX_WEB && MathUtils.randomBoolean(spiderWebSpawnRate)) {
+                pickups.add(new SpiderWeb(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                numSpiderWeb++;
+                currentPickupsOnScreen++;
+            }
+            if (numIceBlock < MAX_ICE && MathUtils.randomBoolean(iceBlockSpawnRate)) {
+                pickups.add(new IceBlock(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                numIceBlock++;
+                currentPickupsOnScreen++;
+            }
+            if (numGhost < MAX_GHOST && MathUtils.randomBoolean(ghostSpawnRate)) {
+                pickups.add(new Ghost(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                numGhost++;
+                currentPickupsOnScreen++;
+            }
+        } while (currentPickupsOnScreen <= MAX_TOTAL_PICKUPS);
+    }
+       /* }
+    }, 0, 1f / 60); // Spawn pickups at 60 frames per second*/
+
 
         // Should spawn pickups in the game world randomly
         // Spawn rate will be different for each pickup
@@ -123,5 +116,4 @@ public class PickupSpawner implements PickupHandler {
             pickupItemLocations.add(newLocation);
         }*/
 
-    }
 }
