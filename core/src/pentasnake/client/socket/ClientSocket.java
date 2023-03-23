@@ -54,17 +54,20 @@ public class ClientSocket extends WebSocketClient{
     @Override
     public void onMessage(String s){
         Gdx.app.log("server",s);
-        {
-            val msg = s.split(",");
-            if("cons".equals(msg[0])){
-                StringBuilder string = new StringBuilder();
-                for(String x: msg){
-                    if(!"cons".equals(x))
-                        string.append(x);
-                }
-                snakeConstruct.add(String.valueOf(string));
-            }
 
+        if(s.startsWith("cons")){
+            val i = s.split("cons");
+            for(String x: i){
+                val msg = x.split(",");
+                if("cons".equals(msg[0])){
+                    StringBuilder string = new StringBuilder();
+                    for(String y: msg){
+                        if(!"cons".equals(y))
+                            string.append(y);
+                    }
+                    snakeConstruct.add(String.valueOf(string));
+                }
+            }
         }
     }
 

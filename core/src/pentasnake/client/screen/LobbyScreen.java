@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import lombok.val;
+import org.java_websocket.client.WebSocketClient;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
@@ -29,6 +30,8 @@ public class LobbyScreen implements Screen{
     Label waiting;
 
     private Communication com;
+
+    private List<WebSocketClient> clients = new ArrayList<>();
 
     public LobbyScreen(SnakeGame game){
         this.game = game;
@@ -65,6 +68,7 @@ public class LobbyScreen implements Screen{
                 com.send("0,0,20,ORANGE,"+com.getWebsocketClient().getId());
 
             val snakeConstruct = com.getWebsocketClient().getSnakeConstruct();
+
             for(String x: snakeConstruct){
                 val string = x.split(",");
                 snakes.add(new Snake(
