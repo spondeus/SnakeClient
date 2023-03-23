@@ -64,7 +64,7 @@ public class LobbyScreen implements Screen{
             waiting.draw(batch, 1);
         batch.end();
 
-        if(snakes != null && snakes.size() == 2){
+        if(com.getWebsocketClient().isCons()){
             //System.out.println(com.getWebsocketClient().getReadyState());
             val snakeConstruct = com.getWebsocketClient().getSnakeConstruct();
 

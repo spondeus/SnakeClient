@@ -29,6 +29,9 @@ public class ClientSocket extends WebSocketClient{
     @Getter
     private int id;
 
+    @Getter
+    private boolean cons;
+
     public ClientSocket(URI uri, SnakeGame game){
         super(uri);
 
@@ -55,7 +58,9 @@ public class ClientSocket extends WebSocketClient{
     public void onMessage(String s){
         Gdx.app.log("server",s);
 
-        if(s.startsWith("cons")){
+        if(s.startsWith("[cons")){
+            Gdx.app.log("Server","Construct msg");
+            cons = true;
             val i = s.split("cons");
             for(String x: i){
                 val msg = x.split(",");
