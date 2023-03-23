@@ -50,6 +50,9 @@ public class LobbyScreen implements Screen{
         } catch (InterruptedException e){
             throw new RuntimeException(e);
         }
+
+        if(com.getWebsocketClient().isOpen())
+            com.send("0,0,20,ORANGE,"+com.getWebsocketClient().getId());
     }
 
     @Override
@@ -61,12 +64,8 @@ public class LobbyScreen implements Screen{
             waiting.draw(batch, 1);
         batch.end();
 
-
         if(snakes != null && snakes.size() == 2){
-            System.out.println(com.getWebsocketClient().getReadyState());
-            if(com.getWebsocketClient().isOpen())
-                com.send("0,0,20,ORANGE,"+com.getWebsocketClient().getId());
-
+            //System.out.println(com.getWebsocketClient().getReadyState());
             val snakeConstruct = com.getWebsocketClient().getSnakeConstruct();
 
             for(String x: snakeConstruct){
