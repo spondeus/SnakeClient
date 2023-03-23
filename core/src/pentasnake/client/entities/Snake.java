@@ -64,7 +64,7 @@ public class Snake extends Actor {
         innerEye1 = new Circle();
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
-        points=0;
+        points = 0;
         this.speed = DEFAULT_SPEED;
     }
 
@@ -90,10 +90,10 @@ public class Snake extends Actor {
                         break;
                     case NE:
                     case SW:
-                        eye1.x = head.x - eye1.radius / sqrt2 -1;
+                        eye1.x = head.x - eye1.radius / sqrt2 - 1;
                         eye1.y = head.y + eye1.radius / sqrt2 + 1;
                         eye2.x = head.x + eye2.radius / sqrt2 + 1;
-                        eye2.y = head.y - eye2.radius / sqrt2 -1;
+                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
                         innerEye1.x = eye1.x;
                         innerEye2.x = eye2.x;
                         innerEye1.y = eye1.y;
@@ -110,10 +110,10 @@ public class Snake extends Actor {
                         break;
                     case NW:
                     case SE:
-                        eye1.x = head.x + eye1.radius / sqrt2 +1;
+                        eye1.x = head.x + eye1.radius / sqrt2 + 1;
                         eye1.y = head.y + eye1.radius / sqrt2 + 1;
                         eye2.x = head.x - eye2.radius / sqrt2 - 1;
-                        eye2.y = head.y - eye2.radius / sqrt2 -1;
+                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
                         innerEye1.x = eye1.x;
                         innerEye2.x = eye2.x;
                         innerEye1.y = eye1.y;
@@ -253,11 +253,11 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if(speed>80) speed-=50;
+        if (speed > 80) speed -= 50;
     }
 
     public void speedUp() {
-        speed+=100;
+        speed += 100;
     }
 
     public void grow() {
@@ -270,48 +270,48 @@ public class Snake extends Actor {
                 parts.get(parts.size - 2).radius,
                 parts.get(parts.size - 2).getColor(),
                 parts.get(parts.size - 2).getDirection());
-        float radius2 = 2 * beforeTail.radius;
-        float radiusSqrt = radius2/sqrt2;
+        float diameter = 2 * beforeTail.radius;
+        float diameterSqrt = diameter / sqrt2;
         switch (newBeforeTail.getDirection()) {
             case N:
-                beforeTail.y -= radius2;
-                tail.y -= radius2;
+                beforeTail.y -= diameter;
+                tail.y -= diameter;
                 break;
             case NE:
-                beforeTail.y -= radiusSqrt;
-                beforeTail.x -= radiusSqrt;
-                tail.y -= radiusSqrt;
-                tail.x -= radiusSqrt;
+                beforeTail.y -= diameterSqrt;
+                beforeTail.x -= diameterSqrt;
+                tail.y -= diameterSqrt;
+                tail.x -= diameterSqrt;
                 break;
             case E:
-                beforeTail.x -= radius2;
-                tail.x -= radius2;
+                beforeTail.x -= diameter;
+                tail.x -= diameter;
                 break;
             case SE:
-                beforeTail.y += radiusSqrt;
-                beforeTail.x -= radiusSqrt;
-                tail.y += radiusSqrt;
-                tail.x -= radiusSqrt;
+                beforeTail.y += diameterSqrt;
+                beforeTail.x -= diameterSqrt;
+                tail.y += diameterSqrt;
+                tail.x -= diameterSqrt;
                 break;
             case S:
-                beforeTail.y += radius2;
-                tail.y += radius2;
+                beforeTail.y += diameter;
+                tail.y += diameter;
                 break;
             case SW:
-                beforeTail.x += radiusSqrt;
-                beforeTail.y -= radiusSqrt;
-                tail.x += radiusSqrt;
-                tail.y -= radiusSqrt;
+                beforeTail.x += diameterSqrt;
+                beforeTail.y -= diameterSqrt;
+                tail.x += diameterSqrt;
+                tail.y -= diameterSqrt;
                 break;
             case W:
-                beforeTail.x += radius2;
-                tail.x += radius2;
+                beforeTail.x += diameter;
+                tail.x += diameter;
                 break;
             case NW:
-                beforeTail.x += radiusSqrt;
-                beforeTail.y += radiusSqrt;
-                tail.x += radiusSqrt;
-                tail.y += radiusSqrt;
+                beforeTail.x += diameterSqrt;
+                beforeTail.y += diameterSqrt;
+                tail.x += diameterSqrt;
+                tail.y += diameterSqrt;
                 break;
         }
         this.parts.insert(parts.size - 2, newBeforeTail);
@@ -324,7 +324,7 @@ public class Snake extends Actor {
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
         beforeTail.radius = tail.radius;
-        float radiusSqrt = beforeTail.radius/sqrt2;
+        float radiusSqrt = beforeTail.radius / sqrt2;
         switch (beforeTail.getDirection()) {
             case N:
                 beforeTail.y += beforeTail.radius;
@@ -332,24 +332,28 @@ public class Snake extends Actor {
             case NE:
                 beforeTail.y += radiusSqrt;
                 beforeTail.x += radiusSqrt;
+                break;
             case S:
                 beforeTail.y -= beforeTail.radius;
                 break;
             case SE:
                 beforeTail.y -= radiusSqrt;
                 beforeTail.x += radiusSqrt;
+                break;
             case E:
                 beforeTail.x -= beforeTail.radius;
                 break;
             case SW:
                 beforeTail.x -= radiusSqrt;
                 beforeTail.y -= radiusSqrt;
+                break;
             case W:
                 beforeTail.x += beforeTail.radius;
                 break;
             case NW:
                 beforeTail.x -= radiusSqrt;
                 beforeTail.y += radiusSqrt;
+                break;
         }
         parts.removeValue(tail, true);
         parts.end();
