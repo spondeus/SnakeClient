@@ -16,23 +16,20 @@ import pentasnake.client.socket.Communication;
 
 import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 public class LobbyScreen implements Screen{
 
     private final SnakeGame game;
 
     SpriteBatch batch = new SpriteBatch();
+
     private List<Snake> snakes= new ArrayList<>();
 
     Label waiting;
 
     private Communication com;
-
-    private List<WebSocketClient> clients = new ArrayList<>();
 
     public LobbyScreen(SnakeGame game){
         this.game = game;
@@ -44,8 +41,8 @@ public class LobbyScreen implements Screen{
          waiting.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 
         com = new Communication(game);
-        val snake = com.getSnake();
-        snakes.add(snake);
+        //val snake = com.getSnake();
+        //snakes.add(snake);
         try{
             Thread.sleep(1000);
         } catch (InterruptedException e){
@@ -53,8 +50,8 @@ public class LobbyScreen implements Screen{
         }
 
         if(com.getWebsocketClient().isOpen()){
-            int x = new Random().nextInt(1,10);
-            int y = new Random().nextInt(1,10);
+            int x = new Random().nextInt(100,300);
+            int y = new Random().nextInt(100,300);
             com.send(x+","+ y +",20,ORANGE,"+com.getWebsocketClient().getId());
         }
     }
@@ -69,19 +66,27 @@ public class LobbyScreen implements Screen{
         batch.end();
 
         if(com.getWebsocketClient().isCons()){
-            //System.out.println(com.getWebsocketClient().getReadyState());
-            val snakeConstruct = com.getWebsocketClient().getSnakeConstruct();
+            System.out.println(com.getWebsocketClient().getReadyState());
 
-            for(String x: snakeConstruct){
-                val string = x.split(",");
-                snakes.add(new Snake(
-                        Integer.parseInt(string[0]),
-                        Integer.parseInt(string[1]),
-                        Integer.parseInt(string[2]),
-                        Color.ORANGE,
-                        Integer.parseInt(string[4])));
+            String s = com.getWebsocketClient().getConstMsg();
+            String[] msg = s.split("#");
+            for (String value : msg){
+                if (!value.equals("cons")){
+                    String[] parts = value.split(",");
+                    System.out.println(Arrays.toString(parts));
+                    snakes.add(
+                            new Snake(
+                                    Integer.parseInt(parts[0]),
+                                    Integer.parseInt(parts[1]),
+                                    20,
+                                    Color.GREEN,
+                                    com.getWebsocketClient().getId()
+                            ));
+                }
             }
+            System.out.println(snakes.toString());
 
+            com.getWebsocketClient().setCons(false);
             game.setScreen(new PlayScreen(game, snakes));
         }
     }

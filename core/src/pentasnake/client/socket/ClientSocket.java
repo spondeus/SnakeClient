@@ -4,6 +4,7 @@ package pentasnake.client.socket;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import lombok.var;
 import org.java_websocket.client.WebSocketClient;
@@ -27,9 +28,12 @@ public class ClientSocket extends WebSocketClient{
     private Snake snake;
 
     @Getter
-    private int id;
+    private String constMsg;
 
     @Getter
+    private int id;
+
+    @Getter @Setter
     private boolean cons;
 
     public ClientSocket(URI uri, SnakeGame game){
@@ -45,7 +49,7 @@ public class ClientSocket extends WebSocketClient{
                     break;
                 }
             }
-            snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, id);
+            //snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, id);
         }
     }
 
@@ -58,21 +62,9 @@ public class ClientSocket extends WebSocketClient{
     public void onMessage(String s){
         Gdx.app.log("server",s);
 
-        if(s.startsWith("[cons")){
-            Gdx.app.log("Server","Construct msg");
+        if(s.startsWith("cons")){
+            constMsg = s;
             cons = true;
-            val i = s.split("cons");
-            for(String x: i){
-                val msg = x.split(",");
-                if("cons".equals(msg[0])){
-                    StringBuilder string = new StringBuilder();
-                    for(String y: msg){
-                        if(!"cons".equals(y))
-                            string.append(y);
-                    }
-                    snakeConstruct.add(String.valueOf(string));
-                }
-            }
         }
     }
 

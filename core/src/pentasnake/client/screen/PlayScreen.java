@@ -66,6 +66,7 @@ public class PlayScreen implements Screen {
 
          */
 
+        Gdx.app.log("Client/ snakeList",snakeList.toString());
         for(Snake x: snakeList){
             mainStage.addActor(x);
         }
