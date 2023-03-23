@@ -15,11 +15,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 public class BaseActorTEMP extends Actor {
 
     protected Animation<TextureRegion> animation;
     private long playerScore;
+
+    public BaseActorTEMP() {
+    }
 
     public long getPlayerScore(){
         return this.playerScore;

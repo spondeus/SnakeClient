@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Getter
-@Setter
 public class PlayScreenTEMP extends Game implements Screen, InputProcessor {
 
     private AssetManager assetManager;
@@ -188,6 +186,74 @@ public class PlayScreenTEMP extends Game implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
+
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
+    }
+
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public Stage getUiStage() {
+        return uiStage;
+    }
+
+    public void setUiStage(Stage uiStage) {
+        this.uiStage = uiStage;
+    }
+
+    public Label getMyPoints() {
+        return myPoints;
+    }
+
+    public void setMyPoints(Label myPoints) {
+        this.myPoints = myPoints;
+    }
+
+    public List<Label> getPointsLabel() {
+        return pointsLabel;
+    }
+
+    public void setPointsLabel(List<Label> pointsLabel) {
+        this.pointsLabel = pointsLabel;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
+    }
+
+    public SnapshotArray<PickupItems> getPickups() {
+        return pickups;
+    }
+
+    public void setPickups(SnapshotArray<PickupItems> pickups) {
+        this.pickups = pickups;
     }
 }
 

@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pentasnake.client.entities.Snake;
 
-@Getter
-@Setter
 public class Food extends PickupItems {
 
     public Food(float x, float y, Stage stage, int points){

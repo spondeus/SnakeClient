@@ -9,11 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import lombok.*;
 import pentasnake.client.entities.Snake;
 import pentasnake.temporaryclasses.BaseActorTEMP;
 
-@NoArgsConstructor
 public abstract class PickupItems extends BaseActorTEMP {
 
     // For the MVP, only 4 pickup types, food and poison for score, energy drink and spider web for speed change
@@ -24,6 +22,9 @@ public abstract class PickupItems extends BaseActorTEMP {
     private int size=40;
 
     protected TextureRegion region;
+
+    public PickupItems() {
+    }
 
     public PickupItems(float x, float y, Stage stage){
         super(x,y,stage);

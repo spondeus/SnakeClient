@@ -9,8 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pentasnake.client.entities.Snake;
 
-@Getter
-@Setter
+
 public class SpiderWeb extends PickupItems {
 
     public SpiderWeb(float x, float y, Stage stage){
