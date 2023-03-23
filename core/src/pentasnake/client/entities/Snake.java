@@ -37,9 +37,7 @@ public class Snake extends Actor {
     private Color innerEyeColor = Color.BLACK;
     private final ShapeRenderer sr = new ShapeRenderer();
 
-    private final float angle = (float) (360.0 / 4.0);
-
-    private SnapshotArray<SnakePart> colliders = new SnapshotArray<SnakePart>();
+    private SnapshotArray<SnakePart> colliders = new SnapshotArray<>();
 
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
@@ -273,7 +271,7 @@ public class Snake extends Actor {
                 parts.get(parts.size - 2).getColor(),
                 parts.get(parts.size - 2).getDirection());
         float radius2 = 2 * beforeTail.radius;
-        float radiusSqrt = sqrt2 * beforeTail.radius;
+        float radiusSqrt = radius2/sqrt2;
         switch (newBeforeTail.getDirection()) {
             case N:
                 beforeTail.y -= radius2;
@@ -312,7 +310,7 @@ public class Snake extends Actor {
             case NW:
                 beforeTail.x += radiusSqrt;
                 beforeTail.y += radiusSqrt;
-                tail.x += radius2;
+                tail.x += radiusSqrt;
                 tail.y += radiusSqrt;
                 break;
         }
@@ -326,32 +324,32 @@ public class Snake extends Actor {
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
         beforeTail.radius = tail.radius;
-        float radiusSqrt = sqrt2 * beforeTail.radius;
+        float radiusSqrt = beforeTail.radius/sqrt2;
         switch (beforeTail.getDirection()) {
             case N:
                 beforeTail.y += beforeTail.radius;
                 break;
             case NE:
-                beforeTail.y += beforeTail.radius;
-                beforeTail.x += beforeTail.radius;
+                beforeTail.y += radiusSqrt;
+                beforeTail.x += radiusSqrt;
             case S:
                 beforeTail.y -= beforeTail.radius;
                 break;
             case SE:
-                beforeTail.y -= beforeTail.radius;
-                beforeTail.x += beforeTail.radius;
+                beforeTail.y -= radiusSqrt;
+                beforeTail.x += radiusSqrt;
             case E:
                 beforeTail.x -= beforeTail.radius;
                 break;
             case SW:
-                beforeTail.x -= beforeTail.radius;
-                beforeTail.y -= beforeTail.radius;
+                beforeTail.x -= radiusSqrt;
+                beforeTail.y -= radiusSqrt;
             case W:
                 beforeTail.x += beforeTail.radius;
                 break;
             case NW:
-                beforeTail.x -= beforeTail.radius;
-                beforeTail.y += beforeTail.radius;
+                beforeTail.x -= radiusSqrt;
+                beforeTail.y += radiusSqrt;
         }
         parts.removeValue(tail, true);
         parts.end();
