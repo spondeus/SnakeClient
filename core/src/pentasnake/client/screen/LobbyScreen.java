@@ -29,8 +29,11 @@ public class LobbyScreen implements Screen {
     private Communication com;
     private int myId;
 
-    public LobbyScreen(SnakeGame game) {
-        this.game = game;
+    private boolean single;
+
+    public LobbyScreen(SnakeGame game,boolean single) {
+        this.game=game;
+        if(single) game.setScreen(new PlayScreen(game, snakes, com,true));
     }
 
     @Override
@@ -77,7 +80,7 @@ public class LobbyScreen implements Screen {
                 }
             }
             com.getWebsocketClient().setCons(false);
-            game.setScreen(new PlayScreen(game, snakes, com));
+            game.setScreen(new PlayScreen(game, snakes, com,false));
         }
     }
 

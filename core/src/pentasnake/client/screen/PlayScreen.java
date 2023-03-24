@@ -43,17 +43,23 @@ public class PlayScreen implements Screen {
     private final Communication localClient;
     private final int myId;
 
-    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient) {
+    private boolean single;
+
+    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
+        this.single = single;
         mainStage = new Stage();
         uiStage = new Stage();
 
         this.localClient = localClient;
-        myId = localClient.getWebsocketClient().getId();
+        if(localClient!=null) myId = localClient.getWebsocketClient().getId();
+        else myId=0;
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
         if (snakeList.size() == 0)
-            Gdx.app.error("Server", "No snake found");
+            if (!single) Gdx.app.error("Server", "No snake found");
+            else
+                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 0));
 
         initialize();
     }
@@ -117,24 +123,28 @@ public class PlayScreen implements Screen {
         myPoints.setText(snakeList.get(0).getPoints() + " p");
         pickupSpawner.getPickups().end();
 
-        for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
-            for (Snake snake : snakeList) {
-                if (inputs.get(snake.getId()) != null) {
-                    switch (inputs.get(snake.getId())) {
-                        case "A":
-                            snake.turnLeft();
-                            break;
-                        case "D":
-                            snake.turnRight();
-                            break;
-                        default:
-                            Gdx.app.error("Inputs", "Unknown input");
-                            break;
+        if(localClient!=null){
+            for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
+                for (Snake snake : snakeList) {
+                    if (inputs.get(snake.getId()) != null) {
+                        switch (inputs.get(snake.getId())) {
+                            case "A":
+                                snake.turnLeft();
+                                break;
+                            case "D":
+                                snake.turnRight();
+                                break;
+                            default:
+                                Gdx.app.error("Inputs", "Unknown input");
+                                break;
+                        }
+                        inputs.remove(snake.getId());
                     }
-                    inputs.remove(snake.getId());
                 }
             }
         }
+
+
     }
 
     public void render(float dt) {

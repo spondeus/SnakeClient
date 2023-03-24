@@ -58,7 +58,7 @@ public class TutorialScreen implements Screen {
         addButton("Got it, let's play! (Press P)").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LobbyScreen(game));
+                game.setScreen(new LobbyScreen(game,true));
                 table.left();
             }
         });
@@ -278,7 +278,7 @@ public class TutorialScreen implements Screen {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) game.setScreen(new LobbyScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) game.setScreen(new LobbyScreen(game,true));
         if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new MenuScreen(game));
     }
 
