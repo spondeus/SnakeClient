@@ -272,11 +272,11 @@ public class Snake extends Actor {
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
         SnakePart newBeforeTail = new SnakePart(
-                parts.get(parts.size - 2).x,
-                parts.get(parts.size - 2).y,
-                parts.get(parts.size - 2).radius,
-                parts.get(parts.size - 2).getColor(),
-                parts.get(parts.size - 2).getDirection());
+                beforeTail.x,
+                beforeTail.y,
+                beforeTail.radius,
+                beforeTail.getColor(),
+                beforeTail.getDirection());
         float diameter = 2 * beforeTail.radius;
         float diameterSqrt = diameter / sqrt2;
         switch (newBeforeTail.getDirection()) {
