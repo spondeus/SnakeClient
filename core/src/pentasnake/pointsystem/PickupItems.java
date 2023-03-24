@@ -19,6 +19,16 @@ public abstract class PickupItems extends BaseActorTEMP {
     private int points;
     boolean collected;
 
+    float spawnRate;
+
+    public void setSpawnRate(float spawnRate) {
+        this.spawnRate = spawnRate;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     private int size=40;
 
     protected TextureRegion region;
@@ -56,11 +66,11 @@ public abstract class PickupItems extends BaseActorTEMP {
     }
 
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(region, getX(), getY(), SIZE, SIZE);
+        batch.draw(region, getX(), getY(), size, size);
     }
 
     public void setBoundaryRectangle() {
-        boundaryRectangle = new Rectangle(getX(), getY(), SIZE, SIZE);
+        boundaryRectangle = new Rectangle(getX(), getY(), size, size);
         ;
     }
 
