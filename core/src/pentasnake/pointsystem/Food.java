@@ -1,25 +1,28 @@
 package pentasnake.pointsystem;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pentasnake.client.entities.Snake;
 
 public class Food extends PickupItems {
 
-    public Food(float x, float y, Stage stage, int points){
-        super(x,y,stage,50);
+    @Getter
+    Type type = Type.FOOD;
+
+    public final int MAX_FOOD = 6;
+
+    public int getMAX_FOOD() {
+        return MAX_FOOD;
+    }
+
+    public Food(float x, float y, Stage stage) {
+        super(x, y, stage);
+        setPoints(50);
+        setSpawnRate(1f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("food.png")));
-//        float foodSize = 100;
-//        region.setRegionWidth( (int) foodSize);
-//        region.setRegionHeight( (int) foodSize);
-//        loadTexture("assets/food.png");
         setBoundaryRectangle();
     }
 

@@ -55,12 +55,13 @@ public abstract class PickupItems extends BaseActorTEMP {
         }
     }
 
-    public void draw(Batch batch, float parentAlpha){
-        batch.draw(region, getX(), getY(), size, size );
+    public void draw(Batch batch, float parentAlpha) {
+        batch.draw(region, getX(), getY(), SIZE, SIZE);
     }
 
-    public void setBoundaryRectangle(){
-        boundaryRectangle=new Rectangle(getX(),getY(),getX()+size,getY()+size);;
+    public void setBoundaryRectangle() {
+        boundaryRectangle = new Rectangle(getX(), getY(), SIZE, SIZE);
+        ;
     }
 
 }
