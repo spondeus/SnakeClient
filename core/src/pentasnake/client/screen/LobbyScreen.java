@@ -39,12 +39,11 @@ public class LobbyScreen implements Screen{
          waiting.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 
         com = new Communication(game);
-        myId = com.getWebsocketClient().getId();
         Timer.schedule(new Timer.Task(){
             @Override
             public void run(){
                 if(com.getWebsocketClient().isOpen()){
-                    com.send("cons?1,?2,20,ORANGE,"+myId);
+                    com.send("cons?1,?2,20,ORANGE,"+com.getWebsocketClient().getId());
                 }
             }
         },1);
