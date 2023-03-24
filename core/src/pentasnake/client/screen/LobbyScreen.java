@@ -33,11 +33,16 @@ public class LobbyScreen implements Screen {
 
     public LobbyScreen(SnakeGame game,boolean single) {
         this.game=game;
-        if(single) game.setScreen(new PlayScreen(game, snakes, com,true));
+        this.single=single;
+
     }
 
     @Override
     public void show() {
+        if(single) {
+            if(single) game.setScreen(new PlayScreen(game, snakes, com,single));
+            return;
+        }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
