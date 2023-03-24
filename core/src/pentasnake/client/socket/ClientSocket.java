@@ -45,11 +45,7 @@ public class ClientSocket extends WebSocketClient{
 
         if(s.startsWith("id")){
             String[] msgSPlt = s.split("#");
-            for (String x: msgSPlt){
-                System.out.println(x);
-            }
             id = Integer.parseInt(msgSPlt[1]);
-            System.out.println("myID?"+id);
         }
 
         if(s.startsWith("input")){
@@ -63,11 +59,13 @@ public class ClientSocket extends WebSocketClient{
             currentInputs.add(newInput);
         }
 
+        if(!s.contains("#"))
+            Gdx.app.log("Server",s);
         if(s.startsWith("cons")){
             constMsg = s;
             cons = true;
-        }else
-            Gdx.app.log("Server",s);
+        }
+
     }
 
     @Override
