@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
-import java.util.concurrent.*;
-
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.Set;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -41,6 +41,13 @@ public class Snake extends Actor {
 
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
+    private int id;
+        public int getId(){
+            return id;
+        }
+        public void setId(int id){
+            this.id = id;
+        }
 
     public Snake(int x, int y, int radius, Color bodyColor) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -66,10 +73,14 @@ public class Snake extends Actor {
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points = 0;
         this.speed = DEFAULT_SPEED;
+        points=0;
+
+        this.id = id;
+
     }
 
 
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw (Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
         for (SnakePart part : this.parts) {
@@ -190,6 +201,7 @@ public class Snake extends Actor {
             if (part.y < 0) part.y = Gdx.graphics.getHeight();
             if (part.y > Gdx.graphics.getHeight()) part.y = 0;
         }
+
     }
 
     public void turnRight() {
