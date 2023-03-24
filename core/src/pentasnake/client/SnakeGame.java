@@ -1,6 +1,7 @@
 package pentasnake.client;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import lombok.Getter;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.MenuScreen;
@@ -16,4 +17,7 @@ public class SnakeGame extends Game {
         setScreen(menu);
     }
 
+    @Override
+    public void dispose(){
+    }
 }

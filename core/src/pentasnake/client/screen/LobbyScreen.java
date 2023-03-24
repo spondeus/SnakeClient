@@ -7,15 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import lombok.val;
-import org.java_websocket.client.WebSocketClient;
-import pentasnake.client.InputHandler;
+import com.badlogic.gdx.utils.Timer;
+
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.socket.Communication;
 
-import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -30,6 +27,7 @@ public class LobbyScreen implements Screen{
     Label waiting;
 
     private Communication com;
+    private int myId;
 
     public LobbyScreen(SnakeGame game){
         this.game = game;
@@ -41,17 +39,17 @@ public class LobbyScreen implements Screen{
          waiting.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 
         com = new Communication(game);
-        //val snake = com.getSnake();
-        //snakes.add(snake);
-        try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e){
-            throw new RuntimeException(e);
-        }
+        myId = com.getWebsocketClient().getId();
+        Timer.schedule(new Timer.Task(){
+            @Override
+            public void run(){
+                if(com.getWebsocketClient().isOpen()){
+                    com.send("cons?1,?2,20,ORANGE,"+myId);
+                }
+            }
+        },1);
 
-        if(com.getWebsocketClient().isOpen()){
-            com.send("cons?1,?2,20,ORANGE,"+com.getWebsocketClient().getId());
-        }
+
     }
 
     @Override
@@ -82,7 +80,7 @@ public class LobbyScreen implements Screen{
                 }
             }
             com.getWebsocketClient().setCons(false);
-            game.setScreen(new PlayScreen(game, snakes));
+            game.setScreen(new PlayScreen(game, snakes, myId, com));
         }
     }
 

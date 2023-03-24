@@ -11,22 +11,18 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import lombok.Getter;
-import lombok.val;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
-import pentasnake.client.socket.ClientSocket;
+import pentasnake.client.entities.SnakePart;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 
 public class PlayScreen implements Screen {
@@ -44,9 +40,15 @@ public class PlayScreen implements Screen {
 
     private final SnakeGame game;
 
-    public PlayScreen(SnakeGame game, List<Snake> snakes) {
+    private final Communication localClient;
+    private final int myId;
+
+    public PlayScreen(SnakeGame game, List<Snake> snakes, int id, Communication localClient) {
         mainStage = new Stage();
         uiStage = new Stage();
+
+        this.localClient = localClient;
+        myId = id;
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
@@ -54,20 +56,21 @@ public class PlayScreen implements Screen {
             Gdx.app.error("Server", "No snake found");
 
         initialize();
-        for(Snake snake : snakeList)
-            Gdx.input.setInputProcessor(new InputHandler(snake));
-
     }
 
     public void initialize() {
         /*
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor(im);
-
          */
 
         Gdx.app.log("Client/ snakeList",snakeList.toString());
         for(Snake x: snakeList){
+            if(x.getId() == myId){
+                for(SnakePart p: x.getParts())
+                    p.setColor(Color.BLUE);
+                Gdx.input.setInputProcessor(new InputHandler(x, localClient));
+            }
             mainStage.addActor(x);
         }
 
@@ -109,12 +112,31 @@ public class PlayScreen implements Screen {
                 pickupSpawner.getPickups().removeValue(pickup,true);
             }
         }
+
+        for(Map<Integer, String> inputs: localClient.getWebsocketClient().getCurrentInputs()){
+            for(Snake snake: snakeList){
+                if(inputs.get(snake.getId()) != null){
+                    switch (inputs.get(snake.getId())){
+                        case "A":
+                            snake.turnLeft();
+                            break;
+                        case "D":
+                            snake.turnRight();
+                            break;
+                        default:
+                            Gdx.app.error("Inputs", "Unknown input");
+                            break;
+                    }
+                    inputs.remove(snake.getId());
+                }
+            }
+        }
     }
 
     public void render(float dt) {
         uiStage.act(dt);
-        mainStage.act(dt);
         update(dt);
+        mainStage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();

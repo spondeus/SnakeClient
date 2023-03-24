@@ -2,11 +2,7 @@ package pentasnake.client.socket;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.val;
-import lombok.var;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import pentasnake.client.SnakeGame;
@@ -21,23 +17,22 @@ public class ClientSocket extends WebSocketClient{
     private final SnakeGame game;
     public static Set<Integer> ids = new HashSet<>();
 
-    @Getter
-    private List<String> snakeConstruct = new ArrayList<>();
 
-    @Getter
+    private final List<String> snakeConstruct = new ArrayList<>();
+
     private Snake snake;
 
-    @Getter
     private String constMsg;
+    private List<Map<Integer, String>> currentInputs;
+    private final int id;
 
-    @Getter
-    private int id;
-
-    @Getter @Setter
     private boolean cons;
+
 
     public ClientSocket(URI uri, SnakeGame game){
         super(uri);
+
+        currentInputs = new ArrayList<>();
 
         this.game = game;
         {
@@ -49,7 +44,6 @@ public class ClientSocket extends WebSocketClient{
                     break;
                 }
             }
-            //snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, id);
         }
     }
 
@@ -60,12 +54,22 @@ public class ClientSocket extends WebSocketClient{
 
     @Override
     public void onMessage(String s){
-        Gdx.app.log("Server",s);
+        if(s.startsWith("input")){
+            Gdx.app.log("Input",s);
+            final String[] split = s.split("#");
+            String input = split[1];
+            int id = Integer.parseInt(split[2]);
+            Map<Integer, String> newInput = new HashMap<Integer, String>();
+            newInput.put(id, input);
+
+            currentInputs.add(newInput);
+        }
 
         if(s.startsWith("cons")){
             constMsg = s;
             cons = true;
-        }
+        }else
+            Gdx.app.log("Server",s);
     }
 
     @Override
@@ -81,5 +85,26 @@ public class ClientSocket extends WebSocketClient{
 
     }
 
+    public List<String> getSnakeConstruct(){
+        return snakeConstruct;
+    }
+    public Snake getSnake(){
+        return snake;
+    }
+    public String getConstMsg(){
+        return constMsg;
+    }
+    public int getId(){
+        return id;
+    }
+    public boolean isCons(){
+        return cons;
+    }
+    public void setCons(boolean cons){
+        this.cons = cons;
+    }
+    public List<Map<Integer, String>> getCurrentInputs(){
+        return currentInputs;
+    }
 }
 
