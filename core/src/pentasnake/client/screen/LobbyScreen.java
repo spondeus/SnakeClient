@@ -47,8 +47,6 @@ public class LobbyScreen implements Screen{
                 }
             }
         },1);
-
-
     }
 
     @Override
