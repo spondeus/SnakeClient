@@ -37,19 +37,19 @@ public class MenuScreen implements Screen {
     }
 
     public void show() {
-        addButton("START (Press S)").addListener(new ClickListener() {
+        addButton("ST(A)RT").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new PlayScreen());
             }
         });
-        addButton("TUTORIAL (Press T)").addListener(new ClickListener() {
+        addButton("(T)UTORIAL").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new TutorialScreen(game));
             }
         });
-        addButton("SCOREBOARD (Press B)").addListener(new ClickListener() {
+        addButton("S(C)OREBOARD").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new ScoreboardScreen(game));
@@ -112,9 +112,10 @@ public class MenuScreen implements Screen {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new PlayScreen());
-        if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new ScoreboardScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) game.setScreen(new PlayScreen());
+        if (Gdx.input.isKeyPressed(Input.Keys.C)) game.setScreen(new ScoreboardScreen(game));
         if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new TutorialScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new EmptyScreen(game));
     }
 
     @Override

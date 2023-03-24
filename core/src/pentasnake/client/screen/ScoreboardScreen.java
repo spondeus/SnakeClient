@@ -2,6 +2,7 @@ package pentasnake.client.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -55,7 +56,7 @@ public class ScoreboardScreen implements Screen {
         stage.addActor(tableScore);
         stage.addActor(tableTime);
 
-        TextButton backButton = new TextButton("Back to menu", skin);
+        TextButton backButton = new TextButton("(B)ack to menu", skin);
         backButton.setPosition(Gdx.graphics.getWidth()/2f - backButton.getWidth()/2f, tableScore.getHeight());
         backButton.addListener(new ClickListener(){
             @Override
@@ -67,12 +68,17 @@ public class ScoreboardScreen implements Screen {
         Gdx.input.setInputProcessor(stageBack);
     }
 
+    public void update() {
+        if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new MenuScreen((SnakeGame) game));
+    }
+
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.6f, 0.3f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        update();
         stage.act(Gdx.graphics.getDeltaTime());
         stageBack.act();
         stageBack.draw();
