@@ -30,7 +30,7 @@ public class EmptyScreen implements Screen {
         batch.begin();
         batch.draw(img, 0, 0);
         batch.end();
-        if(Gdx.input.isKeyPressed(Input.Keys.X)) game.setScreen(new MenuScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.X)) game.setScreen(new MenuScreen(game));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class EmptyScreen implements Screen {
     }
 
     @Override
-    public void dispose () {
+    public void dispose() {
         batch.dispose();
         img.dispose();
     }

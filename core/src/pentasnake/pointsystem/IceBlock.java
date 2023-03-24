@@ -12,8 +12,8 @@ public class IceBlock extends PickupItems {
     @Getter
     Type type = Type.ICE;
 
-    public IceBlock(float x, float y, Stage stage){
-        super(x,y,stage);
+    public IceBlock(float x, float y, Stage stage) {
+        super(x, y, stage);
         setPoints(0);
         setSpawnRate(0.25f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("iceblock.png")));

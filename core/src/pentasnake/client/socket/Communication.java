@@ -10,9 +10,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Set;
 
-public class Communication extends ApplicationAdapter{
+public class Communication extends ApplicationAdapter {
 
-    public void send(String message){
+    public void send(String message) {
         websocketClient.send(message);
     }
 
@@ -27,11 +27,11 @@ public class Communication extends ApplicationAdapter{
     public Communication(SnakeGame game) {
         this.game = game;
 
-        try{
+        try {
             URI uri = new URI("ws://192.168.18.8:8080");
             websocketClient = new ClientSocket(uri, game);
             snake = websocketClient.getSnake();
-        } catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
         this.create();
@@ -39,7 +39,7 @@ public class Communication extends ApplicationAdapter{
 
 
     @Override
-    public void create(){
+    public void create() {
         super.create();
         websocketClient.connect();
 

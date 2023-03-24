@@ -29,8 +29,8 @@ public abstract class PickupItems extends BaseActorTEMP {
     private float spawnRate;
     protected TextureRegion region;
 
-    public PickupItems(float x, float y, Stage stage){
-        super(x,y,stage);
+    public PickupItems(float x, float y, Stage stage) {
+        super(x, y, stage);
     }
 
     public abstract void applyEffect(Snake snake);
@@ -42,17 +42,18 @@ public abstract class PickupItems extends BaseActorTEMP {
         updatePlayerScore(snake);
     }
 
-    public void updatePlayerScore(Snake snake){
+    public void updatePlayerScore(Snake snake) {
         if (collected) {
-            snake.setPoints(snake.getPoints()+getPoints());
+            snake.setPoints(snake.getPoints() + getPoints());
         }
     }
 
-    public void draw(Batch batch, float parentAlpha){
-        batch.draw(region, getX(), getY(), SIZE, SIZE );
+    public void draw(Batch batch, float parentAlpha) {
+        batch.draw(region, getX(), getY(), SIZE, SIZE);
     }
 
-    public void setBoundaryRectangle(){
-        boundaryRectangle=new Rectangle(getX(),getY(),SIZE,SIZE);;
+    public void setBoundaryRectangle() {
+        boundaryRectangle = new Rectangle(getX(), getY(), SIZE, SIZE);
+        ;
     }
 }

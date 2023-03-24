@@ -42,14 +42,16 @@ public class Snake extends Actor {
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
     private int id;
-        public int getId(){
-            return id;
-        }
-        public void setId(int id){
-            this.id = id;
-        }
 
-    public Snake(int x, int y, int radius, Color bodyColor) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
         this.parts = new SnapshotArray<>();
         this.parts.begin();
@@ -73,14 +75,14 @@ public class Snake extends Actor {
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points = 0;
         this.speed = DEFAULT_SPEED;
-        points=0;
+        points = 0;
 
         this.id = id;
 
     }
 
 
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
         for (SnakePart part : this.parts) {

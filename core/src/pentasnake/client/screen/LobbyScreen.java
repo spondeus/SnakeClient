@@ -16,57 +16,57 @@ import pentasnake.client.socket.Communication;
 import java.util.*;
 import java.util.List;
 
-public class LobbyScreen implements Screen{
+public class LobbyScreen implements Screen {
 
     private final SnakeGame game;
 
     SpriteBatch batch = new SpriteBatch();
 
-    private List<Snake> snakes= new ArrayList<>();
+    private List<Snake> snakes = new ArrayList<>();
 
     Label waiting;
 
     private Communication com;
     private int myId;
 
-    public LobbyScreen(SnakeGame game){
+    public LobbyScreen(SnakeGame game) {
         this.game = game;
     }
 
     @Override
-    public void show(){
-         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
-         waiting.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+    public void show() {
+        waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
+        waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         com = new Communication(game);
-        Timer.schedule(new Timer.Task(){
+        Timer.schedule(new Timer.Task() {
             @Override
-            public void run(){
-                if(com.getWebsocketClient().isOpen()){
-                    com.send("cons?1,?2,20,ORANGE,"+com.getWebsocketClient().getId());
+            public void run() {
+                if (com.getWebsocketClient().isOpen()) {
+                    com.send("cons?1,?2,20,ORANGE," + com.getWebsocketClient().getId());
                 }
             }
-        },1);
+        }, 1);
     }
 
     @Override
-    public void render(float delta){
-        Gdx.gl.glClearColor(0,0,0,1);
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-            waiting.draw(batch, 1);
+        waiting.draw(batch, 1);
         batch.end();
 
-        if(com.getWebsocketClient().isCons()){
-            Gdx.app.log("Client-state" , String.valueOf(com.getWebsocketClient().getReadyState()));
+        if (com.getWebsocketClient().isCons()) {
+            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
 
             String s = com.getWebsocketClient().getConstMsg();
             String[] msg = s.split("#");
-            for (String value : msg){
-                if (!value.equals("cons")){
+            for (String value : msg) {
+                if (!value.equals("cons")) {
                     String[] parts = value.split(",");
-                    Snake newSnake =  new Snake(
+                    Snake newSnake = new Snake(
                             Integer.parseInt(parts[0]),
                             Integer.parseInt(parts[1]),
                             20,
@@ -82,27 +82,27 @@ public class LobbyScreen implements Screen{
     }
 
     @Override
-    public void resize(int width, int height){
+    public void resize(int width, int height) {
 
     }
 
     @Override
-    public void pause(){
+    public void pause() {
 
     }
 
     @Override
-    public void resume(){
+    public void resume() {
 
     }
 
     @Override
-    public void hide(){
+    public void hide() {
 
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
 
     }
 }

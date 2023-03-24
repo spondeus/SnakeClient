@@ -32,33 +32,33 @@ public class ScoreboardScreen implements Screen {
 
     @Override
     public void show() {
-        Label scoreboardTitle= new Label("SCOREBOARD", skin);
+        Label scoreboardTitle = new Label("SCOREBOARD", skin);
         scoreboardTitle.setFontScale(2);
-        scoreboardTitle.setPosition(Gdx.graphics.getWidth()/2f - scoreboardTitle.getWidth()+20,Gdx.graphics.getHeight()/1.1f);
+        scoreboardTitle.setPosition(Gdx.graphics.getWidth() / 2f - scoreboardTitle.getWidth() + 20, Gdx.graphics.getHeight() / 1.1f);
         stage.addActor(scoreboardTitle);
 
         for (int i = 0; i < 10; i++) {
-            TextButton labelName = new TextButton("Anonymus"+(i+1),skin);
+            TextButton labelName = new TextButton("Anonymus" + (i + 1), skin);
             tableName.add(labelName).width(300).height(60).padBottom(5);
             tableName.row();
-            TextButton labelScore = new TextButton(String.valueOf(10000-(i*1000)), skin);
+            TextButton labelScore = new TextButton(String.valueOf(10000 - (i * 1000)), skin);
             tableScore.add(labelScore).width(300).height(60).padBottom(5);
             tableScore.row();
-            TextButton labelTime = new TextButton("01.01.1970 00:00:00" ,skin);
+            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
             tableTime.add(labelTime).width(300).height(60).padBottom(5);
             tableTime.row();
         }
 
-        tableScore.setPosition(Gdx.graphics.getWidth()/2f - tableScore.getWidth()/2, Gdx.graphics.getHeight()/2f-tableScore.getHeight()/2);
-        tableName.setPosition( Gdx.graphics.getWidth()/4f - tableName.getWidth()-2,Gdx.graphics.getHeight()/2f-tableName.getHeight()/2);
-        tableTime.setPosition(Gdx.graphics.getWidth()/(4/3f) - tableScore.getWidth()-2 ,Gdx.graphics.getHeight()/2f-tableTime.getHeight()/2);
+        tableScore.setPosition(Gdx.graphics.getWidth() / 2f - tableScore.getWidth() / 2, Gdx.graphics.getHeight() / 2f - tableScore.getHeight() / 2);
+        tableName.setPosition(Gdx.graphics.getWidth() / 4f - tableName.getWidth() - 2, Gdx.graphics.getHeight() / 2f - tableName.getHeight() / 2);
+        tableTime.setPosition(Gdx.graphics.getWidth() / (4 / 3f) - tableScore.getWidth() - 2, Gdx.graphics.getHeight() / 2f - tableTime.getHeight() / 2);
         stage.addActor(tableName);
         stage.addActor(tableScore);
         stage.addActor(tableTime);
 
         TextButton backButton = new TextButton("(B)ack to menu", skin);
-        backButton.setPosition(Gdx.graphics.getWidth()/2f - backButton.getWidth()/2f, tableScore.getHeight());
-        backButton.addListener(new ClickListener(){
+        backButton.setPosition(Gdx.graphics.getWidth() / 2f - backButton.getWidth() / 2f, tableScore.getHeight());
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen((SnakeGame) game));

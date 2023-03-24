@@ -80,11 +80,11 @@ public class PickupSpawner implements PickupHandler {
     }, 0, 1f / 60); // Spawn pickups at 60 frames per second*/
 
 
-        // Should spawn pickups in the game world randomly
-        // Spawn rate will be different for each pickup
+    // Should spawn pickups in the game world randomly
+    // Spawn rate will be different for each pickup
 
 
-        // will try this
+    // will try this
 
         /*// define an ArrayList to store the locations of all existing pickup items
         ArrayList<Vector2> pickupItemLocations = new ArrayList<Vector2>();

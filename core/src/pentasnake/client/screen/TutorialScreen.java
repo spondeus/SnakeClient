@@ -33,10 +33,10 @@ public class TutorialScreen implements Screen {
 
     public static final int SCREEN_WIDTH = Gdx.graphics.getWidth();
     public static final int SCREEN_HEIGHT = Gdx.graphics.getHeight();
-    public static final int CENTER_X = SCREEN_WIDTH/2;
-    public static final int CENTER_Y = SCREEN_HEIGHT/2;
-    public static final int COL_WIDTH = SCREEN_WIDTH/8;
-    public static final int ROW_HEIGHT = SCREEN_HEIGHT/8;
+    public static final int CENTER_X = SCREEN_WIDTH / 2;
+    public static final int CENTER_Y = SCREEN_HEIGHT / 2;
+    public static final int COL_WIDTH = SCREEN_WIDTH / 8;
+    public static final int ROW_HEIGHT = SCREEN_HEIGHT / 8;
 
     public TutorialScreen(SnakeGame game) {
         this.game = game;
@@ -58,7 +58,7 @@ public class TutorialScreen implements Screen {
         addButton("Got it, let's play! (Press P)").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen());
+                game.setScreen(new LobbyScreen(game));
                 table.left();
             }
         });
@@ -90,19 +90,19 @@ public class TutorialScreen implements Screen {
         Label titleLabel = new Label("HOW TO PLAY"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.GOLD));
-        titleLabel.setSize(COL_WIDTH*2,ROW_HEIGHT*2);
-        titleLabel.setPosition(CENTER_X-titleLabel.getWidth()/2,CENTER_Y+ROW_HEIGHT*2+50);
+        titleLabel.setSize(COL_WIDTH * 2, ROW_HEIGHT * 2);
+        titleLabel.setPosition(CENTER_X - titleLabel.getWidth() / 2, CENTER_Y + ROW_HEIGHT * 2 + 50);
         titleLabel.setAlignment(Align.center);
         table.add(titleLabel);
         stage.addActor(titleLabel);
 
-        Label goalLabel= new Label(
+        Label goalLabel = new Label(
                 "GOAL:\nTo win the game, get the most points ahead of your opponents by\n" +
                         "collecting food and rewarding pickups while avoiding the bad ones!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
-        goalLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        goalLabel.setPosition(50,CENTER_Y+210);
+        goalLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        goalLabel.setPosition(50, CENTER_Y + 210);
         goalLabel.setAlignment(Align.left);
         table.add(goalLabel);
         stage.addActor(goalLabel);
@@ -111,8 +111,8 @@ public class TutorialScreen implements Screen {
                 "CONTROLS: \nPress A to turn left \nPress D to turn right."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
-        controlsLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        controlsLabel.setPosition(50,CENTER_Y+120);
+        controlsLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        controlsLabel.setPosition(50, CENTER_Y + 120);
         controlsLabel.setAlignment(Align.left);
         table.add(controlsLabel);
         stage.addActor(controlsLabel);
@@ -121,8 +121,8 @@ public class TutorialScreen implements Screen {
                 "Beware! Colliding with walls, other \nsnakes and yourself will end your game!".toUpperCase()
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.RED));
-        bewareLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        bewareLabel.setPosition(50,CENTER_Y+60);
+        bewareLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        bewareLabel.setPosition(50, CENTER_Y + 60);
         bewareLabel.setAlignment(Align.left);
         table.add(bewareLabel);
         stage.addActor(bewareLabel);
@@ -131,8 +131,8 @@ public class TutorialScreen implements Screen {
                 "PICKUP TYPES:\n\nFood\n\nPoison\n\nEnergy drink\n\nSpider web\n\nIce block\n\nGhost potion"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
-        pickupTypesLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        pickupTypesLabel.setPosition(50,CENTER_Y-90);
+        pickupTypesLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        pickupTypesLabel.setPosition(50, CENTER_Y - 90);
         pickupTypesLabel.setAlignment(Align.left);
         table.add(pickupTypesLabel);
         stage.addActor(pickupTypesLabel);
@@ -148,7 +148,7 @@ public class TutorialScreen implements Screen {
         foodIcon.setScale(0.3f);
         pickupImages.addActor(foodIcon);
         stage.addActor(foodIcon);
-        foodIcon.setPosition(CENTER_X+100, CENTER_Y+220);
+        foodIcon.setPosition(CENTER_X + 100, CENTER_Y + 220);
 
         TextureRegionDrawable poisonImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -159,7 +159,7 @@ public class TutorialScreen implements Screen {
         poisonIcon.setScale(0.2f);
         pickupImages.addActor(poisonIcon);
         stage.addActor(poisonIcon);
-        poisonIcon.setPosition(CENTER_X+85, CENTER_Y+110);
+        poisonIcon.setPosition(CENTER_X + 85, CENTER_Y + 110);
 
         TextureRegionDrawable energyDrinkImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -170,7 +170,7 @@ public class TutorialScreen implements Screen {
         energyDrinkIcon.setScale(0.2f);
         pickupImages.addActor(energyDrinkIcon);
         stage.addActor(energyDrinkIcon);
-        energyDrinkIcon.setPosition(CENTER_X+85, CENTER_Y);
+        energyDrinkIcon.setPosition(CENTER_X + 85, CENTER_Y);
 
         TextureRegionDrawable spiderWebImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -181,7 +181,7 @@ public class TutorialScreen implements Screen {
         spiderWebIcon.setScale(0.2f);
         pickupImages.addActor(spiderWebIcon);
         stage.addActor(spiderWebIcon);
-        spiderWebIcon.setPosition(CENTER_X+80, CENTER_Y-90);
+        spiderWebIcon.setPosition(CENTER_X + 80, CENTER_Y - 90);
 
         TextureRegionDrawable iceBlockImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -192,7 +192,7 @@ public class TutorialScreen implements Screen {
         iceBlockIcon.setScale(0.17f);
         pickupImages.addActor(iceBlockIcon);
         stage.addActor(iceBlockIcon);
-        iceBlockIcon.setPosition(CENTER_X+90, CENTER_Y-190);
+        iceBlockIcon.setPosition(CENTER_X + 90, CENTER_Y - 190);
 
         TextureRegionDrawable ghostImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -203,7 +203,7 @@ public class TutorialScreen implements Screen {
         ghostIcon.setScale(0.18f);
         pickupImages.addActor(ghostIcon);
         stage.addActor(ghostIcon);
-        ghostIcon.setPosition(CENTER_X+90, CENTER_Y-300);
+        ghostIcon.setPosition(CENTER_X + 90, CENTER_Y - 300);
 
         //VerticalGroup pickupDescriptionsGroup = new VerticalGroup();
 
@@ -211,8 +211,8 @@ public class TutorialScreen implements Screen {
                 "Increases snake's body length,\nadds 50 points to your score."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        foodLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        foodLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-200);
+        foodLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        foodLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 200);
         foodLabel.setAlignment(Align.left);
         table.add(foodLabel);
         stage.addActor(foodLabel);
@@ -221,8 +221,8 @@ public class TutorialScreen implements Screen {
                 "Decreases snake's body length,\ndeducts 100 points from your score."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        poisonLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        poisonLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-300);
+        poisonLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        poisonLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 300);
         poisonLabel.setAlignment(Align.left);
         table.add(poisonLabel);
         stage.addActor(poisonLabel);
@@ -231,8 +231,8 @@ public class TutorialScreen implements Screen {
                 "Speeds up snake movement.\nWatch out: too much speed can be dangerous!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        drinkLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        drinkLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-400);
+        drinkLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        drinkLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 400);
         drinkLabel.setAlignment(Align.left);
         table.add(drinkLabel);
         stage.addActor(drinkLabel);
@@ -241,8 +241,8 @@ public class TutorialScreen implements Screen {
                 "Slows down the snake."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        webLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        webLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-500);
+        webLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        webLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 500);
         webLabel.setAlignment(Align.left);
         table.add(webLabel);
         stage.addActor(webLabel);
@@ -251,8 +251,8 @@ public class TutorialScreen implements Screen {
                 "Freezes the snake for 5 seconds."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        iceLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        iceLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-600);
+        iceLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        iceLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 600);
         iceLabel.setAlignment(Align.left);
         table.add(iceLabel);
         stage.addActor(iceLabel);
@@ -261,8 +261,8 @@ public class TutorialScreen implements Screen {
                 "Enables the snake to go through walls and other snakes.\nIt's pretty rare so keep an eye out for it!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
-        ghostLabel.setSize(COL_WIDTH,ROW_HEIGHT);
-        ghostLabel.setPosition(CENTER_X+200,SCREEN_HEIGHT-700);
+        ghostLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 700);
         ghostLabel.setAlignment(Align.left);
         table.add(ghostLabel);
         stage.addActor(ghostLabel);
@@ -278,7 +278,7 @@ public class TutorialScreen implements Screen {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) game.setScreen(new PlayScreen());
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) game.setScreen(new LobbyScreen(game));
         if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new MenuScreen(game));
     }
 

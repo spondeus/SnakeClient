@@ -12,12 +12,12 @@ public class SnakeGame extends Game {
     public MenuScreen menu;
 
     @Override
-    public void create () {
+    public void create() {
         menu = new MenuScreen(this);
         setScreen(menu);
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
     }
 }

@@ -12,7 +12,7 @@ import pentasnake.client.screen.MenuScreen;
 import java.net.URI;
 import java.util.*;
 
-public class ClientSocket extends WebSocketClient{
+public class ClientSocket extends WebSocketClient {
 
     private final SnakeGame game;
 
@@ -27,7 +27,7 @@ public class ClientSocket extends WebSocketClient{
     private boolean cons;
 
 
-    public ClientSocket(URI uri, SnakeGame game){
+    public ClientSocket(URI uri, SnakeGame game) {
         super(uri);
 
         currentInputs = new ArrayList<>();
@@ -36,20 +36,20 @@ public class ClientSocket extends WebSocketClient{
     }
 
     @Override
-    public void onOpen(ServerHandshake serverHandshake){
+    public void onOpen(ServerHandshake serverHandshake) {
         System.out.println("connected");
     }
 
     @Override
-    public void onMessage(String s){
+    public void onMessage(String s) {
 
-        if(s.startsWith("id")){
+        if (s.startsWith("id")) {
             String[] msgSPlt = s.split("#");
             id = Integer.parseInt(msgSPlt[1]);
         }
 
-        if(s.startsWith("input")){
-            Gdx.app.log("Input",s);
+        if (s.startsWith("input")) {
+            Gdx.app.log("Input", s);
             final String[] split = s.split("#");
             String input = split[1];
             int id = Integer.parseInt(split[2]);
@@ -59,9 +59,9 @@ public class ClientSocket extends WebSocketClient{
             currentInputs.add(newInput);
         }
 
-        if(!s.contains("#"))
-            Gdx.app.log("Server",s);
-        if(s.startsWith("cons")){
+        if (!s.contains("#"))
+            Gdx.app.log("Server", s);
+        if (s.startsWith("cons")) {
             constMsg = s;
             cons = true;
         }
@@ -69,36 +69,42 @@ public class ClientSocket extends WebSocketClient{
     }
 
     @Override
-    public void onClose(int i, String s, boolean b){
+    public void onClose(int i, String s, boolean b) {
         System.out.println("disconnected");
-        Gdx.app.error("Client","no server");
+        Gdx.app.error("Client", "no server");
         game.setScreen(game.menu);
     }
 
     @Override
-    public void onError(Exception e){
+    public void onError(Exception e) {
 
     }
 
-    public List<String> getSnakeConstruct(){
+    public List<String> getSnakeConstruct() {
         return snakeConstruct;
     }
-    public Snake getSnake(){
+
+    public Snake getSnake() {
         return snake;
     }
-    public String getConstMsg(){
+
+    public String getConstMsg() {
         return constMsg;
     }
-    public int getId(){
+
+    public int getId() {
         return id;
     }
-    public boolean isCons(){
+
+    public boolean isCons() {
         return cons;
     }
-    public void setCons(boolean cons){
+
+    public void setCons(boolean cons) {
         this.cons = cons;
     }
-    public List<Map<Integer, String>> getCurrentInputs(){
+
+    public List<Map<Integer, String>> getCurrentInputs() {
         return currentInputs;
     }
 }

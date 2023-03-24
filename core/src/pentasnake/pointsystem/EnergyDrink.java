@@ -17,7 +17,7 @@ public class EnergyDrink extends PickupItems {
     Type type = Type.DRINK;
 
     public EnergyDrink(float x, float y, Stage stage) {
-        super(x,y,stage);
+        super(x, y, stage);
         setPoints(0);
         setSpawnRate(0.75f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("energydrink.png")));

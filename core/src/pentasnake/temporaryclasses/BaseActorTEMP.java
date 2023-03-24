@@ -21,10 +21,11 @@ public class BaseActorTEMP extends Actor {
     protected Animation<TextureRegion> animation;
     private long playerScore;
 
-    public long getPlayerScore(){
+    public long getPlayerScore() {
         return this.playerScore;
     }
-   // private float elapsedTime;
+
+    // private float elapsedTime;
     private Polygon boundaryPolygon;
     protected Rectangle boundaryRectangle;
 
@@ -34,12 +35,12 @@ public class BaseActorTEMP extends Actor {
 
     private static Rectangle worldBounds;
 
-    public BaseActorTEMP(float x, float y, Stage stage){
+    public BaseActorTEMP(float x, float y, Stage stage) {
         super();
         setPosition(x, y);
         stage.addActor(this);
         animation = null;
-       // elapsedTime = 0;
+        // elapsedTime = 0;
         this.playerScore = 0;
     }
 
@@ -82,7 +83,7 @@ public class BaseActorTEMP extends Actor {
         float w = getWidth();
         float h = getHeight();
         float[] vertices = {0, 0, w, 0, w, h, 0, h};
-        boundaryRectangle = new Rectangle(0,0,w,h);
+        boundaryRectangle = new Rectangle(0, 0, w, h);
     }
 
     public void setBoundaryPolygon(int numSides) {
