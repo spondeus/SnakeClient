@@ -73,9 +73,8 @@ public class LobbyScreen implements Screen{
                             Integer.parseInt(parts[1]),
                             20,
                             Color.GREEN,
-                            -1
+                            Integer.parseInt(parts[4])
                     );
-                    newSnake.setId(com.getWebsocketClient().getId());
                     snakes.add(newSnake);
                 }
             }
