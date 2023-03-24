@@ -25,7 +25,7 @@ public class Snake extends Actor {
 
     private final SnakePart head;
     private int speed;
-    private static final int DEFAULT_SPEED = 120;
+    private static final int DEFAULT_SPEED = 200;
     private int points;
 
     private final int initialParts = 4;
@@ -189,17 +189,16 @@ public class Snake extends Actor {
             if (part.x > Gdx.graphics.getWidth()) part.x = 0;
             if (part.y < 0) part.y = Gdx.graphics.getHeight();
             if (part.y > Gdx.graphics.getHeight()) part.y = 0;
-//            if (prev != null) {
-//                if (part.getDirection() == prev.getDirection())
-//                    if (part.getDirection() == N || part.getDirection() == S || part.getDirection() == E || part.getDirection() == W)
-//                        if (Math.abs(part.x - prev.x) * Math.abs(part.x - prev.x) +
-//                                Math.abs(part.y - prev.y) * Math.abs(part.y - prev.y)
-//                                > part.radius + prev.radius) {
-//                            part.setColor(Color.PURPLE);
-//                            prev.setColor(Color.PURPLE);
-//                            speed = 0;
-//                        }
-//            }
+            if (prev != null) {
+                if (part.getDirection() == prev.getDirection())
+                    if (Math.abs(part.x - prev.x) * Math.abs(part.x - prev.x) +
+                            Math.abs(part.y - prev.y) * Math.abs(part.y - prev.y)
+                            > (part.radius + prev.radius) * (part.radius + prev.radius)) {
+                        part.setColor(Color.PURPLE);
+                        prev.setColor(Color.PURPLE);
+                        speed = 0;
+                    }
+            }
         }
     }
 
