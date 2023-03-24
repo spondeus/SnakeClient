@@ -69,18 +69,19 @@ public class LobbyScreen implements Screen{
             for (String value : msg){
                 if (!value.equals("cons")){
                     String[] parts = value.split(",");
-                    snakes.add(
-                            new Snake(
-                                    Integer.parseInt(parts[0]),
-                                    Integer.parseInt(parts[1]),
-                                    20,
-                                    Color.GREEN,
-                                    com.getWebsocketClient().getId()
-                            ));
+                    Snake newSnake =  new Snake(
+                            Integer.parseInt(parts[0]),
+                            Integer.parseInt(parts[1]),
+                            20,
+                            Color.GREEN,
+                            -1
+                    );
+                    newSnake.setId(com.getWebsocketClient().getId());
+                    snakes.add(newSnake);
                 }
             }
             com.getWebsocketClient().setCons(false);
-            game.setScreen(new PlayScreen(game, snakes, myId, com));
+            game.setScreen(new PlayScreen(game, snakes, com));
         }
     }
 

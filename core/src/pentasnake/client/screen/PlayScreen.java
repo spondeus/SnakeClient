@@ -43,12 +43,12 @@ public class PlayScreen implements Screen {
     private final Communication localClient;
     private final int myId;
 
-    public PlayScreen(SnakeGame game, List<Snake> snakes, int id, Communication localClient) {
+    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient) {
         mainStage = new Stage();
         uiStage = new Stage();
 
         this.localClient = localClient;
-        myId = id;
+        myId = localClient.getWebsocketClient().getId();
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
@@ -59,12 +59,13 @@ public class PlayScreen implements Screen {
     }
 
     public void initialize() {
-        /*
-        InputMultiplexer im = new InputMultiplexer();
+        /*InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor(im);
+
          */
 
         Gdx.app.log("Client/ snakeList",snakeList.toString());
+        System.out.println("myid?"+myId);
         for(Snake x: snakeList){
             if(x.getId() == myId){
                 for(SnakePart p: x.getParts())
@@ -147,10 +148,16 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        //  InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
+        /*InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
         InputMultiplexer im = new InputMultiplexer();
         im.addProcessor(uiStage);
         im.addProcessor(mainStage);
+
+         */
+
+        for(Snake snake: snakeList){
+            Gdx.app.log("Snake", String.valueOf(snake.getId()));
+        }
 
     }
 
@@ -169,9 +176,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
+        /*
         InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
         im.removeProcessor(uiStage);
         im.removeProcessor(mainStage);
+
+         */
 
     }
 

@@ -15,8 +15,6 @@ import java.util.*;
 public class ClientSocket extends WebSocketClient{
 
     private final SnakeGame game;
-    public static Set<Integer> ids = new HashSet<>();
-
 
     private final List<String> snakeConstruct = new ArrayList<>();
 
@@ -24,7 +22,7 @@ public class ClientSocket extends WebSocketClient{
 
     private String constMsg;
     private List<Map<Integer, String>> currentInputs;
-    private final int id;
+    private int id;
 
     private boolean cons;
 
@@ -35,16 +33,6 @@ public class ClientSocket extends WebSocketClient{
         currentInputs = new ArrayList<>();
 
         this.game = game;
-        {
-            while(true){
-                Integer random = new Random().nextInt(1,10);
-                if(!ids.contains(random)){
-                    ids.add(random);
-                    id= random;
-                    break;
-                }
-            }
-        }
     }
 
     @Override
@@ -54,12 +42,22 @@ public class ClientSocket extends WebSocketClient{
 
     @Override
     public void onMessage(String s){
+
+        if(s.startsWith("id")){
+            String[] msgSPlt = s.split("#");
+            for (String x: msgSPlt){
+                System.out.println(x);
+            }
+            id = Integer.parseInt(msgSPlt[1]);
+            System.out.println("myID?"+id);
+        }
+
         if(s.startsWith("input")){
             Gdx.app.log("Input",s);
             final String[] split = s.split("#");
             String input = split[1];
             int id = Integer.parseInt(split[2]);
-            Map<Integer, String> newInput = new HashMap<Integer, String>();
+            Map<Integer, String> newInput = new HashMap<>();
             newInput.put(id, input);
 
             currentInputs.add(newInput);
@@ -77,7 +75,6 @@ public class ClientSocket extends WebSocketClient{
         System.out.println("disconnected");
         Gdx.app.error("Client","no server");
         game.setScreen(game.menu);
-        ids.remove(id);
     }
 
     @Override
