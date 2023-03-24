@@ -43,8 +43,8 @@ public class PlayScreen implements Screen {
     }
 
     public void initialize() {
-        InputMultiplexer im = new InputMultiplexer();
-        Gdx.input.setInputProcessor(im);
+//        InputMultiplexer im = new InputMultiplexer();
+//        Gdx.input.setInputProcessor(im);
         snakeList = new ArrayList<Snake>();
         Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN);
         snakeList.add(snake);
@@ -106,9 +106,9 @@ public class PlayScreen implements Screen {
     @Override
     public void show() {
         //  InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
-        InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(uiStage);
-        im.addProcessor(mainStage);
+//        InputMultiplexer im = new InputMultiplexer();
+//        im.addProcessor(uiStage);
+//        im.addProcessor(mainStage);
     }
 
     @Override
