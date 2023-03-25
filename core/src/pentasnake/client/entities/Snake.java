@@ -426,14 +426,14 @@ public class Snake extends Actor {
         switch (prevDir) {
             case N:
             case S:                                     // ha elkanyarodott felfele
-                if (deltaX < 1) {                       // ha egy vonalba kerülnek
+                if (deltaX < 3) {                       // ha egy vonalba kerülnek
                     part.x = prev.x;                    // legyenek teljesen egy vonalban
                     part.setDirection(prevDir);         // és váltson irányt a hátsó tag is
                 }
                 break;
             case E:
             case W:
-                if (deltaY < 1) {
+                if (deltaY < 3) {
                     part.y = prev.y;
                     part.setDirection(prevDir);
                 }
