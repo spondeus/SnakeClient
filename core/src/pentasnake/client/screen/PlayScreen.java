@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayScreen implements Screen {
 
@@ -41,6 +40,18 @@ public class PlayScreen implements Screen {
         uiStage = new Stage();
         initialize();
     }
+
+    /*private boolean pickupCollision() {
+        for (int i = 0; i < pickupSpawner.getPickups().size; i++) {
+            for (int j = 0; j < pickupSpawner.getPickups().size; j++) {
+                if (Math.abs(i - j) < 2) continue;
+                if (pickupSpawner.getPickups().get(i).overlaps(pickupSpawner.getPickups().get(j))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }*/
 
     public void initialize() {
         InputMultiplexer im = new InputMultiplexer();

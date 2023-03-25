@@ -48,18 +48,18 @@ public class TutorialScreen implements Screen {
     @Override
     public void show() {
 
-        addButton("Back to main menu (Press B)").addListener(new ClickListener() {
+        addButton("Back to main menu (Press B)", true).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen(game));
                 table.left();
             }
         });
-        addButton("Got it, let's play! (Press P)").addListener(new ClickListener() {
+        addButton("Got it, let's play! (Press P)", false).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new PlayScreen());
-                table.left();
+                table.right();
             }
         });
         table.setFillParent(true);
@@ -270,9 +270,13 @@ public class TutorialScreen implements Screen {
 
     }
 
-    private TextButton addButton(String name) {
+    private TextButton addButton(String name, Boolean left) {
         TextButton button = new TextButton(name, skin);
-        table.add(button).width(380).height(60).padBottom(10);
+        if (left) {
+            table.add(button).width(380).height(60).padBottom(10).align(Align.left);
+        } else {
+            table.add(button).width(380).height(60).padBottom(10).align(Align.right);
+        }
         table.bottom();
         return button;
     }
