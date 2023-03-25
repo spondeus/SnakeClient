@@ -7,13 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -52,7 +48,10 @@ public class Snake extends Actor {
     public void setId(int id) {
         this.id = id;
     }
-    List<String> dump=new ArrayList<>();
+
+    private List<String> dump = new ArrayList<>();
+
+    private int newSpeed;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -77,7 +76,7 @@ public class Snake extends Actor {
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points = 0;
-        this.speed = DEFAULT_SPEED;
+        this.speed =this.newSpeed= DEFAULT_SPEED;
         points = 0;
 
         this.id = id;
@@ -164,16 +163,21 @@ public class Snake extends Actor {
     }
 
     public void act(float delta) {
-        if(dump.size()==20) dump.remove(0);
-        dump.add(this.toString());
+//        if(dump.size()==20) dump.remove(0);
+//        dump.add(this.toString());
         parseString(this.toString());
         if (selfCollision()) return;
+        if(newSpeed!=speed){
+            if(newSpeed>speed) speed++;
+            else speed--;
+        }
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
-        for (int i = this.parts.size-1; i >=0; i--) {
+        for (int i = this.parts.size - 1; i >= 0; i--) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
-            if (prev != null) changeDirection(part, prev);
+            SnakePart next = (i == this.parts.size - 1) ? null : this.parts.get(i + 1);
+            changeDirection(part, prev, next);
             switch (part.getDirection()) {
                 case N:
                     part.y += movement;
@@ -213,6 +217,7 @@ public class Snake extends Actor {
     }
 
     public void turnRight() {
+        if (head.getDirection() != parts.get(1).getDirection()) return;
         switch (head.getDirection()) {
             case N:
                 head.setDirection(NE);
@@ -242,7 +247,7 @@ public class Snake extends Actor {
     }
 
     public void turnLeft() {
-        float dt = Gdx.graphics.getDeltaTime();
+        if (head.getDirection() != parts.get(1).getDirection()) return;
         switch (head.getDirection()) {
             case N:
                 head.setDirection(NW);
@@ -272,11 +277,11 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if (speed > 80) speed -= 50;
+        if (speed > 80) newSpeed = speed-50;
     }
 
     public void speedUp() {
-        speed += 100;
+        newSpeed=speed+100;
     }
 
     public void grow() {
@@ -409,13 +414,14 @@ public class Snake extends Actor {
     }
 
 
-    private void changeDirection(SnakePart part, SnakePart prev) {
+    private void changeDirection(SnakePart part, SnakePart prev, SnakePart next) {
+        if (prev == null) return;
         float delta;
         SnakeDirection prevDir = prev.getDirection();
         float deltaX = Math.abs(part.x - prev.x);
         float deltaY = Math.abs(part.y - prev.y);
         float radius2 = part.radius + prev.radius;
-        float side = (radius2) / sqrt2;
+        float side = radius2 / sqrt2;
         delta = (part.getDirection() == N || part.getDirection() == S) ? deltaY : deltaX;
         switch (prevDir) {
             case N:
@@ -465,25 +471,27 @@ public class Snake extends Actor {
 
     @Override
     public String toString() {
-        StringBuilder str=new StringBuilder();
-        for (SnakePart part:parts) {
-            str.append(String.format("%3s",part.getDirection()));
+        StringBuilder str = new StringBuilder();
+        for (SnakePart part : parts) {
+            str.append(String.format("%3s", part.getDirection()));
         }
         return str.toString();
     }
-    public List<String> getDump(){
+
+    public List<String> getDump() {
         return dump;
     }
-    public void parseString(String str){
-        if(speed>0) System.out.println(str);
-        for (int i = 1; i < parts.size-1; i++) {
-            SnakeDirection prevD=parts.get(i-1).getDirection();
-            SnakeDirection currD=parts.get(i).getDirection();
-            SnakeDirection nextD=parts.get(i+1).getDirection();
-            int co= currD.ordinal(),po=prevD.ordinal(),no=nextD.ordinal();
-            boolean nextPrev=co== po||(co+1)%8== po||(po+1)%8==co;
-            boolean prevNext=co== no||(co+1)%8== no||(no+1)%8==co;
-            if(!nextPrev||!prevNext) this.speed=0;
+
+    public void parseString(String str) {
+        if (speed > 0) System.out.println(str);
+        for (int i = 1; i < parts.size - 1; i++) {
+            SnakeDirection prevD = parts.get(i - 1).getDirection();
+            SnakeDirection currD = parts.get(i).getDirection();
+            SnakeDirection nextD = parts.get(i + 1).getDirection();
+            int co = currD.ordinal(), po = prevD.ordinal(), no = nextD.ordinal();
+            boolean nextPrev = co == po || (co + 1) % 8 == po || (po + 1) % 8 == co;
+            boolean prevNext = co == no || (co + 1) % 8 == no || (no + 1) % 8 == co;
+            if (!nextPrev || !prevNext) this.speed = 0;
         }
     }
 
