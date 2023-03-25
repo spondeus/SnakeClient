@@ -365,14 +365,14 @@ public class Snake extends Actor {
                 beforeTail.x += radiusSqrt;
                 break;
             case E:
-                beforeTail.x -= beforeTail.radius;
+                beforeTail.x += beforeTail.radius;
                 break;
             case SW:
                 beforeTail.x -= radiusSqrt;
                 beforeTail.y -= radiusSqrt;
                 break;
             case W:
-                beforeTail.x += beforeTail.radius;
+                beforeTail.x -= beforeTail.radius;
                 break;
             case NW:
                 beforeTail.x -= radiusSqrt;
