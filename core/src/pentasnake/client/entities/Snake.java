@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -50,6 +52,7 @@ public class Snake extends Actor {
     public void setId(int id) {
         this.id = id;
     }
+    List<String> dump=new ArrayList<>();
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -161,10 +164,13 @@ public class Snake extends Actor {
     }
 
     public void act(float delta) {
+        if(dump.size()==20) dump.remove(0);
+        dump.add(this.toString());
+        parseString(this.toString());
         if (selfCollision()) return;
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
-        for (int i = 0; i < this.parts.size; i++) {
+        for (int i = this.parts.size-1; i >=0; i--) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             if (prev != null) changeDirection(part, prev);
@@ -456,6 +462,31 @@ public class Snake extends Actor {
                 break;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str=new StringBuilder();
+        for (SnakePart part:parts) {
+            str.append(String.format("%3s",part.getDirection()));
+        }
+        return str.toString();
+    }
+    public List<String> getDump(){
+        return dump;
+    }
+    public void parseString(String str){
+        if(speed>0) System.out.println(str);
+        for (int i = 1; i < parts.size-1; i++) {
+            SnakeDirection prevD=parts.get(i-1).getDirection();
+            SnakeDirection currD=parts.get(i).getDirection();
+            SnakeDirection nextD=parts.get(i+1).getDirection();
+            int co= currD.ordinal(),po=prevD.ordinal(),no=nextD.ordinal();
+            boolean nextPrev=co== po||(co+1)%8== po||(po+1)%8==co;
+            boolean prevNext=co== no||(co+1)%8== no||(no+1)%8==co;
+            if(!nextPrev||!prevNext) this.speed=0;
+        }
+    }
+
 }
 
 
