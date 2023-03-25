@@ -26,8 +26,8 @@ public class InputHandler extends InputAdapter {
         if (isTurning(head,neck) && tooCloseX(head,neck)) return false;
         if (isTurning(head,neck) && tooCloseY(head,neck)) return false;
         if(localClient==null){
-            if (keycode == Input.Keys.A) snake.turnLeft();
-            else if (keycode == Input.Keys.D) snake.turnRight();
+            if (keycode == Input.Keys.A) snake.setLeftMove(true);
+            else if (keycode == Input.Keys.D) snake.setRightMove(true);
         }else{
             if (keycode == Input.Keys.A) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
@@ -38,6 +38,15 @@ public class InputHandler extends InputAdapter {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
                 localClient.send("inputD," + localClient.getWebsocketClient().getId());
             }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        if(localClient==null){
+            if (keycode == Input.Keys.A) snake.setLeftMove(false);
+            else if (keycode == Input.Keys.D) snake.setRightMove(false);
         }
         return false;
     }

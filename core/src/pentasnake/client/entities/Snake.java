@@ -23,6 +23,7 @@ public class Snake extends Actor {
 
     private final SnakePart head;
     private int speed;
+    private int newSpeed;
     private static final int DEFAULT_SPEED = 200;
     private int points;
 
@@ -41,6 +42,7 @@ public class Snake extends Actor {
 
     private int id;
 
+
     public int getId() {
         return id;
     }
@@ -51,7 +53,7 @@ public class Snake extends Actor {
 
     private List<String> dump = new ArrayList<>();
 
-    private int newSpeed;
+    private boolean leftMove, rightMove;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -177,7 +179,7 @@ public class Snake extends Actor {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             SnakePart next = (i == this.parts.size - 1) ? null : this.parts.get(i + 1);
-            changeDirection(part, prev, next);
+            changeDirection(part, prev,next);
             switch (part.getDirection()) {
                 case N:
                     part.y += movement;
@@ -409,8 +411,8 @@ public class Snake extends Actor {
     }
 
 
-    private void changeDirection(SnakePart part, SnakePart prev, SnakePart next) {
-        if (prev == null) return;
+    private void changeDirection(SnakePart part, SnakePart prev,SnakePart next) {
+        if(prev==null||(next!=null&&next.getDirection()!=part.getDirection())) return;
         float delta;
         SnakeDirection prevDir = prev.getDirection();
         float deltaX = Math.abs(part.x - prev.x);
@@ -490,6 +492,23 @@ public class Snake extends Actor {
         }
     }
 
+    public void setLeftMove(boolean leftMove) {
+        if (rightMove && leftMove) rightMove = false;
+        this.leftMove = leftMove;
+    }
+
+    public void setRightMove(boolean rightMove) {
+        if (rightMove && leftMove) leftMove = false;
+        this.rightMove = rightMove;
+    }
+
+    public boolean isLeftMove() {
+        return leftMove;
+    }
+
+    public boolean isRightMove() {
+        return rightMove;
+    }
 }
 
 

@@ -143,6 +143,10 @@ public class PlayScreen implements Screen {
                 }
             }
         }
+        else{
+            if(snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
+            else if(snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
+        }
 
 
     }
@@ -151,7 +155,6 @@ public class PlayScreen implements Screen {
         uiStage.act(dt);
         update(dt);
         mainStage.act(dt);
-        update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();
