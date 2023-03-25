@@ -76,7 +76,7 @@ public class Snake extends Actor {
         innerEye2 = new Circle();
         innerEye1.radius = innerEye2.radius = eye1.radius / 2;
         points = 0;
-        this.speed =this.newSpeed= DEFAULT_SPEED;
+        this.speed = this.newSpeed = DEFAULT_SPEED;
         points = 0;
 
         this.id = id;
@@ -167,8 +167,8 @@ public class Snake extends Actor {
 //        dump.add(this.toString());
         parseString(this.toString());
         if (selfCollision()) return;
-        if(newSpeed!=speed){
-            if(newSpeed>speed) speed++;
+        if (newSpeed != speed) {
+            if (newSpeed > speed) speed++;
             else speed--;
         }
         float movement = 1 / 60f * speed;
@@ -277,68 +277,63 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if (speed > 80) newSpeed = speed-50;
+        if (speed > 80) newSpeed = speed - 50;
     }
 
     public void speedUp() {
-        newSpeed=speed+100;
+        newSpeed = speed + 100;
     }
 
     public void grow() {
         parts.begin();
-        SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
-        SnakePart newBeforeTail = new SnakePart(
-                beforeTail.x,
-                beforeTail.y,
-                beforeTail.radius,
-                beforeTail.getColor(),
-                beforeTail.getDirection());
-        float diameter = 2 * beforeTail.radius;
-        float diameterSqrt = diameter / sqrt2;
-        switch (newBeforeTail.getDirection()) {
+        SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
+        tail.setRadius(head.radius);
+        float diameter = tail.radius;
+        float diameterSqrt = diameter / sqrt2 / 2;
+        switch (tail.getDirection()) {
             case N:
-                beforeTail.y -= diameter;
-                tail.y -= diameter;
+                newTail.y -= diameter * 2;
+                tail.y -= newTail.radius;
                 break;
             case NE:
-                beforeTail.y -= diameterSqrt;
-                beforeTail.x -= diameterSqrt;
+                newTail.y -= diameterSqrt;
+                newTail.x -= diameterSqrt;
                 tail.y -= diameterSqrt;
                 tail.x -= diameterSqrt;
                 break;
             case E:
-                beforeTail.x -= diameter;
-                tail.x -= diameter;
+                newTail.x -= diameter * 2;
+                tail.x -= newTail.radius;
                 break;
             case SE:
-                beforeTail.y += diameterSqrt;
-                beforeTail.x -= diameterSqrt;
+                newTail.y += diameterSqrt;
+                newTail.x -= diameterSqrt;
                 tail.y += diameterSqrt;
                 tail.x -= diameterSqrt;
                 break;
             case S:
-                beforeTail.y += diameter;
-                tail.y += diameter;
+                newTail.y += diameter * 2;
+                tail.y += newTail.radius;
                 break;
             case SW:
-                beforeTail.x += diameterSqrt;
-                beforeTail.y -= diameterSqrt;
+                newTail.x += diameterSqrt;
+                newTail.y -= diameterSqrt;
                 tail.x += diameterSqrt;
                 tail.y -= diameterSqrt;
                 break;
             case W:
-                beforeTail.x += diameter;
-                tail.x += diameter;
+                newTail.x += diameter * 2;
+                tail.x += newTail.radius;
                 break;
             case NW:
-                beforeTail.x += diameterSqrt;
-                beforeTail.y += diameterSqrt;
+                newTail.x += diameterSqrt;
+                newTail.y += diameterSqrt;
                 tail.x += diameterSqrt;
                 tail.y += diameterSqrt;
                 break;
         }
-        this.parts.insert(parts.size - 2, newBeforeTail);
+        this.parts.add(newTail);
         parts.end();
     }
 
