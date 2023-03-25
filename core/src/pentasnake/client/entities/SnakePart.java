@@ -16,6 +16,9 @@ public class SnakePart extends Circle {
         this.direction = direction;
     }
 
+    public SnakePart() {
+    }
+
     public Color getColor() {
         return color;
     }

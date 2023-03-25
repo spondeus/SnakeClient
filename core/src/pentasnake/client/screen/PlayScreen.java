@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.client.entities.Wall;
 import pentasnake.pointsystem.Food;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
@@ -58,8 +59,10 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(im);
         snakeList = new ArrayList<Snake>();
         Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN);
+        Wall wall = new Wall(200, 200, 300,50);
         snakeList.add(snake);
         mainStage.addActor(snake);
+        mainStage.addActor(wall);
         Gdx.input.setInputProcessor(new InputHandler(snake));
         pickupSpawner = new PickupSpawner(mainStage);
         pickupSpawner.spawnPickups();
