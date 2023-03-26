@@ -25,6 +25,10 @@ public class Snake extends Actor {
     private int speed;
     private int newSpeed;
     private static final int DEFAULT_SPEED = 200;
+    private static final int MAX_SPEED = 400;
+
+    private static final int MIN_SPEED = 50;
+    private static final int SPEED_CHANGE = 50;
     private int points;
 
     private final int initialParts = 4;
@@ -286,11 +290,11 @@ public class Snake extends Actor {
     }
 
     public void slowDown() {
-        if (speed > 80) newSpeed = speed - 50;
+        if (speed > MIN_SPEED) newSpeed = speed - SPEED_CHANGE;
     }
 
     public void speedUp() {
-        newSpeed = speed + 100;
+        if (speed < MAX_SPEED) newSpeed = speed + SPEED_CHANGE;
     }
 
 
@@ -517,6 +521,10 @@ public class Snake extends Actor {
 
     public boolean isRightMove() {
         return rightMove;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 }
 
