@@ -32,6 +32,8 @@ public class PickupSpawner implements PickupHandler {
     private final float iceBlockSpawnRate = 0.0001f;
     private final float ghostSpawnRate = 0.0001f;
 
+    float padding = 30f;
+
     public PickupSpawner(Stage mainStage) {
         this.mainStage = mainStage;
         pickups = new SnapshotArray<>();
@@ -45,32 +47,38 @@ public class PickupSpawner implements PickupHandler {
 
         do {
             if (numFood < MAX_FOOD && MathUtils.randomBoolean(foodSpawnRate)) {
-                pickups.add(new Food(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new Food(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 currentPickupsOnScreen++;
                 numFood++;
             }
             if (numPoison < MAX_POISON && MathUtils.randomBoolean(poisonSpawnRate)) {
-                pickups.add(new Poison(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new Poison(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 numPoison++;
                 currentPickupsOnScreen++;
             }
             if (numEnergyDrink < MAX_DRINK && MathUtils.randomBoolean(energyDrinkSpawnRate)) {
-                pickups.add(new EnergyDrink(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new EnergyDrink(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 numEnergyDrink++;
                 currentPickupsOnScreen++;
             }
             if (numSpiderWeb < MAX_WEB && MathUtils.randomBoolean(spiderWebSpawnRate)) {
-                pickups.add(new SpiderWeb(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new SpiderWeb(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 numSpiderWeb++;
                 currentPickupsOnScreen++;
             }
             if (numIceBlock < MAX_ICE && MathUtils.randomBoolean(iceBlockSpawnRate)) {
-                pickups.add(new IceBlock(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new IceBlock(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 numIceBlock++;
                 currentPickupsOnScreen++;
             }
             if (numGhost < MAX_GHOST && MathUtils.randomBoolean(ghostSpawnRate)) {
-                pickups.add(new Ghost(MathUtils.random(0, width), MathUtils.random(0, height), mainStage));
+                pickups.add(new Ghost(
+                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
                 numGhost++;
                 currentPickupsOnScreen++;
             }

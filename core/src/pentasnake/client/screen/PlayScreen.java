@@ -91,7 +91,6 @@ public class PlayScreen implements Screen {
         Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId);
 
         snakeList.add(snake);
-        mainStage.addActor(snake);
 
         Gdx.input.setInputProcessor(new InputHandler(snake, localClient));
         pickupSpawner = new PickupSpawner(mainStage);
@@ -99,15 +98,16 @@ public class PlayScreen implements Screen {
 
         SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
 
-        WallParts wallPart1 = new WallParts(200, 200, 200, 100, Color.FIREBRICK);
-        WallParts wallPart2 = new WallParts(200, 300, 200, 100, Color.FIREBRICK);
-        WallParts wallPart3 = new WallParts(200, 400, 200, 100, Color.FIREBRICK);
+        WallParts wallPart1 = new WallParts(250, 150, 200, 50, Color.FIREBRICK);
+        WallParts wallPart2 = new WallParts(250, 150+wallPart1.height, 50, 100, Color.FIREBRICK);
+        WallParts wallPart3 = new WallParts(1000, 400, 50, 300, Color.FIREBRICK);
         wallPartsList.add(wallPart1);
         wallPartsList.add(wallPart2);
         wallPartsList.add(wallPart3);
 
         wall = new Wall(wallPartsList);
         mainStage.addActor(wall);
+        mainStage.addActor(snake);
     }
 
     public boolean wallCollision(Wall wall, Snake snake) {
@@ -173,8 +173,6 @@ public class PlayScreen implements Screen {
                 }
             }
         }
-
-
     }
 
     public void render(float dt) {

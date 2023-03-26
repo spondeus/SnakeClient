@@ -25,15 +25,15 @@ public class Wall extends Actor {
         parts.add(part);
     }
 
-    public void drawWall(Batch batch, float parentAlpha){
+    public void draw(Batch batch, float parentAlpha) {
+        batch.end();
         sr.setAutoShapeType(true);
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(getColor());
-        batch.begin();
         for (WallParts part : parts) {
+            sr.setColor(part.getWallColor());
             sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
         }
         sr.end();
-        batch.end();
+        batch.begin();
     }
 }

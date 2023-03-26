@@ -7,9 +7,16 @@ public class WallParts extends Rectangle {
 
     private Color wallColor;
 
+    protected Rectangle boundaryRectangle;
+
+    public Rectangle getBoundaryRectangle() {
+        return boundaryRectangle;
+    }
+
     public WallParts(float x, float y, float width, float height, Color color){
         super(x,y, width, height);
         this.wallColor = color;
+        boundaryRectangle = new Rectangle(getX(), getY(), width, height);
     }
 
     public WallParts() {
