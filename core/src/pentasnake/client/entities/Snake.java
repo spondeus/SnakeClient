@@ -7,11 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Random;
-import java.util.Set;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 

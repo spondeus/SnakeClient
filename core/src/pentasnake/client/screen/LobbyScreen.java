@@ -44,7 +44,7 @@ public class LobbyScreen implements Screen {
             return;
         }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
-        waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        waiting.setPosition((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
 
         com = new Communication(game);
         Timer.schedule(new Timer.Task() {

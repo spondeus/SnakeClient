@@ -1,20 +1,22 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
+import pentasnake.client.entities.Wall;
+import pentasnake.client.entities.WallParts;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
@@ -44,6 +46,10 @@ public class PlayScreen implements Screen {
     private final int myId;
 
     private boolean single;
+
+    private Wall wall;
+
+    private SpriteBatch batch = new SpriteBatch();
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -81,8 +87,32 @@ public class PlayScreen implements Screen {
             mainStage.addActor(x);
         }
 
+        snakeList = new ArrayList<Snake>();
+        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId);
+
+        snakeList.add(snake);
+        mainStage.addActor(snake);
+
+        Gdx.input.setInputProcessor(new InputHandler(snake, localClient));
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
+
+        SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
+
+        WallParts wallPart1 = new WallParts(200, 200, 200, 100, Color.FIREBRICK);
+        WallParts wallPart2 = new WallParts(200, 300, 200, 100, Color.FIREBRICK);
+        WallParts wallPart3 = new WallParts(200, 400, 200, 100, Color.FIREBRICK);
+        wallPartsList.add(wallPart1);
+        wallPartsList.add(wallPart2);
+        wallPartsList.add(wallPart3);
+
+        wall = new Wall(wallPartsList);
+        mainStage.addActor(wall);
+    }
+
+    public boolean wallCollision(Wall wall, Snake snake) {
+        // checks if wall and snake head overlaps
+        return false;
     }
 
     public void labelInitialize() {
@@ -154,7 +184,9 @@ public class PlayScreen implements Screen {
         update(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         mainStage.draw();
+        batch.end();
         uiStage.draw();
     }
 
