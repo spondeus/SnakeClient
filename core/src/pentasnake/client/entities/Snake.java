@@ -45,6 +45,8 @@ public class Snake extends Actor {
 
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
+    private static final double tang45=Math.atan2(1,1);
+
     private int id;
 
 
@@ -308,7 +310,7 @@ public class Snake extends Actor {
 
 
     public void grow() {
-        isGrowing=60;
+        isGrowing+=60;
         parts.begin();
         SnakePart tail = parts.get(parts.size - 1);
 //        SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
@@ -344,18 +346,18 @@ public class Snake extends Actor {
                 break;
             case SW:
                 newTail.x += diameterSqrt;
-                newTail.y -= diameterSqrt;
+                newTail.y += diameterSqrt;
                 tail.x += diameterSqrt;
-                tail.y -= diameterSqrt;
+                tail.y += diameterSqrt;
                 break;
             case W:
                 newTail.x += diameter;
                 tail.x += newTail.radius;
                 break;
             case NW:
-                newTail.x += diameterSqrt;
+                newTail.x -= diameterSqrt;
                 newTail.y += diameterSqrt;
-                tail.x += diameterSqrt;
+                tail.x -= diameterSqrt;
                 tail.y += diameterSqrt;
                 break;
         }
@@ -444,6 +446,8 @@ public class Snake extends Actor {
         float radius2 = part.radius + prev.radius;
         float side = radius2 / sqrt2;
         delta = (part.getDirection() == N || part.getDirection() == S) ? deltaY : deltaX;
+        double tang=Math.atan2(deltaX,deltaY);
+        boolean changeNeeded=Math.abs(tang45-tang)<0.05;
         switch (prevDir) {
             case N:
             case S:                                     // ha elkanyarodott felfele
@@ -460,28 +464,32 @@ public class Snake extends Actor {
                 }
                 break;
             case NE:
-                if (radius2 / delta > sqrt2) {
+                if (changeNeeded) {
+//                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SW:
-                if (radius2 / delta > sqrt2) {
+                if (changeNeeded) {
+//                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case NW:
-                if (radius2 / delta > sqrt2) {
+                if (changeNeeded) {
+//                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SE:
-                if (radius2 / delta > sqrt2) {
+                if (changeNeeded) {
+//                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
@@ -504,7 +512,7 @@ public class Snake extends Actor {
     }
 
     public void parseString(String str) {
-//        if (speed > 0) System.out.println(str);
+        if (speed > 0) System.out.println(str);
         for (int i = 1; i < parts.size - 1; i++) {
             SnakeDirection prevD = parts.get(i - 1).getDirection();
             SnakeDirection currD = parts.get(i).getDirection();
