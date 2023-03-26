@@ -47,9 +47,15 @@ public class PlayScreen implements Screen {
 
     private boolean single;
 
-    private Wall wall;
-
     private SpriteBatch batch = new SpriteBatch();
+
+    SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
+    protected Wall wall = new Wall(wallPartsList);
+    public Wall getWall() {
+        return this.wall;
+    }
+
+
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -65,7 +71,7 @@ public class PlayScreen implements Screen {
         if (snakeList.size() == 0)
             if (!single) Gdx.app.error("Server", "No snake found");
             else
-                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 0));
+                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 0, wall));
 
         initialize();
     }
@@ -88,15 +94,13 @@ public class PlayScreen implements Screen {
         }
 
         snakeList = new ArrayList<Snake>();
-        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId);
+        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId, wall);
 
         snakeList.add(snake);
 
         Gdx.input.setInputProcessor(new InputHandler(snake, localClient));
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
-
-        SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
 
         WallParts wallPart1 = new WallParts(250, 150, 200, 50, Color.FIREBRICK);
         WallParts wallPart2 = new WallParts(250, 150+wallPart1.height, 50, 100, Color.FIREBRICK);
@@ -105,14 +109,9 @@ public class PlayScreen implements Screen {
         wallPartsList.add(wallPart2);
         wallPartsList.add(wallPart3);
 
-        wall = new Wall(wallPartsList);
         mainStage.addActor(wall);
-        mainStage.addActor(snake);
-    }
 
-    public boolean wallCollision(Wall wall, Snake snake) {
-        // checks if wall and snake head overlaps
-        return false;
+        mainStage.addActor(snake);
     }
 
     public void labelInitialize() {

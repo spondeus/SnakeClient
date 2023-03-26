@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
@@ -46,7 +48,11 @@ public class Snake extends Actor {
         this.id = id;
     }
 
-    public Snake(int x, int y, int radius, Color bodyColor, int id) {
+    private final Wall wall;
+
+    private boolean collidedWithWall;
+
+    public Snake(int x, int y, int radius, Color bodyColor, int id, Wall wall) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
         this.parts = new SnapshotArray<>();
         this.parts.begin();
@@ -74,6 +80,7 @@ public class Snake extends Actor {
 
         this.id = id;
 
+        this.wall = wall;
     }
 
 
@@ -83,7 +90,7 @@ public class Snake extends Actor {
         for (SnakePart part : this.parts) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
-            if (colliders.contains(part, true)) sr.setColor(Color.RED);
+            if (colliders.contains(part, true) || (part == head && collidedWithWall)) sr.setColor(Color.RED);
             sr.circle(part.x, part.y, part.radius, 100);
             if (part == head) {
                 switch (head.getDirection()) {
@@ -141,7 +148,9 @@ public class Snake extends Actor {
         batch.begin();
     }
 
-    private boolean selfCollision() {
+
+    private boolean collisionDetection(Wall wall) {
+        // checks for self collision
         for (int i = 0; i < this.parts.size; i++) {
             for (int j = 0; j < this.parts.size; j++) {
                 if (Math.abs(i - j) < 2) continue;
@@ -152,11 +161,21 @@ public class Snake extends Actor {
                 }
             }
         }
+        // checks for wall collision
+        Circle head = this.parts.first();
+        for (WallParts wallPart : wall.getParts()) {
+            Rectangle wallRect = new Rectangle(wallPart.getX(), wallPart.getY(), wallPart.getWidth(), wallPart.getHeight());
+            if (Intersector.overlaps(head, wallRect)) {
+                collidedWithWall = true;
+                return true;
+            }
+        }
+
         return false;
     }
 
     public void act(float delta) {
-        if (selfCollision()) return;
+        if (collisionDetection(wall)) return;
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
         for (int i = 0; i < this.parts.size; i++) {

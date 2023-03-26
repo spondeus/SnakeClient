@@ -3,11 +3,8 @@ package pentasnake.client.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
 
 public class Wall extends Actor {
     SnapshotArray<WallParts> parts;
@@ -20,10 +17,6 @@ public class Wall extends Actor {
         this.parts = parts;
     }
 
-    public void addWallPart(float x, float y, float width, float height, Color color) {
-        WallParts part = new WallParts(x, y, width, height, color);
-        parts.add(part);
-    }
 
     public void draw(Batch batch, float parentAlpha) {
         batch.end();

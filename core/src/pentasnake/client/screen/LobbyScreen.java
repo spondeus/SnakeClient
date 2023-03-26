@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.client.entities.Wall;
 import pentasnake.client.socket.Communication;
 
 import java.util.*;
@@ -31,10 +32,10 @@ public class LobbyScreen implements Screen {
 
     private boolean single;
 
+
     public LobbyScreen(SnakeGame game,boolean single) {
         this.game=game;
         this.single=single;
-
     }
 
     @Override
@@ -74,14 +75,14 @@ public class LobbyScreen implements Screen {
             for (String value : msg) {
                 if (!value.equals("cons")) {
                     String[] parts = value.split(",");
-                    Snake newSnake = new Snake(
+                    /*Snake newSnake = new Snake(
                             Integer.parseInt(parts[0]),
                             Integer.parseInt(parts[1]),
                             20,
                             Color.GREEN,
-                            Integer.parseInt(parts[4])
+                            Integer.parseInt(parts[4]),
                     );
-                    snakes.add(newSnake);
+                    snakes.add(newSnake);*/
                 }
             }
             com.getWebsocketClient().setCons(false);
