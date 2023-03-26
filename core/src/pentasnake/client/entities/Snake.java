@@ -31,7 +31,8 @@ public class Snake extends Actor {
     private static final int SPEED_CHANGE = 50;
     private int points;
 
-    private final int initialParts = 4;
+    private static final int initialParts = 4;
+    private static final int minParts = 3;
 
     private Circle eye1, eye2;
     private Circle innerEye1, innerEye2;
@@ -353,7 +354,7 @@ public class Snake extends Actor {
     }
 
     public void shrink() {
-        if (parts.size < 3) return;
+        if (parts.size <= minParts) return;
         parts.begin();
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
