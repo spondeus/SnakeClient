@@ -185,41 +185,49 @@ public class Snake extends Actor {
             if (newSpeed > speed) speed++;
             else speed--;
         }
+        if (isGrowing > 0) isGrowing--;
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
         for (int i = this.parts.size - 1; i >= 0; i--) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             SnakePart next = (i == this.parts.size - 1) ? null : this.parts.get(i + 1);
+            float growthM = 0;
+            float growthD = 0;
+            if (isGrowing > 0 && isGrowing % 6 == 0 && i > this.parts.size - 3) {
+                part.radius++;
+                growthM = (i == parts.size - 1) ? 2 : 1;
+                growthD = growthM/sqrt2;
+            }
             changeDirection(part, prev, next);
             switch (part.getDirection()) {
                 case N:
-                    part.y += movement;
+                    part.y += movement - growthM;
                     break;
                 case NE:
-                    part.x += diagonal;
-                    part.y += diagonal;
+                    part.x += diagonal - growthD;
+                    part.y += diagonal - growthD;
                     break;
                 case E:
-                    part.x += movement;
+                    part.x += movement - growthM;
                     break;
                 case SE:
-                    part.x += diagonal;
-                    part.y -= diagonal;
+                    part.x += diagonal - growthD;
+                    part.y -= diagonal - growthD;
                     break;
                 case S:
-                    part.y -= movement;
+                    part.y -= movement - growthM;
                     break;
                 case SW:
-                    part.x -= diagonal;
-                    part.y -= diagonal;
+                    part.x -= diagonal - growthD;
+                    part.y -= diagonal - growthD;
                     break;
                 case W:
-                    part.x -= movement;
+                    part.x -= movement - growthM;
                     break;
                 case NW:
-                    part.x -= diagonal;
-                    part.y += diagonal;
+                    part.x -= diagonal - growthD;
+                    part.y += diagonal - growthD;
                     break;
             }
             if (part.x < 0) part.x = Gdx.graphics.getWidth();
@@ -303,8 +311,10 @@ public class Snake extends Actor {
         isGrowing=60;
         parts.begin();
         SnakePart tail = parts.get(parts.size - 1);
-        SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
-        tail.setRadius(head.radius);
+//        SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
+        SnakePart newTail = new SnakePart(tail.x, tail.y, 1, tail.getColor(), tail.getDirection());
+//        tail.setRadius(head.radius);
+        tail.radius++;
         float diameter = tail.radius * 2;
         float diameterSqrt = diameter / sqrt2;
         switch (tail.getDirection()) {
@@ -494,7 +504,7 @@ public class Snake extends Actor {
     }
 
     public void parseString(String str) {
-        if (speed > 0) System.out.println(str);
+//        if (speed > 0) System.out.println(str);
         for (int i = 1; i < parts.size - 1; i++) {
             SnakeDirection prevD = parts.get(i - 1).getDirection();
             SnakeDirection currD = parts.get(i).getDirection();
