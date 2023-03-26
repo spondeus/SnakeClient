@@ -112,10 +112,12 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
+        pickupSpawner.getPickups().begin();
         for (PickupItems pickup : pickupSpawner.getPickups()) {
             if (Intersector.overlaps(snakeList.get(0).getHead(), pickup.getBoundaryRectangle())) {
                 pickup.collectItem(snakeList.get(0));
                 pickup.applyEffect(snakeList.get(0));
+                System.out.println("Pickup:"+pickup);
                 pickupSpawner.getPickups().removeValue(pickup, true);
             }
         }

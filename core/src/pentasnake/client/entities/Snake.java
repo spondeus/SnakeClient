@@ -55,6 +55,8 @@ public class Snake extends Actor {
 
     private boolean leftMove, rightMove;
 
+    private int isGrowing=0;
+
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
         this.parts = new SnapshotArray<>();
@@ -151,12 +153,17 @@ public class Snake extends Actor {
     }
 
     private boolean selfCollision() {
+        if(isGrowing>0){
+            isGrowing--;
+            return  false;
+        }
         for (int i = 0; i < this.parts.size; i++) {
             for (int j = 0; j < this.parts.size; j++) {
                 if (Math.abs(i - j) < 2) continue;
                 if (this.parts.get(i).overlaps(this.parts.get(j))) {
                     colliders.add(parts.get(i));
                     colliders.add(parts.get(j));
+                    speed = 0;
                     return true;
                 }
             }
@@ -179,7 +186,7 @@ public class Snake extends Actor {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
             SnakePart next = (i == this.parts.size - 1) ? null : this.parts.get(i + 1);
-            changeDirection(part, prev,next);
+            changeDirection(part, prev, next);
             switch (part.getDirection()) {
                 case N:
                     part.y += movement;
@@ -286,16 +293,18 @@ public class Snake extends Actor {
         newSpeed = speed + 100;
     }
 
+
     public void grow() {
+        isGrowing=60;
         parts.begin();
         SnakePart tail = parts.get(parts.size - 1);
         SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
         tail.setRadius(head.radius);
-        float diameter = tail.radius;
-        float diameterSqrt = diameter / sqrt2 / 2;
+        float diameter = tail.radius * 2;
+        float diameterSqrt = diameter / sqrt2;
         switch (tail.getDirection()) {
             case N:
-                newTail.y -= diameter * 2;
+                newTail.y -= diameter;
                 tail.y -= newTail.radius;
                 break;
             case NE:
@@ -305,7 +314,7 @@ public class Snake extends Actor {
                 tail.x -= diameterSqrt;
                 break;
             case E:
-                newTail.x -= diameter * 2;
+                newTail.x -= diameter;
                 tail.x -= newTail.radius;
                 break;
             case SE:
@@ -315,7 +324,7 @@ public class Snake extends Actor {
                 tail.x -= diameterSqrt;
                 break;
             case S:
-                newTail.y += diameter * 2;
+                newTail.y += diameter;
                 tail.y += newTail.radius;
                 break;
             case SW:
@@ -325,7 +334,7 @@ public class Snake extends Actor {
                 tail.y -= diameterSqrt;
                 break;
             case W:
-                newTail.x += diameter * 2;
+                newTail.x += diameter;
                 tail.x += newTail.radius;
                 break;
             case NW:
@@ -411,8 +420,8 @@ public class Snake extends Actor {
     }
 
 
-    private void changeDirection(SnakePart part, SnakePart prev,SnakePart next) {
-        if(prev==null||(next!=null&&next.getDirection()!=part.getDirection())) return;
+    private void changeDirection(SnakePart part, SnakePart prev, SnakePart next) {
+        if (prev == null || (next != null && next.getDirection() != part.getDirection())) return;
         float delta;
         SnakeDirection prevDir = prev.getDirection();
         float deltaX = Math.abs(part.x - prev.x);
