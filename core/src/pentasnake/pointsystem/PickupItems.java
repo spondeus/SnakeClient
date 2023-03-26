@@ -29,21 +29,14 @@ public abstract class PickupItems extends BaseActorTEMP {
         this.points = points;
     }
 
-    private int size=40;
+    private final int SIZE=60;
 
     protected TextureRegion region;
 
-    public PickupItems() {
-    }
+    public PickupItems() {}
 
     public PickupItems(float x, float y, Stage stage){
         super(x,y,stage);
-        points = 0; // default value
-    }
-
-    public PickupItems(float x, float y, Stage stage, int points){
-        super(x,y,stage);
-        this.points = points;
     }
 
     public int getPoints(){
@@ -66,12 +59,11 @@ public abstract class PickupItems extends BaseActorTEMP {
     }
 
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(region, getX(), getY(), size, size);
+        batch.draw(region, getX(), getY(), SIZE, SIZE);
     }
 
     public void setBoundaryRectangle() {
-        boundaryRectangle = new Rectangle(getX(), getY(), size, size);
-        ;
+        boundaryRectangle = new Rectangle(getX(), getY(), SIZE, SIZE);
     }
 
 }

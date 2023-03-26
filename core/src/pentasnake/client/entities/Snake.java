@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.Timer;
+
+import java.util.concurrent.TimeUnit;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -51,6 +54,8 @@ public class Snake extends Actor {
     private final Wall wall;
 
     private boolean collidedWithWall;
+
+    private boolean ghostModeActive;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id, Wall wall) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
@@ -151,26 +156,29 @@ public class Snake extends Actor {
 
     private boolean collisionDetection(Wall wall) {
         // checks for self collision
-        for (int i = 0; i < this.parts.size; i++) {
-            for (int j = 0; j < this.parts.size; j++) {
-                if (Math.abs(i - j) < 2) continue;
-                if (this.parts.get(i).overlaps(this.parts.get(j))) {
-                    colliders.add(parts.get(i));
-                    colliders.add(parts.get(j));
-                    return true;
+        if (!ghostModeActive) {
+            for (int i = 0; i < this.parts.size; i++) {
+                for (int j = 0; j < this.parts.size; j++) {
+                    if (Math.abs(i - j) < 2) continue;
+                    if (this.parts.get(i).overlaps(this.parts.get(j))) {
+                        colliders.add(parts.get(i));
+                        colliders.add(parts.get(j));
+                        return true;
+                    }
                 }
             }
         }
         // checks for wall collision
-        Circle head = this.parts.first();
-        for (WallParts wallPart : wall.getParts()) {
-            Rectangle wallRect = new Rectangle(wallPart.getX(), wallPart.getY(), wallPart.getWidth(), wallPart.getHeight());
-            if (Intersector.overlaps(head, wallRect)) {
-                collidedWithWall = true;
-                return true;
+        if(!ghostModeActive) {
+            Circle head = this.parts.first();
+            for (WallParts wallPart : wall.getParts()) {
+                Rectangle wallRect = new Rectangle(wallPart.getX(), wallPart.getY(), wallPart.getWidth(), wallPart.getHeight());
+                if (Intersector.overlaps(head, wallRect)) {
+                    collidedWithWall = true;
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
@@ -387,19 +395,25 @@ public class Snake extends Actor {
     }
 
     public void freeze() {
-        /*speed = 0;
+        speed = 0;
         head.setColor(Color.CYAN);
-            executor.schedule(new Runnable() {
+            Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     speed = DEFAULT_SPEED;
                     head.setColor(Color.ORANGE);
                 }
-            }, 5, TimeUnit.SECONDS);*/
+            }, 5);
     }
 
     public void ghostMode() {
-        // enables snake to go through obstacles, walls, other snakes, but not itself
+        ghostModeActive = true;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                ghostModeActive = false;
+            }
+        }, 10);
     }
 
     enum SnakeDirection {N, NE, E, SE, S, SW, W, NW}

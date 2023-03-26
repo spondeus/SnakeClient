@@ -141,6 +141,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
+
         for (PickupItems pickup : pickupSpawner.getPickups()) {
             if (Intersector.overlaps(snakeList.get(0).getHead(), pickup.getBoundaryRectangle())) {
                 pickup.collectItem(snakeList.get(0));
