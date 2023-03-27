@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static pentasnake.client.entities.Snake.SnakeDirection.*;
+//import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
 public class Snake extends Actor {
 
@@ -24,10 +25,10 @@ public class Snake extends Actor {
     private final SnakePart head;
     private int speed;
     private int newSpeed;
-    private static final int DEFAULT_SPEED = 200;
-    private static final int MAX_SPEED = 400;
+    private static final int DEFAULT_SPEED = 400;
+    private static final int MAX_SPEED = 800;
 
-    private static final int MIN_SPEED = 50;
+    private static final int MIN_SPEED = 10;
     private static final int SPEED_CHANGE = 50;
     private int points;
 
@@ -45,7 +46,7 @@ public class Snake extends Actor {
 
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
-    private static final double tang45=Math.atan2(1,1);
+    private static final Vector2 initialDirection = new Vector2(1, 0);
 
     private int id;
 
@@ -58,26 +59,24 @@ public class Snake extends Actor {
         this.id = id;
     }
 
-    private List<String> dump = new ArrayList<>();
-
     private boolean leftMove, rightMove;
 
-    private int isGrowing=0;
+    private int isGrowing = 0;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
-        head = new SnakePart(x, y, radius, Color.ORANGE, E);
+        head = new SnakePart(x, y, radius, Color.ORANGE, initialDirection);
         this.parts = new SnapshotArray<>();
         this.parts.begin();
         this.parts.add(head);
         for (int i = 1; i <= initialParts; i++) {
             x -= 2 * radius;
             y = y;
-            SnakePart body = new SnakePart(x, y, radius, bodyColor, E);
+            SnakePart body = new SnakePart(x, y, radius, bodyColor, initialDirection);
             this.parts.add(body);
         }
         x -= 1.5 * radius;
         y = y;
-        SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, E);
+        SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, initialDirection);
         this.parts.add(tail);
         this.parts.end();
         eye1 = new Circle();
@@ -102,67 +101,71 @@ public class Snake extends Actor {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
             if (colliders.contains(part, true)) sr.setColor(Color.RED);
-            sr.circle(part.x, part.y, part.radius, 100);
-            if (part == head) {
-                switch (head.getDirection()) {
-                    case N:
-                    case S:
-                        eye1.x = head.x - eye1.radius - 2;
-                        eye1.y = eye2.y = head.y + (head.getDirection() == N ? 3 : -3);
-                        eye2.x = head.x + eye2.radius + 2;
-                        innerEye1.x = eye1.x;
-                        innerEye2.x = eye2.x;
-                        innerEye1.y = innerEye2.y = eye1.y;
-                        break;
-                    case NE:
-                    case SW:
-                        eye1.x = head.x - eye1.radius / sqrt2 - 1;
-                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
-                        eye2.x = head.x + eye2.radius / sqrt2 + 1;
-                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
-                        innerEye1.x = eye1.x;
-                        innerEye2.x = eye2.x;
-                        innerEye1.y = eye1.y;
-                        innerEye2.y = eye2.y;
-                        break;
-                    case E:
-                    case W:
-                        eye1.x = eye2.x = head.x + (head.getDirection() == E ? -3 : 3);
-                        eye1.y = head.y - eye1.radius - 2;
-                        eye2.y = head.y + eye2.radius + 2;
-                        innerEye1.x = innerEye2.x = eye1.x;
-                        innerEye1.y = eye1.y;
-                        innerEye2.y = eye2.y;
-                        break;
-                    case NW:
-                    case SE:
-                        eye1.x = head.x + eye1.radius / sqrt2 + 1;
-                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
-                        eye2.x = head.x - eye2.radius / sqrt2 - 1;
-                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
-                        innerEye1.x = eye1.x;
-                        innerEye2.x = eye2.x;
-                        innerEye1.y = eye1.y;
-                        innerEye2.y = eye2.y;
-                        break;
-
-                }
-                sr.setColor(eyeColor);
-                sr.circle(eye1.x, eye1.y, eye1.radius);
-                sr.circle(eye2.x, eye2.y, eye2.radius);
-                sr.setColor(innerEyeColor);
-                sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
-                sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
-            }
+            float x2 = part.x % Gdx.graphics.getWidth();
+            if (x2 < 0) x2 += Gdx.graphics.getWidth();
+            float y2 = part.y % Gdx.graphics.getHeight();
+            if (y2 < 0) y2 += Gdx.graphics.getHeight();
+            sr.circle(x2, y2, part.radius, 100);
+//            if (part == head) {
+//                switch (head.getDirection()) {
+//                    case N:
+//                    case S:
+//                        eye1.x = head.x - eye1.radius - 2;
+//                        eye1.y = eye2.y = head.y + (head.getDirection() == N ? 3 : -3);
+//                        eye2.x = head.x + eye2.radius + 2;
+//                        innerEye1.x = eye1.x;
+//                        innerEye2.x = eye2.x;
+//                        innerEye1.y = innerEye2.y = eye1.y;
+//                        break;
+//                    case NE:
+//                    case SW:
+//                        eye1.x = head.x - eye1.radius / sqrt2 - 1;
+//                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
+//                        eye2.x = head.x + eye2.radius / sqrt2 + 1;
+//                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
+//                        innerEye1.x = eye1.x;
+//                        innerEye2.x = eye2.x;
+//                        innerEye1.y = eye1.y;
+//                        innerEye2.y = eye2.y;
+//                        break;
+//                    case E:
+//                    case W:
+//                        eye1.x = eye2.x = head.x + (head.getDirection() == E ? -3 : 3);
+//                        eye1.y = head.y - eye1.radius - 2;
+//                        eye2.y = head.y + eye2.radius + 2;
+//                        innerEye1.x = innerEye2.x = eye1.x;
+//                        innerEye1.y = eye1.y;
+//                        innerEye2.y = eye2.y;
+//                        break;
+//                    case NW:
+//                    case SE:
+//                        eye1.x = head.x + eye1.radius / sqrt2 + 1;
+//                        eye1.y = head.y + eye1.radius / sqrt2 + 1;
+//                        eye2.x = head.x - eye2.radius / sqrt2 - 1;
+//                        eye2.y = head.y - eye2.radius / sqrt2 - 1;
+//                        innerEye1.x = eye1.x;
+//                        innerEye2.x = eye2.x;
+//                        innerEye1.y = eye1.y;
+//                        innerEye2.y = eye2.y;
+//                        break;
+//
+//                }
+//                sr.setColor(eyeColor);
+//                sr.circle(eye1.x, eye1.y, eye1.radius);
+//                sr.circle(eye2.x, eye2.y, eye2.radius);
+//                sr.setColor(innerEyeColor);
+//                sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
+//                sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
+//            }
             sr.end();
         }
         batch.begin();
     }
 
     private boolean selfCollision() {
-        if(isGrowing>0){
+        if (isGrowing > 0) {
             isGrowing--;
-            return  false;
+            return false;
         }
         for (int i = 0; i < this.parts.size; i++) {
             for (int j = 0; j < this.parts.size; j++) {
@@ -179,125 +182,84 @@ public class Snake extends Actor {
     }
 
     public void act(float delta) {
-//        if(dump.size()==20) dump.remove(0);
-//        dump.add(this.toString());
-//        parseString(this.toString());
         if (selfCollision()) return;
         if (newSpeed != speed) {
             if (newSpeed > speed) speed++;
             else speed--;
         }
-        if (isGrowing > 0) isGrowing--;
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
-        for (int i = this.parts.size - 1; i >= 0; i--) {
+        for (int i = 0; i < parts.size; i++) {
             SnakePart part = this.parts.get(i);
             SnakePart prev = (i == 0) ? null : this.parts.get(i - 1);
-            SnakePart next = (i == this.parts.size - 1) ? null : this.parts.get(i + 1);
-            float growthM = 0;
-            float growthD = 0;
-            if (isGrowing > 0 && isGrowing % 6 == 0 && i > this.parts.size - 3) {
-                part.radius++;
-                growthM = (i == parts.size - 1) ? 2 : 1;
-                growthD = growthM/sqrt2;
-            }
-            changeDirection(part, prev, next);
-            switch (part.getDirection()) {
-                case N:
-                    part.y += movement - growthM;
-                    break;
-                case NE:
-                    part.x += diagonal - growthD;
-                    part.y += diagonal - growthD;
-                    break;
-                case E:
-                    part.x += movement - growthM;
-                    break;
-                case SE:
-                    part.x += diagonal - growthD;
-                    part.y -= diagonal - growthD;
-                    break;
-                case S:
-                    part.y -= movement - growthM;
-                    break;
-                case SW:
-                    part.x -= diagonal - growthD;
-                    part.y -= diagonal - growthD;
-                    break;
-                case W:
-                    part.x -= movement - growthM;
-                    break;
-                case NW:
-                    part.x -= diagonal - growthD;
-                    part.y += diagonal - growthD;
-                    break;
-            }
-            if (part.x < 0) part.x = Gdx.graphics.getWidth();
-            if (part.x > Gdx.graphics.getWidth()) part.x = 0;
-            if (part.y < 0) part.y = Gdx.graphics.getHeight();
-            if (part.y > Gdx.graphics.getHeight()) part.y = 0;
+            changeDirection(part, prev);
+
+            part.x += speed / 100 * part.getDirectionVector().x;
+            part.y += speed / 100 * part.getDirectionVector().y;
         }
 
     }
 
     public void turnRight() {
-        if (head.getDirection() != parts.get(1).getDirection()) return;
-        switch (head.getDirection()) {
-            case N:
-                head.setDirection(NE);
-                break;
-            case NE:
-                head.setDirection(E);
-                break;
-            case E:
-                head.setDirection(SE);
-                break;
-            case SE:
-                head.setDirection(S);
-                break;
-            case S:
-                head.setDirection(SW);
-                break;
-            case SW:
-                head.setDirection(W);
-                break;
-            case W:
-                head.setDirection(NW);
-                break;
-            case NW:
-                head.setDirection(N);
-                break;
-        }
+        head.rotate(speed / 140);
+//        if (head.getDirection() != parts.get(1).getDirection()) return;
+//        switch (head.getDirection()) {
+//            case N:
+//                head.setDirection(NE);
+//                break;
+//            case NE:
+//                head.setDirection(E);
+//                break;
+//            case E:
+//                head.setDirection(SE);
+//                break;
+//            case SE:
+//                head.setDirection(S);
+//                break;
+//            case S:
+//                head.setDirection(SW);
+//                break;
+//            case SW:
+//                head.setDirection(W);
+//                break;
+//            case W:
+//                head.setDirection(NW);
+//                break;
+//            case NW:
+//                head.setDirection(N);
+//                break;
+//        }
     }
 
     public void turnLeft() {
-        if (head.getDirection() != parts.get(1).getDirection()) return;
-        switch (head.getDirection()) {
-            case N:
-                head.setDirection(NW);
-                break;
-            case NW:
-                head.setDirection(W);
-                break;
-            case W:
-                head.setDirection(SW);
-                break;
-            case SW:
-                head.setDirection(S);
-                break;
-            case S:
-                head.setDirection(SE);
-                break;
-            case SE:
-                head.setDirection(E);
-                break;
-            case E:
-                head.setDirection(NE);
-                break;
-            case NE:
-                head.setDirection(N);
-                break;
-        }
+        head.rotate(-speed / 140);
+//        if (head.getDirection() != parts.get(1).getDirection()) return;
+//        switch (head.getDirection()) {
+//            case N:
+//                head.setDirection(NW);
+//                break;
+//            case NW:
+//                head.setDirection(W);
+//                break;
+//            case W:
+//                head.setDirection(SW);
+//                break;
+//            case SW:
+//                head.setDirection(S);
+//                break;
+//            case S:
+//                head.setDirection(SE);
+//                break;
+//            case SE:
+//                head.setDirection(E);
+//                break;
+//            case E:
+//                head.setDirection(NE);
+//                break;
+//            case NE:
+//                head.setDirection(N);
+//                break;
+//        }
     }
 
     public void slowDown() {
@@ -310,58 +272,16 @@ public class Snake extends Actor {
 
 
     public void grow() {
-        isGrowing+=60;
         parts.begin();
         SnakePart tail = parts.get(parts.size - 1);
-//        SnakePart newTail = new SnakePart(tail.x, tail.y, tail.radius, tail.getColor(), tail.getDirection());
-        SnakePart newTail = new SnakePart(tail.x, tail.y, 1, tail.getColor(), tail.getDirection());
-//        tail.setRadius(head.radius);
-        tail.radius++;
-        float diameter = tail.radius * 2;
-        float diameterSqrt = diameter / sqrt2;
-        switch (tail.getDirection()) {
-            case N:
-                newTail.y -= diameter;
-                tail.y -= newTail.radius;
-                break;
-            case NE:
-                newTail.y -= diameterSqrt;
-                newTail.x -= diameterSqrt;
-                tail.y -= diameterSqrt;
-                tail.x -= diameterSqrt;
-                break;
-            case E:
-                newTail.x -= diameter;
-                tail.x -= newTail.radius;
-                break;
-            case SE:
-                newTail.y += diameterSqrt;
-                newTail.x -= diameterSqrt;
-                tail.y += diameterSqrt;
-                tail.x -= diameterSqrt;
-                break;
-            case S:
-                newTail.y += diameter;
-                tail.y += newTail.radius;
-                break;
-            case SW:
-                newTail.x += diameterSqrt;
-                newTail.y += diameterSqrt;
-                tail.x += diameterSqrt;
-                tail.y += diameterSqrt;
-                break;
-            case W:
-                newTail.x += diameter;
-                tail.x += newTail.radius;
-                break;
-            case NW:
-                newTail.x -= diameterSqrt;
-                newTail.y += diameterSqrt;
-                tail.x -= diameterSqrt;
-                tail.y += diameterSqrt;
-                break;
-        }
-        this.parts.add(newTail);
+        Vector2 pos = new Vector2(tail.x, tail.y);
+        Vector2 move = new Vector2(-4 * tail.getDirectionVector().x * tail.radius, -4 * tail.getDirectionVector().y * tail.radius);
+        pos.add(move);
+        tail.x -= tail.getDirectionVector().x * tail.radius;
+        tail.y -= tail.getDirectionVector().y * tail.radius;
+        SnakePart newTail = new SnakePart(pos.x, pos.y, tail.radius, tail.getColor(), tail.getDirectionVector());
+        tail.radius *= 2;
+        parts.add(newTail);
         parts.end();
     }
 
@@ -371,37 +291,6 @@ public class Snake extends Actor {
         SnakePart beforeTail = parts.get(parts.size - 2);
         SnakePart tail = parts.get(parts.size - 1);
         beforeTail.radius = tail.radius;
-        float radiusSqrt = beforeTail.radius / sqrt2;
-        switch (beforeTail.getDirection()) {
-            case N:
-                beforeTail.y += beforeTail.radius;
-                break;
-            case NE:
-                beforeTail.y += radiusSqrt;
-                beforeTail.x += radiusSqrt;
-                break;
-            case S:
-                beforeTail.y -= beforeTail.radius;
-                break;
-            case SE:
-                beforeTail.y -= radiusSqrt;
-                beforeTail.x += radiusSqrt;
-                break;
-            case E:
-                beforeTail.x += beforeTail.radius;
-                break;
-            case SW:
-                beforeTail.x -= radiusSqrt;
-                beforeTail.y -= radiusSqrt;
-                break;
-            case W:
-                beforeTail.x -= beforeTail.radius;
-                break;
-            case NW:
-                beforeTail.x -= radiusSqrt;
-                beforeTail.y += radiusSqrt;
-                break;
-        }
         parts.removeValue(tail, true);
         parts.end();
     }
@@ -422,8 +311,6 @@ public class Snake extends Actor {
         // enables snake to go through obstacles, walls, other snakes, but not itself
     }
 
-    enum SnakeDirection {N, NE, E, SE, S, SW, W, NW}
-
     public SnakePart getHead() {
         return head;
     }
@@ -437,108 +324,15 @@ public class Snake extends Actor {
     }
 
 
-    private void changeDirection(SnakePart part, SnakePart prev, SnakePart next) {
-        if (prev == null || (next != null && next.getDirection() != part.getDirection())) return;
-        float delta;
-        SnakeDirection prevDir = prev.getDirection();
-        float deltaX = Math.abs(part.x - prev.x);
-        float deltaY = Math.abs(part.y - prev.y);
-        float radius2 = part.radius + prev.radius;
-        float side = radius2 / sqrt2;
-        delta = (part.getDirection() == N || part.getDirection() == S) ? deltaY : deltaX;
-//        double tang=Math.atan2(deltaX,deltaY);
-//        boolean changeNeeded=Math.abs(tang45-tang)<0.05;
-        switch (prevDir) {
-            case N:
-            case S:                                     // ha elkanyarodott felfele
-                if (deltaX < 3) {                       // ha egy vonalba kerülnek
-                    part.x = prev.x;                    // legyenek teljesen egy vonalban
-                    part.setDirection(prevDir);         // és váltson irányt a hátsó tag is
-                }
-                break;
-            case E:
-            case W:
-                if (deltaY < 3) {
-                    part.y = prev.y;
-                    part.setDirection(prevDir);
-                }
-                break;
-            case NE:
-//                if (changeNeeded) {
-                if (radius2 / delta > sqrt2) {
-                    part.y = prev.y - side;
-                    part.x = prev.x - side;
-                    part.setDirection(prevDir);
-                }
-                break;
-            case SW:
-//                if (changeNeeded) {
-                if (radius2 / delta > sqrt2) {
-                    part.y = prev.y + side;
-                    part.x = prev.x + side;
-                    part.setDirection(prevDir);
-                }
-                break;
-            case NW:
-//                if (changeNeeded) {
-                if (radius2 / delta > sqrt2) {
-                    part.y = prev.y - side;
-                    part.x = prev.x + side;
-                    part.setDirection(prevDir);
-                }
-                break;
-            case SE:
-//                if (changeNeeded) {
-                if (radius2 / delta > sqrt2) {
-                    part.y = prev.y + side;
-                    part.x = prev.x - side;
-                    part.setDirection(prevDir);
-                }
-                break;
+    private void changeDirection(SnakePart part, SnakePart prev) {
+        if (prev != null) {
+            float radius2 = prev.radius + part.radius;
+            float deltaX = prev.x - part.x;
+            float deltaY = prev.y - part.y;
+            if (!part.overlaps(prev)) part.setDirectionVector(new Vector2(deltaX / radius2, deltaY / radius2));
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        for (SnakePart part : parts) {
-            str.append(String.format("%3s", part.getDirection()));
-        }
-        return str.toString();
-    }
-
-    public List<String> getDump() {
-        return dump;
-    }
-
-    public void parseString(String str) {
-        if (speed > 0) System.out.println(str);
-        for (int i = 1; i < parts.size - 1; i++) {
-            SnakeDirection prevD = parts.get(i - 1).getDirection();
-            SnakeDirection currD = parts.get(i).getDirection();
-            SnakeDirection nextD = parts.get(i + 1).getDirection();
-            int co = currD.ordinal(), po = prevD.ordinal(), no = nextD.ordinal();
-            boolean nextPrev = co == po || (co + 1) % 8 == po || (po + 1) % 8 == co;
-            boolean prevNext = co == no || (co + 1) % 8 == no || (no + 1) % 8 == co;
-            if (!nextPrev || !prevNext) this.speed = 0;
-        }
-        for (int i = 0; i < parts.size - 1; i++) {
-            SnakePart part = parts.get(i);
-            SnakePart next = parts.get(i + 1);
-            float deltaX = Math.abs(part.x - next.x);
-            float deltaY = Math.abs(part.y - next.y);
-            float radius2 = part.radius + next.radius;
-            if(deltaX*deltaX+deltaY*deltaY>4*radius2*radius2*1.15)//radius2*radius2+5){
-                speed=0;
-//                System.out.println("Frozen!");
-//            }
-            float sum=deltaX*deltaX+deltaY*deltaY;
-            if(sum>max) max=sum;
-//            System.out.println(max);
-        }
-    }
-
-    float max=0;
     public void setLeftMove(boolean leftMove) {
         if (rightMove && leftMove) rightMove = false;
         this.leftMove = leftMove;

@@ -8,12 +8,22 @@ public class SnakePart extends Circle {
 
     private Color color;
 
-    private Snake.SnakeDirection direction;
+//    private Snake.SnakeDirection direction;
 
-    public SnakePart(float x, float y, float radius, Color color, Snake.SnakeDirection direction) {
+    private Vector2 directionVector;
+
+    public Vector2 getDirectionVector() {
+        return directionVector;
+    }
+
+    public void setDirectionVector(Vector2 directionVector) {
+        this.directionVector = directionVector;
+    }
+
+    public SnakePart(float x, float y, float radius, Color color, Vector2 direction) {
         super(x, y, radius);
         this.color = color;
-        this.direction = direction;
+        this.directionVector = direction;
     }
 
     public Color getColor() {
@@ -24,11 +34,15 @@ public class SnakePart extends Circle {
         this.color = color;
     }
 
-    public Snake.SnakeDirection getDirection() {
-        return direction;
+    public void rotate(float degrees){
+        this.directionVector.rotateDeg(degrees);
     }
 
-    public void setDirection(Snake.SnakeDirection direction) {
-        this.direction = direction;
-    }
+//    public Snake.SnakeDirection getDirection() {
+//        return direction;
+//    }
+//
+//    public void setDirection(Snake.SnakeDirection direction) {
+//        this.direction = direction;
+//    }
 }

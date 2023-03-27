@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -51,8 +52,8 @@ public class PlayScreen implements Screen {
         uiStage = new Stage();
 
         this.localClient = localClient;
-        if(localClient!=null) myId = localClient.getWebsocketClient().getId();
-        else myId=0;
+        if (localClient != null) myId = localClient.getWebsocketClient().getId();
+        else myId = 0;
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
@@ -114,10 +115,16 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         pickupSpawner.getPickups().begin();
         for (PickupItems pickup : pickupSpawner.getPickups()) {
-            if (Intersector.overlaps(snakeList.get(0).getHead(), pickup.getBoundaryRectangle())) {
-                pickup.collectItem(snakeList.get(0));
-                pickup.applyEffect(snakeList.get(0));
-                System.out.println("Pickup:"+pickup);
+            Snake snake = snakeList.get(0);
+            float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+            if (x2 < 0) x2 += Gdx.graphics.getWidth();
+            float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+            if (y2 < 0) y2 += Gdx.graphics.getHeight();
+            if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
+                    pickup.getBoundaryRectangle())) {
+                pickup.collectItem(snake);
+                pickup.applyEffect(snake);
+                System.out.println("Pickup:" + pickup);
                 pickupSpawner.getPickups().removeValue(pickup, true);
             }
         }
@@ -125,7 +132,7 @@ public class PlayScreen implements Screen {
         myPoints.setText(snakeList.get(0).getPoints() + " p");
         pickupSpawner.getPickups().end();
 
-        if(localClient!=null){
+        if (localClient != null) {
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
                 for (Snake snake : snakeList) {
                     if (inputs.get(snake.getId()) != null) {
@@ -144,10 +151,9 @@ public class PlayScreen implements Screen {
                     }
                 }
             }
-        }
-        else{
-            if(snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
-            else if(snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
+        } else {
+            if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
+            else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
 
 
@@ -166,17 +172,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        /*InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
-        InputMultiplexer im = new InputMultiplexer();
-        im.addProcessor(uiStage);
-        im.addProcessor(mainStage);
-
-         */
-
         for (Snake snake : snakeList) {
             Gdx.app.log("Snake", String.valueOf(snake.getId()));
         }
-
     }
 
     @Override
@@ -194,13 +192,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
-        /*
-        InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
-        im.removeProcessor(uiStage);
-        im.removeProcessor(mainStage);
-
-         */
-
     }
 
     @Override

@@ -23,8 +23,6 @@ public class InputHandler extends InputAdapter {
     public boolean keyDown(int keycode) {
         SnakePart head = snake.getHead();
         SnakePart neck = snake.getParts().get(1);
-        if (isTurning(head,neck) && tooCloseX(head,neck)) return false;
-        if (isTurning(head,neck) && tooCloseY(head,neck)) return false;
         if(localClient==null){
             if (keycode == Input.Keys.A) snake.setLeftMove(true);
             else if (keycode == Input.Keys.D) snake.setRightMove(true);
@@ -51,15 +49,4 @@ public class InputHandler extends InputAdapter {
         return false;
     }
 
-    private static boolean tooCloseY(SnakePart head, SnakePart neck) {
-        return Math.abs(head.y - neck.y) <= head.radius * 2;
-    }
-
-    private static boolean tooCloseX(SnakePart head, SnakePart neck) {
-        return Math.abs(head.x - neck.x) <= head.radius * 2;
-    }
-
-    private static boolean isTurning(SnakePart head, SnakePart neck) {
-        return head.getDirection() != neck.getDirection();
-    }
 }
