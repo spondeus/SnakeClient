@@ -181,7 +181,7 @@ public class Snake extends Actor {
     public void act(float delta) {
 //        if(dump.size()==20) dump.remove(0);
 //        dump.add(this.toString());
-        parseString(this.toString());
+//        parseString(this.toString());
         if (selfCollision()) return;
         if (newSpeed != speed) {
             if (newSpeed > speed) speed++;
@@ -446,8 +446,8 @@ public class Snake extends Actor {
         float radius2 = part.radius + prev.radius;
         float side = radius2 / sqrt2;
         delta = (part.getDirection() == N || part.getDirection() == S) ? deltaY : deltaX;
-        double tang=Math.atan2(deltaX,deltaY);
-        boolean changeNeeded=Math.abs(tang45-tang)<0.05;
+//        double tang=Math.atan2(deltaX,deltaY);
+//        boolean changeNeeded=Math.abs(tang45-tang)<0.05;
         switch (prevDir) {
             case N:
             case S:                                     // ha elkanyarodott felfele
@@ -464,32 +464,32 @@ public class Snake extends Actor {
                 }
                 break;
             case NE:
-                if (changeNeeded) {
-//                if (radius2 / delta > sqrt2) {
+//                if (changeNeeded) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SW:
-                if (changeNeeded) {
-//                if (radius2 / delta > sqrt2) {
+//                if (changeNeeded) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case NW:
-                if (changeNeeded) {
-//                if (radius2 / delta > sqrt2) {
+//                if (changeNeeded) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y - side;
                     part.x = prev.x + side;
                     part.setDirection(prevDir);
                 }
                 break;
             case SE:
-                if (changeNeeded) {
-//                if (radius2 / delta > sqrt2) {
+//                if (changeNeeded) {
+                if (radius2 / delta > sqrt2) {
                     part.y = prev.y + side;
                     part.x = prev.x - side;
                     part.setDirection(prevDir);
@@ -522,8 +522,23 @@ public class Snake extends Actor {
             boolean prevNext = co == no || (co + 1) % 8 == no || (no + 1) % 8 == co;
             if (!nextPrev || !prevNext) this.speed = 0;
         }
+        for (int i = 0; i < parts.size - 1; i++) {
+            SnakePart part = parts.get(i);
+            SnakePart next = parts.get(i + 1);
+            float deltaX = Math.abs(part.x - next.x);
+            float deltaY = Math.abs(part.y - next.y);
+            float radius2 = part.radius + next.radius;
+            if(deltaX*deltaX+deltaY*deltaY>4*radius2*radius2*1.15)//radius2*radius2+5){
+                speed=0;
+//                System.out.println("Frozen!");
+//            }
+            float sum=deltaX*deltaX+deltaY*deltaY;
+            if(sum>max) max=sum;
+//            System.out.println(max);
+        }
     }
 
+    float max=0;
     public void setLeftMove(boolean leftMove) {
         if (rightMove && leftMove) rightMove = false;
         this.leftMove = leftMove;
