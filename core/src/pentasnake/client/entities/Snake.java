@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
-public class Snake extends Actor {
+public class Snake extends Actor implements Comparable<Snake> {
 
     public SnapshotArray<SnakePart> getParts() {
         return parts;
@@ -206,6 +206,11 @@ public class Snake extends Actor {
 
     public long getId() {
         return 0;
+    }
+
+    @Override
+    public int compareTo(Snake o) {
+        return this.points - o.points;
     }
 
     enum SnakeDirection {N, E, S, W}
