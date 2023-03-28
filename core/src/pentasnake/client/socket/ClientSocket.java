@@ -11,7 +11,9 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.client.messages.Message;
 import pentasnake.client.messages.SnakeConstruct;
+import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.screen.MenuScreen;
 
 import java.net.URI;
@@ -30,7 +32,9 @@ public class ClientSocket extends WebSocketClient {
     private int id;
 
     private boolean cons;
+    private Gson gson = new Gson();
 
+    private Queue<Message> msgQueue=new PriorityQueue();
 
     public ClientSocket(URI uri, SnakeGame game) {
         super(uri);
@@ -47,11 +51,13 @@ public class ClientSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        JSONObject jsonObject = new JSONObject(s);
-        int clientId = jsonObject.getInt("id");
-        String type = jsonObject.getString("type");
+        JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
+        JsonElement cId = jsonObject.get("id");
+        int clientId = cId.getAsInt();
+        JsonElement msgType = jsonObject.get("type");
+        String type = msgType.getAsString();
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
-        else if (type.startsWith("pickup")) handlePickupMsg(jsonObject)
+        else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
         else {
             switch (type) {
@@ -91,24 +97,29 @@ public class ClientSocket extends WebSocketClient {
 
     }
 
-    private void handleWallMsg(JSONObject jsonObject) {
+    private void handleWallMsg(JsonObject jsonObject) {
     }
 
-    private void handlePickupMsg(JSONObject jsonObject) {
+    private void handlePickupMsg(JsonObject jsonObject) {
 
     }
 
     private void handleSnakeMsg(JsonObject jsonObject) {
         Gson gson = new Gson();
-        JsonElement element=jsonObject.get("type");
+        JsonElement element = jsonObject.get("type");
+        JsonObject innerJson;
         switch (element.getAsString()) {
             case "snakeConstruct":
-                JsonObject innerJSON=jsonObject.getAsJsonObject("data");
-                SnakeConstruct snakeConstruct= gson.fromJson(innerJSON.toString(), SnakeConstruct.class);
+                innerJson = jsonObject.getAsJsonObject("data");
+                SnakeConstruct snakeConstruct = gson.fromJson(innerJson.toString(), SnakeConstruct.class);
+                msgQueue.add(snakeConstruct);
                 break;
             case "snakeCollision":
                 break;
             case "snakeMove":
+                innerJson = jsonObject.getAsJsonObject("data");
+                SnakeMove snakeMove= gson.fromJson(innerJson.toString(), SnakeMove.class);
+                msgQueue.add(snakeMove);
                 break;
             case "snakePointChange":
                 break;
@@ -158,6 +169,10 @@ public class ClientSocket extends WebSocketClient {
 
     public List<Map<Integer, String>> getCurrentInputs() {
         return currentInputs;
+    }
+
+    public Queue<Message> getMsgQueue() {
+        return msgQueue;
     }
 }
 

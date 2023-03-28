@@ -1,7 +1,15 @@
 package pentasnake.client.messages;
 
-public class SnakePointChange {
+public class SnakePointChange extends Message{
 
-    int change;
+    private int change;
+
+    public int getChange() {
+        return change;
+    }
+
+    public void setChange(int change) {
+        this.change = change;
+    }
 }
 

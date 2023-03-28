@@ -66,27 +66,33 @@ public class LobbyScreen implements Screen {
         waiting.draw(batch, 1);
         batch.end();
 
-        if (com.getWebsocketClient().isCons()) {
+        while(!com.getWebsocketClient().getMsgQueue().isEmpty()){
             Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
 
-            String s = com.getWebsocketClient().getConstMsg();
-            String[] msg = s.split("#");
-            for (String value : msg) {
-                if (!value.equals("cons")) {
-                    String[] parts = value.split(",");
-                    Snake newSnake = new Snake(
-                            Integer.parseInt(parts[0]),
-                            Integer.parseInt(parts[1]),
-                            20,
-                            Color.GREEN,
-                            Integer.parseInt(parts[4])
-                    );
-                    snakes.add(newSnake);
-                }
-            }
-            com.getWebsocketClient().setCons(false);
-            game.setScreen(new PlayScreen(game, snakes, com,false));
         }
+
+
+//        if (com.getWebsocketClient().isCons()) {
+//            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
+//
+//            String s = com.getWebsocketClient().getConstMsg();
+//            String[] msg = s.split("#");
+//            for (String value : msg) {
+//                if (!value.equals("cons")) {
+//                    String[] parts = value.split(",");
+//                    Snake newSnake = new Snake(
+//                            Integer.parseInt(parts[0]),
+//                            Integer.parseInt(parts[1]),
+//                            20,
+//                            Color.GREEN,
+//                            Integer.parseInt(parts[4])
+//                    );
+//                    snakes.add(newSnake);
+//                }
+//            }
+//            com.getWebsocketClient().setCons(false);
+//            game.setScreen(new PlayScreen(game, snakes, com,false));
+//        }
     }
 
     @Override

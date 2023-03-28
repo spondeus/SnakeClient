@@ -1,8 +1,23 @@
 package pentasnake.client.messages;
 
-public class SnakeCollision {
-    boolean isPickup;
+public class SnakeCollision extends Message{
+    private boolean isPickup;
 
-    int id;
+    private int pickupId;
 
+    public boolean isPickup() {
+        return isPickup;
+    }
+
+    public void setPickup(boolean pickup) {
+        isPickup = pickup;
+    }
+
+    public int getPickupId() {
+        return pickupId;
+    }
+
+    public void setPickupId(int pickupId) {
+        this.pickupId = pickupId;
+    }
 }
