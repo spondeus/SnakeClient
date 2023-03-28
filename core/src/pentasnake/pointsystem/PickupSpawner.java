@@ -92,6 +92,25 @@ public class PickupSpawner implements PickupHandler {
         }
     }
 
+    @Override
+    public void pickupCollected(PickupItems item) {
+        pickups.removeValue(item, true);
+        currentPickupsOnScreen--;
+        if (item instanceof Food) {
+            numFood--;
+        } else if (item instanceof Poison) {
+            numPoison--;
+        } else if (item instanceof EnergyDrink) {
+            numEnergyDrink--;
+        } else if (item instanceof SpiderWeb) {
+            numSpiderWeb--;
+        } else if (item instanceof IceBlock) {
+            numIceBlock--;
+        } else if (item instanceof Ghost) {
+            numGhost--;
+        }
+    }
+
     public boolean isOverlapping(float x, float y) {
         float radius = 50f;
         for (PickupItems pickup : pickups) {
