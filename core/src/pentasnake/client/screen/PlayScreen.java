@@ -161,8 +161,8 @@ public class PlayScreen implements Screen {
     }
 
     public void render(float dt) {
-        uiStage.act(dt);
         update(dt);
+        uiStage.act(dt);
         mainStage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
