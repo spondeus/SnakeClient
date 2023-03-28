@@ -100,12 +100,12 @@ public class PlayScreen implements Screen {
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
-        WallParts wallPart1 = new WallParts(250, 150, 200, 50, Color.FIREBRICK);
-        WallParts wallPart2 = new WallParts(250, 150+wallPart1.height, 50, 100, Color.FIREBRICK);
-        WallParts wallPart3 = new WallParts(1000, 400, 50, 300, Color.FIREBRICK);
+        WallParts wallPart1 = new WallParts(900, 100, 200, 50, Color.FIREBRICK);
+        WallParts wallPart2 = new WallParts(1050, 150, 50, 150, Color.FIREBRICK);
+        //WallParts wallPart3 = new WallParts(1000, 400, 50, 300, Color.FIREBRICK);
         wallPartsList.add(wallPart1);
         wallPartsList.add(wallPart2);
-        wallPartsList.add(wallPart3);
+        //wallPartsList.add(wallPart3);
 
         mainStage.addActor(wall);
 
