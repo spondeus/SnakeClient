@@ -15,10 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
-import pentasnake.client.entities.Snake;
-import pentasnake.client.entities.SnakePart;
-import pentasnake.client.entities.Wall;
-import pentasnake.client.entities.WallParts;
+import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
@@ -100,12 +97,25 @@ public class PlayScreen implements Screen {
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
-        WallParts wallPart1 = new WallParts(900, 100, 200, 50, Color.FIREBRICK);
-        WallParts wallPart2 = new WallParts(1050, 150, 50, 150, Color.FIREBRICK);
-        //WallParts wallPart3 = new WallParts(1000, 400, 50, 300, Color.FIREBRICK);
-        wallPartsList.add(wallPart1);
-        wallPartsList.add(wallPart2);
-        //wallPartsList.add(wallPart3);
+        WallParts bottomLeft1 = new WallParts(100, 100, 200, 50, Color.FIREBRICK);
+        WallParts bottomLeft2 = new WallParts(100, 150, 50, 150, Color.FIREBRICK);
+
+        WallParts bottomRight1 = new WallParts(900, 100, 200, 50, Color.FIREBRICK);
+        WallParts bottomRight2 = new WallParts(1050, 150, 50, 150, Color.FIREBRICK);
+
+        WallParts upperRight1 = new WallParts(900, 650, 200, 50, Color.FIREBRICK);
+        WallParts upperRight2 = new WallParts(1050, 500, 50, 150, Color.FIREBRICK);
+
+        WallParts upperLeft1 = new WallParts(100, 650, 200, 50, Color.FIREBRICK);
+        WallParts upperLeft2 = new WallParts(100, 500, 50, 150, Color.FIREBRICK);
+        wallPartsList.add(bottomLeft1);
+        wallPartsList.add(bottomLeft2);
+        wallPartsList.add(upperLeft1);
+        wallPartsList.add(upperLeft2);
+        wallPartsList.add(upperRight1);
+        wallPartsList.add(upperRight2);
+        wallPartsList.add(bottomRight1);
+        wallPartsList.add(bottomRight2);
 
         mainStage.addActor(wall);
 

@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum Type {
-    FOOD(6, 0.005f),
-    POISON(4, 0.0025f),
-    DRINK(4, 0.002f),
-    WEB(3, 0.002f),
-    ICE(3, 0.0015f),
-    GHOST(2, 0.001f);
+    FOOD(6, 0.5f),
+    POISON(4, 0.25f),
+    DRINK(4, 0.2f),
+    WEB(3, 0.2f),
+    ICE(3, 0.15f),
+    GHOST(2, 0.1f);
 
     private final int maxAmount;
     private final float spawnRate;
