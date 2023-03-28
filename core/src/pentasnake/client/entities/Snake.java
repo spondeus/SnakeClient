@@ -204,6 +204,10 @@ public class Snake extends Actor {
         parts.removeIndex(parts.size-1);
     }
 
+    public long getId() {
+        return 0;
+    }
+
     enum SnakeDirection {N, E, S, W}
 
     public SnakePart getHead() {
