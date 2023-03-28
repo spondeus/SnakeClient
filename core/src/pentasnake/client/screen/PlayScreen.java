@@ -67,17 +67,10 @@ public class PlayScreen implements Screen {
     }
 
     public void initialize() {
-        /*InputMultiplexer im = new InputMultiplexer();
-        Gdx.input.setInputProcessor(im);
-
-         */
-
         Gdx.app.log("Client/ snakeList", snakeList.toString());
         System.out.println("myid?" + myId);
         for (Snake x : snakeList) {
             if (x.getId() == myId) {
-                for (SnakePart p : x.getParts())
-                    p.setColor(Color.BLUE);
                 Gdx.input.setInputProcessor(new InputHandler(x, localClient));
             }
             mainStage.addActor(x);
@@ -134,7 +127,6 @@ public class PlayScreen implements Screen {
         pickupSpawner.getPickups().end();
 
         if (localClient != null) {
-
             if (snakeList.get(0).isLeftMove()) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
                 localClient.send("inputA," + localClient.getWebsocketClient().getId());
@@ -144,17 +136,15 @@ public class PlayScreen implements Screen {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
                 localClient.send("inputD," + localClient.getWebsocketClient().getId());
             }
-
-
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
                 for (Snake snake : snakeList) {
                     if (inputs.get(snake.getId()) != null) {
                         switch (inputs.get(snake.getId())) {
                             case "A":
-                                snakeList.get(0).turnLeft();
+                                snake.turnLeft();
                                 break;
                             case "D":
-                                snakeList.get(0).turnRight();
+                                snake.turnRight();
                                 break;
                             default:
                                 Gdx.app.error("Inputs", "Unknown input");
@@ -168,10 +158,6 @@ public class PlayScreen implements Screen {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
-
-
-
-
     }
 
     public void render(float dt) {
