@@ -1,7 +1,11 @@
 package pentasnake.client.messages;
 
-public class SnakeSpeedChange extends Message{
+public class SnakeSpeedChange extends Message {
     private int change;
+
+    public SnakeSpeedChange(int change) {
+        this.change = change;
+    }
 
     public int getChange() {
         return change;

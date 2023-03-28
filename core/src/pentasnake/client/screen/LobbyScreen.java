@@ -9,8 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Timer;
 
+import com.google.gson.JsonObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.client.messages.Message;
+import pentasnake.client.messages.SnakeColorChange;
+import pentasnake.client.messages.SnakeConstruct;
+import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.socket.Communication;
 
 import java.util.*;
@@ -31,30 +36,43 @@ public class LobbyScreen implements Screen {
 
     private boolean single;
 
-    public LobbyScreen(SnakeGame game,boolean single) {
-        this.game=game;
-        this.single=single;
+    Queue<Message> queue;
+
+    public LobbyScreen(SnakeGame game, boolean single) {
+        this.game = game;
+        this.single = single;
 
     }
 
     @Override
     public void show() {
-        if(single) {
-            if(single) game.setScreen(new PlayScreen(game, snakes, com,single));
+        if (single) {
+            if (single) game.setScreen(new PlayScreen(game, snakes, com, single));
             return;
         }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         com = new Communication(game);
+        queue = com.getWebsocketClient().getMsgQueue();
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if (com.getWebsocketClient().isOpen()) {
-                    com.send("cons?1,?2,20,ORANGE," + com.getWebsocketClient().getId());
+                    SnakeColorChange snakeColorChange=new SnakeColorChange(Color.BLUE,null,null);
+                    com.getWebsocketClient().writeMsg(1,snakeColorChange);
+//                    com.send(msg);
                 }
             }
         }, 1);
+//        Timer.schedule(new Timer.Task() {
+//            @Override
+//            public void run() {
+//                if (com.getWebsocketClient().isOpen()) {
+//                    com.send("cons?1,?2,20,ORANGE," + com.getWebsocketClient().getId());
+//                }
+//            }
+//        }, 1);
     }
 
     @Override
@@ -66,10 +84,7 @@ public class LobbyScreen implements Screen {
         waiting.draw(batch, 1);
         batch.end();
 
-        while(!com.getWebsocketClient().getMsgQueue().isEmpty()){
-            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
-
-        }
+        processMsg();
 
 
 //        if (com.getWebsocketClient().isCons()) {
@@ -93,6 +108,20 @@ public class LobbyScreen implements Screen {
 //            com.getWebsocketClient().setCons(false);
 //            game.setScreen(new PlayScreen(game, snakes, com,false));
 //        }
+    }
+
+    private void processMsg() {
+        while (!queue.isEmpty()) {
+            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
+            Message message = queue.poll();
+            if (message instanceof SnakeConstruct) {
+                SnakeConstruct snakeConstruct = (SnakeConstruct) message;
+                Snake newSnake = new Snake(snakeConstruct.getX(), snakeConstruct.getY(), snakeConstruct.getRadius(),
+                        snakeConstruct.getColor(),com.getWebsocketClient().getId());
+                snakes.add(newSnake);
+            }
+            game.setScreen(new PlayScreen(game, snakes, com, false));
+        }
     }
 
     @Override

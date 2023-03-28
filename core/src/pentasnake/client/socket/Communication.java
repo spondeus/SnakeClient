@@ -16,20 +16,18 @@ public class Communication extends ApplicationAdapter {
         websocketClient.send(message);
     }
 
-    @Getter
     private ClientSocket websocketClient;
 
     private SnakeGame game;
 
-    @Getter
     private Snake snake;
 
     public Communication(SnakeGame game) {
         this.game = game;
 
         try {
-            URI uri = new URI("ws://192.168.18.8:8080"); // Bálint Progmatic IP
-//            URI uri = new URI("ws://192.168.1.130:8080"); // Tamás home IP
+//            URI uri = new URI("ws://192.168.18.8:8080"); // Bálint Progmatic IP
+            URI uri = new URI("ws://192.168.1.130:8080"); // Tamás home IP
             websocketClient = new ClientSocket(uri, game);
             snake = websocketClient.getSnake();
         } catch (URISyntaxException e) {
@@ -46,4 +44,9 @@ public class Communication extends ApplicationAdapter {
 
 
     }
+
+    public ClientSocket getWebsocketClient() {
+        return websocketClient;
+    }
+
 }

@@ -4,6 +4,10 @@ public class SnakePointChange extends Message{
 
     private int change;
 
+    public SnakePointChange(int change) {
+        this.change = change;
+    }
+
     public int getChange() {
         return change;
     }

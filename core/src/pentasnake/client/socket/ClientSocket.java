@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
@@ -51,26 +52,8 @@ public class ClientSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
-        JsonElement cId = jsonObject.get("id");
-        int clientId = cId.getAsInt();
-        JsonElement msgType = jsonObject.get("type");
-        String type = msgType.getAsString();
-        if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
-        else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
-        else if (type.startsWith("wall")) handleWallMsg(jsonObject);
-        else {
-            switch (type) {
-                case "id":
-                    id = clientId;
-                    break;
-                case "die":
-                    break;
-                default:
-                    System.err.println("Uknown message type!");
-
-            }
-        }
+        writeMsg(1,new SnakeMove(true));
+        readMsg(s);
 
 //        if (s.startsWith("id")) {
 //            String[] msgSPlt = s.split("#");
@@ -95,6 +78,45 @@ public class ClientSocket extends WebSocketClient {
 //            cons = true;
 //        }
 
+    }
+
+    public void writeMsg(int id,Message msg){
+        JsonObject jsonObject=new JsonObject();
+        jsonObject.add("id",new JsonPrimitive(id));
+        String type;
+        if(msg instanceof SnakeMove) type="snakeMove";
+        else if(msg instanceof SnakeConstruct) type="snakeConstruct";
+        else type="id";
+        jsonObject.add("type",new JsonPrimitive(type));
+        String innerJson=gson.toJson(msg);
+        jsonObject.add("data",new JsonPrimitive(innerJson));
+        String outerJson=gson.toJson(jsonObject);
+        send(outerJson);
+        System.out.println("sent:"+jsonObject);
+    }
+
+    public void readMsg(String s) {
+        System.out.println(" got:"+s);
+        JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
+        JsonElement cId = jsonObject.get("id");
+        int clientId = cId.getAsInt();
+        JsonElement msgType = jsonObject.get("type");
+        String type = msgType.getAsString();
+        if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
+        else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
+        else if (type.startsWith("wall")) handleWallMsg(jsonObject);
+        else {
+            switch (type) {
+                case "id":
+                    id = clientId;
+                    break;
+                case "die":
+                    break;
+                default:
+                    System.err.println("Unknown message type!");
+
+            }
+        }
     }
 
     private void handleWallMsg(JsonObject jsonObject) {
@@ -173,6 +195,10 @@ public class ClientSocket extends WebSocketClient {
 
     public Queue<Message> getMsgQueue() {
         return msgQueue;
+    }
+
+    public Gson getGson() {
+        return gson;
     }
 }
 

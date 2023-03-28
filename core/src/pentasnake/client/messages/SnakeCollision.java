@@ -5,6 +5,11 @@ public class SnakeCollision extends Message{
 
     private int pickupId;
 
+    public SnakeCollision( boolean isPickup, int pickupId) {
+        this.isPickup = isPickup;
+        this.pickupId = pickupId;
+    }
+
     public boolean isPickup() {
         return isPickup;
     }

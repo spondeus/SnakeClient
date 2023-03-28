@@ -2,11 +2,18 @@ package pentasnake.client.messages;
 
 import com.badlogic.gdx.graphics.Color;
 
-public class SnakeConstruct extends Message{
+public class SnakeConstruct extends Message {
     private int x;
     private int y;
     private int radius;
     private Color color;
+
+    public SnakeConstruct( int x, int y, int radius, Color color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+    }
 
     public int getX() {
         return x;
