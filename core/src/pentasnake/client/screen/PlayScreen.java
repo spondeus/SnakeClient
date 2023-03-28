@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -51,10 +53,7 @@ public class PlayScreen implements Screen {
 
     SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
     protected Wall wall = new Wall(wallPartsList);
-    public Wall getWall() {
-        return this.wall;
-    }
-
+    public boolean collidedWithWall;
 
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
@@ -71,7 +70,7 @@ public class PlayScreen implements Screen {
         if (snakeList.size() == 0)
             if (!single) Gdx.app.error("Server", "No snake found");
             else
-                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 0, wall));
+                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, 0));
 
         initialize();
     }
@@ -94,7 +93,7 @@ public class PlayScreen implements Screen {
         }
 
         snakeList = new ArrayList<Snake>();
-        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId, wall);
+        Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId);
 
         snakeList.add(snake);
 
@@ -141,7 +140,6 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-
         for (PickupItems pickup : pickupSpawner.getPickups()) {
             if (Intersector.overlaps(snakeList.get(0).getHead(), pickup.getBoundaryRectangle())) {
                 pickup.collectItem(snakeList.get(0));
@@ -152,6 +150,7 @@ public class PlayScreen implements Screen {
         pickupSpawner.spawnPickups();
         myPoints.setText(snakeList.get(0).getPoints() + " p");
         pickupSpawner.getPickups().end();
+        wallCollision(wall);
 
         if(localClient!=null){
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
@@ -170,6 +169,21 @@ public class PlayScreen implements Screen {
                         }
                         inputs.remove(snake.getId());
                     }
+                }
+            }
+        }
+    }
+
+    public void wallCollision(Wall wall) {
+        // checks for wall collision
+        if(!snakeList.get(0).isGhostModeActive()) {
+            Circle head = snakeList.get(0).getParts().first();
+            for (WallParts wallPart : wall.getParts()) {
+                if (Intersector.overlaps(head, wallPart)) {
+                    collidedWithWall = true;
+                    snakeList.get(0).setDeadSnake(true);
+                    snakeList.get(0).setSpeed(0);
+                    return;
                 }
             }
         }

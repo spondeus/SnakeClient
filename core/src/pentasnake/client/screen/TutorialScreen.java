@@ -151,10 +151,10 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "food.png"))));
         Image foodIcon = new Image(foodImage);
-        foodIcon.setScale(0.3f);
+        foodIcon.setScale(0.17f);
         pickupImages.addActor(foodIcon);
         stage.addActor(foodIcon);
-        foodIcon.setPosition(CENTER_X + 100, CENTER_Y + 220);
+        foodIcon.setPosition(CENTER_X + 95, CENTER_Y + 220);
 
         TextureRegionDrawable poisonImage = new TextureRegionDrawable(
                 new TextureRegion(

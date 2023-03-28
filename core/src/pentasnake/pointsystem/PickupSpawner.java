@@ -32,7 +32,7 @@ public class PickupSpawner implements PickupHandler {
     private final float iceBlockSpawnRate = 0.0001f;
     private final float ghostSpawnRate = 0.0001f;
 
-    float padding = 30f;
+    float padding = 60f;
 
     public PickupSpawner(Stage mainStage) {
         this.mainStage = mainStage;

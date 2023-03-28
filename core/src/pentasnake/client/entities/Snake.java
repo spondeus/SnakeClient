@@ -5,13 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.Timer;
-
-import java.util.concurrent.TimeUnit;
+import pentasnake.client.screen.PlayScreen;
 
 import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -24,6 +21,15 @@ public class Snake extends Actor {
     SnapshotArray<SnakePart> parts;
 
     private final SnakePart head;
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     private int speed;
     private static final int DEFAULT_SPEED = 200;
     private int points;
@@ -51,13 +57,25 @@ public class Snake extends Actor {
         this.id = id;
     }
 
-    private final Wall wall;
-
-    private boolean collidedWithWall;
-
     private boolean ghostModeActive;
 
-    public Snake(int x, int y, int radius, Color bodyColor, int id, Wall wall) {
+    public boolean isGhostModeActive() {
+        return ghostModeActive;
+    }
+
+    public void setGhostModeActive(boolean ghostModeActive) {
+        this.ghostModeActive = ghostModeActive;
+    }
+
+    public void setDeadSnake(boolean deadSnake) {
+        this.deadSnake = deadSnake;
+    }
+
+    boolean deadSnake;
+
+    PlayScreen screen;
+
+    public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);
         this.parts = new SnapshotArray<>();
         this.parts.begin();
@@ -82,10 +100,8 @@ public class Snake extends Actor {
         points = 0;
         this.speed = DEFAULT_SPEED;
         points = 0;
-
         this.id = id;
 
-        this.wall = wall;
     }
 
 
@@ -95,7 +111,7 @@ public class Snake extends Actor {
         for (SnakePart part : this.parts) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
-            if (colliders.contains(part, true) || (part == head && collidedWithWall)) sr.setColor(Color.RED);
+            if (colliders.contains(part, true) || (part == head && deadSnake)) sr.setColor(Color.RED);
             sr.circle(part.x, part.y, part.radius, 100);
             if (part == head) {
                 switch (head.getDirection()) {
@@ -153,8 +169,7 @@ public class Snake extends Actor {
         batch.begin();
     }
 
-
-    private boolean collisionDetection(Wall wall) {
+    private boolean selfCollision() {
         // checks for self collision
         if (!ghostModeActive) {
             for (int i = 0; i < this.parts.size; i++) {
@@ -163,19 +178,9 @@ public class Snake extends Actor {
                     if (this.parts.get(i).overlaps(this.parts.get(j))) {
                         colliders.add(parts.get(i));
                         colliders.add(parts.get(j));
+                        speed=0;
                         return true;
                     }
-                }
-            }
-        }
-        // checks for wall collision
-        if(!ghostModeActive) {
-            Circle head = this.parts.first();
-            for (WallParts wallPart : wall.getParts()) {
-                Rectangle wallRect = new Rectangle(wallPart.getX(), wallPart.getY(), wallPart.getWidth(), wallPart.getHeight());
-                if (Intersector.overlaps(head, wallRect)) {
-                    collidedWithWall = true;
-                    return true;
                 }
             }
         }
@@ -183,7 +188,8 @@ public class Snake extends Actor {
     }
 
     public void act(float delta) {
-        if (collisionDetection(wall)) return;
+        selfCollision();
+        //if (screen.wallCollision()) return;;
         float movement = 1 / 60f * speed;
         float diagonal = movement / sqrt2;
         for (int i = 0; i < this.parts.size; i++) {
@@ -397,13 +403,13 @@ public class Snake extends Actor {
     public void freeze() {
         speed = 0;
         head.setColor(Color.CYAN);
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    speed = DEFAULT_SPEED;
-                    head.setColor(Color.ORANGE);
-                }
-            }, 5);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                speed = DEFAULT_SPEED;
+                head.setColor(Color.ORANGE);
+            }
+        }, 5);
     }
 
     public void ghostMode() {
