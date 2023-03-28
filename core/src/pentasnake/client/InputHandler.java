@@ -23,15 +23,12 @@ public class InputHandler extends InputAdapter {
     public boolean keyDown(int keycode) {
         SnakePart head = snake.getHead();
         SnakePart neck = snake.getParts().get(1);
-        if(localClient==null){
-            if (keycode == Input.Keys.A) snake.setLeftMove(true);
-            else if (keycode == Input.Keys.D) snake.setRightMove(true);
-        }else{
+        if (keycode == Input.Keys.A) snake.setLeftMove(true);
+        else if (keycode == Input.Keys.D) snake.setRightMove(true);
+        if(localClient!=null) {
             if (keycode == Input.Keys.A) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
                 localClient.send("inputA," + localClient.getWebsocketClient().getId());
-
-                //snake.turnLeft();
             } else if (keycode == Input.Keys.D) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
                 localClient.send("inputD," + localClient.getWebsocketClient().getId());
@@ -42,10 +39,8 @@ public class InputHandler extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
-        if(localClient==null){
-            if (keycode == Input.Keys.A) snake.setLeftMove(false);
-            else if (keycode == Input.Keys.D) snake.setRightMove(false);
-        }
+        if (keycode == Input.Keys.A) snake.setLeftMove(false);
+        else if (keycode == Input.Keys.D) snake.setRightMove(false);
         return false;
     }
 

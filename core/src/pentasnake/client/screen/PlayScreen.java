@@ -2,6 +2,7 @@ package pentasnake.client.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -133,15 +134,27 @@ public class PlayScreen implements Screen {
         pickupSpawner.getPickups().end();
 
         if (localClient != null) {
+
+            if (snakeList.get(0).isLeftMove()) {
+                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
+                localClient.send("inputA," + localClient.getWebsocketClient().getId());
+
+                //snake.turnLeft();
+            } else if (snakeList.get(0).isRightMove()) {
+                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
+                localClient.send("inputD," + localClient.getWebsocketClient().getId());
+            }
+
+
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
                 for (Snake snake : snakeList) {
                     if (inputs.get(snake.getId()) != null) {
                         switch (inputs.get(snake.getId())) {
                             case "A":
-                                snake.turnLeft();
+                                snakeList.get(0).turnLeft();
                                 break;
                             case "D":
-                                snake.turnRight();
+                                snakeList.get(0).turnRight();
                                 break;
                             default:
                                 Gdx.app.error("Inputs", "Unknown input");
@@ -155,6 +168,8 @@ public class PlayScreen implements Screen {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
+
+
 
 
     }
