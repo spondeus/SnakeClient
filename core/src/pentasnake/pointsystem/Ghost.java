@@ -11,11 +11,14 @@ public class Ghost extends PickupItems {
 
     @Getter
     Type type = Type.GHOST;
+    private static int count = 0;
+    public static int getCount() {
+        return count;
+    }
 
     public Ghost(float x, float y, Stage stage) {
         super(x, y, stage);
         setPoints(0);
-        setSpawnRate(0.1f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("ghost.png")));
         setBoundaryRectangle();
     }

@@ -19,12 +19,6 @@ public abstract class PickupItems extends BaseActorTEMP {
     private int points;
     boolean collected;
 
-    float spawnRate;
-
-    public void setSpawnRate(float spawnRate) {
-        this.spawnRate = spawnRate;
-    }
-
     public void setPoints(int points) {
         this.points = points;
     }
@@ -66,4 +60,7 @@ public abstract class PickupItems extends BaseActorTEMP {
         boundaryRectangle = new Rectangle(getX(), getY(), SIZE, SIZE);
     }
 
+    public float getRadius() {
+        return 30f;
+    }
 }

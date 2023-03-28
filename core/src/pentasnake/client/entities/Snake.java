@@ -63,17 +63,11 @@ public class Snake extends Actor {
         return ghostModeActive;
     }
 
-    public void setGhostModeActive(boolean ghostModeActive) {
-        this.ghostModeActive = ghostModeActive;
-    }
-
     public void setDeadSnake(boolean deadSnake) {
         this.deadSnake = deadSnake;
     }
 
     boolean deadSnake;
-
-    PlayScreen screen;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, E);

@@ -11,17 +11,20 @@ public class Food extends PickupItems {
 
     @Getter
     Type type = Type.FOOD;
+    private static int count = 0;
+    public static int getCount() {
+        return count;
+    }
 
     public Food(float x, float y, Stage stage) {
         super(x, y, stage);
         setPoints(50);
-        setSpawnRate(1f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("food.png")));
         setBoundaryRectangle();
     }
-
     @Override
     public void applyEffect(Snake snake) {
         snake.grow();
     }
+
 }

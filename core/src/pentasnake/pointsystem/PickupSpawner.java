@@ -12,12 +12,6 @@ public class PickupSpawner implements PickupHandler {
     private final SnapshotArray<PickupItems> pickups;
     private final Stage mainStage;
     public final int MAX_TOTAL_PICKUPS = 10;
-    public final int MAX_FOOD = 6;
-    public final int MAX_POISON = 4;
-    public final int MAX_DRINK = 4;
-    public final int MAX_ICE = 3;
-    public final int MAX_WEB = 3;
-    public final int MAX_GHOST = 2;
     public static int numFood = 0;
     public static int numPoison = 0;
     public static int numEnergyDrink = 0;
@@ -25,13 +19,6 @@ public class PickupSpawner implements PickupHandler {
     public static int numIceBlock = 0;
     public static int numGhost = 0;
     public int currentPickupsOnScreen;
-    private final float foodSpawnRate = 0.0002f;
-    private final float poisonSpawnRate = 0.0001f;
-    private final float energyDrinkSpawnRate = 0.0001f;
-    private final float spiderWebSpawnRate = 0.0001f;
-    private final float iceBlockSpawnRate = 0.0001f;
-    private final float ghostSpawnRate = 0.0001f;
-
     float padding = 60f;
 
     public PickupSpawner(Stage mainStage) {
@@ -42,47 +29,78 @@ public class PickupSpawner implements PickupHandler {
     @Override
     public void spawnPickups() {
 
-        final float height = Gdx.graphics.getHeight();
-        final float width = Gdx.graphics.getWidth();
+        final float HEIGHT = Gdx.graphics.getHeight();
+        final float WIDTH = Gdx.graphics.getWidth();
+        float x,y;
 
-        do {
-            if (numFood < MAX_FOOD && MathUtils.randomBoolean(foodSpawnRate)) {
-                pickups.add(new Food(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
-                currentPickupsOnScreen++;
+
+        while (currentPickupsOnScreen <= MAX_TOTAL_PICKUPS) {
+            if (Food.getCount() < Type.FOOD.getMaxAmount() && MathUtils.randomBoolean(Type.FOOD.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new Food(x, y, mainStage));
                 numFood++;
+                currentPickupsOnScreen++;
             }
-            if (numPoison < MAX_POISON && MathUtils.randomBoolean(poisonSpawnRate)) {
-                pickups.add(new Poison(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
+            if (Poison.getCount() < Type.POISON.getMaxAmount() && MathUtils.randomBoolean(Type.POISON.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new Poison(x, y, mainStage));
                 numPoison++;
                 currentPickupsOnScreen++;
             }
-            if (numEnergyDrink < MAX_DRINK && MathUtils.randomBoolean(energyDrinkSpawnRate)) {
-                pickups.add(new EnergyDrink(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
+            if (EnergyDrink.getCount() < Type.DRINK.getMaxAmount() && MathUtils.randomBoolean(Type.DRINK.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new EnergyDrink(x, y, mainStage));
                 numEnergyDrink++;
                 currentPickupsOnScreen++;
             }
-            if (numSpiderWeb < MAX_WEB && MathUtils.randomBoolean(spiderWebSpawnRate)) {
-                pickups.add(new SpiderWeb(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
+            if (SpiderWeb.getCount() < Type.WEB.getMaxAmount() && MathUtils.randomBoolean(Type.WEB.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new SpiderWeb(x, y, mainStage));
                 numSpiderWeb++;
                 currentPickupsOnScreen++;
             }
-            if (numIceBlock < MAX_ICE && MathUtils.randomBoolean(iceBlockSpawnRate)) {
-                pickups.add(new IceBlock(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
+            if (IceBlock.getCount() < Type.ICE.getMaxAmount() && MathUtils.randomBoolean(Type.ICE.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new IceBlock(x, y, mainStage));
                 numIceBlock++;
                 currentPickupsOnScreen++;
             }
-            if (numGhost < MAX_GHOST && MathUtils.randomBoolean(ghostSpawnRate)) {
-                pickups.add(new Ghost(
-                        MathUtils.random(padding, width-padding), MathUtils.random(padding, height-padding), mainStage));
+            if (Ghost.getCount() < Type.GHOST.getMaxAmount() && MathUtils.randomBoolean(Type.GHOST.getSpawnRate())) {
+                do {
+                    x = MathUtils.random(padding, WIDTH - padding);
+                    y = MathUtils.random(padding, HEIGHT - padding);
+                } while (isOverlapping(x, y));
+                pickups.add(new Ghost(x, y, mainStage));
                 numGhost++;
                 currentPickupsOnScreen++;
             }
-        } while (currentPickupsOnScreen <= MAX_TOTAL_PICKUPS);
+        }
+    }
+
+    public boolean isOverlapping(float x, float y) {
+        float radius = 50f;
+        for (PickupItems pickup : pickups) {
+            float distanceSquared = (x - pickup.getX()) * (x - pickup.getX()) + (y - pickup.getY()) * (y - pickup.getY());
+            if (distanceSquared < (radius + pickup.getRadius()) * (radius + pickup.getRadius())) {
+                return true;
+            }
+        }
+        return false;
     }
        /* }
     }, 0, 1f / 60); // Spawn pickups at 60 frames per second*/

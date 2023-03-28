@@ -22,7 +22,6 @@ import pentasnake.client.entities.WallParts;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
