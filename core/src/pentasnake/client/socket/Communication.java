@@ -27,7 +27,8 @@ public class Communication extends ApplicationAdapter {
 
         try {
 //            URI uri = new URI("ws://192.168.18.8:8080"); // Bálint Progmatic IP
-            URI uri = new URI("ws://192.168.1.130:8080"); // Tamás home IP
+            URI uri = new URI("ws://192.168.18.4:8080"); // Tamás Progmatic IP
+//            URI uri = new URI("ws://192.168.1.130:8080"); // Tamás home IP
             websocketClient = new ClientSocket(uri, game);
             snake = websocketClient.getSnake();
         } catch (URISyntaxException e) {

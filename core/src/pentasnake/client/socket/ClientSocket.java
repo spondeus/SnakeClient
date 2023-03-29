@@ -3,6 +3,7 @@ package pentasnake.client.socket;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.graphics.Color;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.messages.Message;
+import pentasnake.client.messages.SnakeColorChange;
 import pentasnake.client.messages.SnakeConstruct;
 import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.screen.MenuScreen;
@@ -35,7 +37,7 @@ public class ClientSocket extends WebSocketClient {
     private boolean cons;
     private Gson gson = new Gson();
 
-    private Queue<Message> msgQueue=new PriorityQueue();
+    private Queue<Message> msgQueue = new PriorityQueue();
 
     public ClientSocket(URI uri, SnakeGame game) {
         super(uri);
@@ -52,8 +54,8 @@ public class ClientSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        writeMsg(1,new SnakeMove(true));
         readMsg(s);
+        writeMsg(1, new SnakeMove(true));
 
 //        if (s.startsWith("id")) {
 //            String[] msgSPlt = s.split("#");
@@ -80,23 +82,24 @@ public class ClientSocket extends WebSocketClient {
 
     }
 
-    public void writeMsg(int id,Message msg){
-        JsonObject jsonObject=new JsonObject();
-        jsonObject.add("id",new JsonPrimitive(id));
+    public void writeMsg(int id, Message msg) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("id", new JsonPrimitive(id));
         String type;
-        if(msg instanceof SnakeMove) type="snakeMove";
-        else if(msg instanceof SnakeConstruct) type="snakeConstruct";
-        else type="id";
-        jsonObject.add("type",new JsonPrimitive(type));
-        String innerJson=gson.toJson(msg);
-        jsonObject.add("data",new JsonPrimitive(innerJson));
-        String outerJson=gson.toJson(jsonObject);
+        if (msg instanceof SnakeMove) type = "snakeMove";
+        else if (msg instanceof SnakeConstruct) type = "snakeConstruct";
+        else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
+        else type = "id";
+        jsonObject.add("type", new JsonPrimitive(type));
+        String innerJson = gson.toJson(msg);
+        jsonObject.add("data", new JsonPrimitive(innerJson));
+        String outerJson = gson.toJson(jsonObject);
         send(outerJson);
-        System.out.println("sent:"+jsonObject);
+        System.out.println("sent:" + jsonObject);
     }
 
     public void readMsg(String s) {
-        System.out.println(" got:"+s);
+        System.out.println(" got:" + s);
         JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
         JsonElement cId = jsonObject.get("id");
         int clientId = cId.getAsInt();
@@ -130,22 +133,31 @@ public class ClientSocket extends WebSocketClient {
         Gson gson = new Gson();
         JsonElement element = jsonObject.get("type");
         JsonObject innerJson;
+        String dataStr;
         switch (element.getAsString()) {
             case "snakeConstruct":
-                innerJson = jsonObject.getAsJsonObject("data");
-                SnakeConstruct snakeConstruct = gson.fromJson(innerJson.toString(), SnakeConstruct.class);
+                dataStr = jsonObject.get("data").getAsString();
+                SnakeConstruct snakeConstruct = gson.fromJson(dataStr, SnakeConstruct.class);
+                System.out.println(snakeConstruct);
+
                 msgQueue.add(snakeConstruct);
                 break;
             case "snakeCollision":
                 break;
             case "snakeMove":
                 innerJson = jsonObject.getAsJsonObject("data");
-                SnakeMove snakeMove= gson.fromJson(innerJson.toString(), SnakeMove.class);
+                SnakeMove snakeMove = gson.fromJson(innerJson.toString(), SnakeMove.class);
+                System.out.println(snakeMove);
                 msgQueue.add(snakeMove);
                 break;
             case "snakePointChange":
                 break;
             case "snakeSpeedChange":
+                break;
+            case "snakeColorChange":
+                dataStr = jsonObject.get("data").getAsString();
+                SnakeColorChange snakeColorChange = gson.fromJson(dataStr, SnakeColorChange.class);
+                System.out.println(snakeColorChange);
                 break;
             default:
                 System.err.println("Unknown snake message!");

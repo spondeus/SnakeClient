@@ -40,4 +40,13 @@ public class SnakeColorChange extends Message {
     public void setSecond(Integer second) {
         this.second = second;
     }
+
+    @Override
+    public String toString() {
+        return "SnakeColorChange{" +
+                "newColor=" + newColor +
+                ", first=" + first +
+                ", second=" + second +
+                '}';
+    }
 }
