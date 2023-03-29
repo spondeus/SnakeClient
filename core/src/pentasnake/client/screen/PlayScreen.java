@@ -35,20 +35,14 @@ public class PlayScreen implements Screen {
     private List<Label> pointsLabel;
     private ArrayList<Snake> snakeList;
     private Table table;
-
     private PickupSpawner pickupSpawner;
-
     private final SnakeGame game;
-
     private final Communication localClient;
     private final int myId;
-
     private boolean single;
-
     private SpriteBatch batch = new SpriteBatch();
-
-    SnapshotArray<WallParts> wallPartsList = new SnapshotArray<>();
-    protected Wall wall = new Wall(wallPartsList);
+    SnapshotArray<WallPattern> wallList = new SnapshotArray<>();
+    protected Wall wall;
     public boolean collidedWithWall;
 
 
@@ -76,7 +70,6 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(im);
 
          */
-
         Gdx.app.log("Client/ snakeList", snakeList.toString());
         System.out.println("myid?" + myId);
         for (Snake x : snakeList) {
@@ -88,7 +81,7 @@ public class PlayScreen implements Screen {
             mainStage.addActor(x);
         }
 
-        snakeList = new ArrayList<Snake>();
+        snakeList = new ArrayList<>();
         Snake snake = new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, Color.GREEN, myId);
 
         snakeList.add(snake);
@@ -97,7 +90,7 @@ public class PlayScreen implements Screen {
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
-        WallParts bottomLeft1 = new WallParts(100, 100, 200, 50, Color.FIREBRICK);
+        /*WallParts bottomLeft1 = new WallParts(100, 100, 200, 50, Color.FIREBRICK);
         WallParts bottomLeft2 = new WallParts(100, 150, 50, 150, Color.FIREBRICK);
 
         WallParts bottomRight1 = new WallParts(900, 100, 200, 50, Color.FIREBRICK);
@@ -108,6 +101,21 @@ public class PlayScreen implements Screen {
 
         WallParts upperLeft1 = new WallParts(100, 650, 200, 50, Color.FIREBRICK);
         WallParts upperLeft2 = new WallParts(100, 500, 50, 150, Color.FIREBRICK);
+
+        WallParts straightLong = new WallParts(450, 500, 350, 50, Color.FIREBRICK);
+
+        WallParts crossVertical = new WallParts(550, 600, 50, 150, Color.FIREBRICK);
+        WallParts crossHorizontal = new WallParts(500, 650, 150, 50, Color.FIREBRICK);
+
+        WallParts diagonal1 = new WallParts(220, 450, 50, 50, Color.FIREBRICK);
+        WallParts diagonal2 = new WallParts(270, 400, 50, 50, Color.FIREBRICK);
+        WallParts diagonal3 = new WallParts(320, 350, 50, 50, Color.FIREBRICK);
+        WallParts diagonal4 = new WallParts(370, 300, 50, 50, Color.FIREBRICK);
+
+        WallParts landingPad1 = new WallParts(600, 300, 150, 50, Color.FIREBRICK);
+        WallParts landingPad2 = new WallParts(650, 150, 50, 200, Color.FIREBRICK);
+        WallParts landingPad3 = new WallParts(600, 100, 150, 50, Color.FIREBRICK);
+
         wallPartsList.add(bottomLeft1);
         wallPartsList.add(bottomLeft2);
         wallPartsList.add(upperLeft1);
@@ -116,9 +124,19 @@ public class PlayScreen implements Screen {
         wallPartsList.add(upperRight2);
         wallPartsList.add(bottomRight1);
         wallPartsList.add(bottomRight2);
-
+        wallPartsList.add(straightLong);
+        wallPartsList.add(crossVertical);
+        wallPartsList.add(crossHorizontal);
+        wallPartsList.add(diagonal1);
+        wallPartsList.add(diagonal2);
+        wallPartsList.add(diagonal3);
+        wallPartsList.add(diagonal4);
+        wallPartsList.add(landingPad1);
+        wallPartsList.add(landingPad2);
+        wallPartsList.add(landingPad3);*/
+        wall = new Wall(wallList);
+        wallList = wall.spawnWalls();
         mainStage.addActor(wall);
-
         mainStage.addActor(snake);
     }
 

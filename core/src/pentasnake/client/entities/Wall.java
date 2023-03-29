@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
-
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Wall extends Actor {
     SnapshotArray<WallParts> parts;
@@ -16,10 +16,11 @@ public class Wall extends Actor {
     }
     private final ShapeRenderer sr = new ShapeRenderer();
 
-    public Wall(SnapshotArray<WallParts> parts){
-        this.parts = parts;
-    }
+    private final WallPattern pattern = new WallPattern(getParts());
 
+    public Wall(SnapshotArray<WallPattern> patterns){
+
+    }
 
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
@@ -32,4 +33,20 @@ public class Wall extends Actor {
         sr.end();
         batch.begin();
     }
+
+    public SnapshotArray<WallPattern> spawnWalls(){
+
+        final int MAX_WALLS_TO_SPAWN = 4;
+
+        SnapshotArray<WallPattern> wallPatterns = pattern.createWallPatterns();
+        SnapshotArray<WallPattern> randomlySelectedWalls = new SnapshotArray<>();
+
+        Random random = new Random();
+        Collections.shuffle((List<?>) wallPatterns, random);
+        for (int i = 0; i < MAX_WALLS_TO_SPAWN; i++) {
+            randomlySelectedWalls.add(wallPatterns.get(i));
+        }
+        return randomlySelectedWalls;
+    }
+
 }

@@ -8,7 +8,6 @@ import org.java_websocket.handshake.ServerHandshake;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.MenuScreen;
-
 import java.net.URI;
 import java.util.*;
 
