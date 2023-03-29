@@ -120,7 +120,6 @@ public class ClientSocket extends WebSocketClient {
 
             }
         }
-        System.out.println(clientId);
     }
 
     private void handleWallMsg(JsonObject jsonObject) {
@@ -131,24 +130,22 @@ public class ClientSocket extends WebSocketClient {
     }
 
     private void handleSnakeMsg(JsonObject jsonObject) {
-        Gson gson = new Gson();
-        JsonElement element = jsonObject.get("type");
+        JsonElement type = jsonObject.get("type");
         JsonObject innerJson;
         String dataStr;
-        switch (element.getAsString()) {
+        switch (type.getAsString()) {
             case "snakeConstruct":
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeConstruct snakeConstruct = gson.fromJson(dataStr, SnakeConstruct.class);
-                System.out.println(snakeConstruct);
+                snakeConstruct.setId(id);
                 msgQueue.add(snakeConstruct);
                 break;
             case "snakeCollision":
                 break;
             case "snakeMove":
-                innerJson = jsonObject.getAsJsonObject("data");
-                SnakeMove snakeMove = gson.fromJson(innerJson.toString(), SnakeMove.class);
+                dataStr = jsonObject.get("data").getAsString();
+                SnakeMove snakeMove = gson.fromJson(dataStr, SnakeMove.class);
                 snakeMove.setId(id);
-                System.out.println(snakeMove);
                 msgQueue.add(snakeMove);
                 break;
             case "snakePointChange":

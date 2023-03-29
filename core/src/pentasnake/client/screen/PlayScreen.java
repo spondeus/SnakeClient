@@ -50,13 +50,18 @@ public class PlayScreen implements Screen {
 
     private boolean single;
 
+    ClientSocket socket;
+
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
         mainStage = new Stage();
         uiStage = new Stage();
 
         this.localClient = localClient;
-        if (localClient != null) myId = localClient.getWebsocketClient().getId();
+        if (localClient != null){
+            socket=localClient.getWebsocketClient();
+            myId = socket.getId();
+        }
         else myId = 0;
 
         this.game = game;
@@ -129,14 +134,22 @@ public class PlayScreen implements Screen {
         myPoints.setText(snakeList.get(0).getPoints() + " p");
         pickupSpawner.getPickups().end();
 
+//        if(localClient!=null) {
+//            ClientSocket socket=localClient.getWebsocketClient();
+//            if (snake.isLeftMove()) {
+//                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+//                socket.writeMsg(socket.getId(),new SnakeMove(true));
+//            } else if (snake.isRightMove()) {
+//                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+//                socket.writeMsg(socket.getId(),new SnakeMove(false));
+//            }
+//        }
+
         if (localClient != null) {
-            ClientSocket socket=localClient.getWebsocketClient();
-            if (snakeList.get(0).isLeftMove()) {
+            if (snakeList.get(myId).isLeftMove()) {
                 if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
                 socket.writeMsg(myId,new SnakeMove(true));
-
-                //snake.turnLeft();
-            } else if (snakeList.get(0).isRightMove()) {
+            } else if (snakeList.get(myId).isRightMove()) {
                 if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
                 socket.writeMsg(myId,new SnakeMove(false));
             }
@@ -145,7 +158,7 @@ public class PlayScreen implements Screen {
                 if(msg instanceof SnakeMove){
                     SnakeMove snakeMove=(SnakeMove) msg;
                     Snake snake=snakeList.get(snakeMove.getId());
-                    if(snake.isLeftMove()) snake.turnLeft();
+                    if(snakeMove.isLeft()) snake.turnLeft();
                     else snake.turnRight();
                 }
 

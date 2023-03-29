@@ -171,11 +171,11 @@ public class Snake extends Actor {
     }
 
     public void turnRight() {
-        head.rotate(speed / 140);
+        head.rotate(-speed / 140);
     }
 
     public void turnLeft() {
-        head.rotate(-speed / 140);
+        head.rotate(speed / 140);
     }
 
     public void slowDown() {

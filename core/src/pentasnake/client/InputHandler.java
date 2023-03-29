@@ -22,20 +22,8 @@ public class InputHandler extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        SnakePart head = snake.getHead();
-        SnakePart neck = snake.getParts().get(1);
         if (keycode == Input.Keys.A) snake.setLeftMove(true);
         else if (keycode == Input.Keys.D) snake.setRightMove(true);
-        if(localClient!=null) {
-            ClientSocket socket=localClient.getWebsocketClient();
-            if (keycode == Input.Keys.A) {
-                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
-                socket.writeMsg(socket.getId(),new SnakeMove(true));
-            } else if (keycode == Input.Keys.D) {
-                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
-                socket.writeMsg(socket.getId(),new SnakeMove(false));
-            }
-        }
         return false;
     }
 

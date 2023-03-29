@@ -123,7 +123,7 @@ public class LobbyScreen implements Screen {
             if (message instanceof SnakeConstruct) {
                 SnakeConstruct snakeConstruct = (SnakeConstruct) message;
                 Snake newSnake = new Snake(snakeConstruct.getX(), snakeConstruct.getY(), snakeConstruct.getRadius(),
-                        snakeConstruct.getColor(),com.getWebsocketClient().getId());
+                        snakeConstruct.getColor(), snakeConstruct.getId());
                 snakes.add(newSnake);
             }
             game.setScreen(new PlayScreen(game, snakes, com, false));
