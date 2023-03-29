@@ -120,6 +120,7 @@ public class ClientSocket extends WebSocketClient {
 
             }
         }
+        System.out.println(clientId);
     }
 
     private void handleWallMsg(JsonObject jsonObject) {
@@ -139,7 +140,6 @@ public class ClientSocket extends WebSocketClient {
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeConstruct snakeConstruct = gson.fromJson(dataStr, SnakeConstruct.class);
                 System.out.println(snakeConstruct);
-
                 msgQueue.add(snakeConstruct);
                 break;
             case "snakeCollision":

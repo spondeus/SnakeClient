@@ -17,6 +17,7 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
+import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
@@ -129,12 +130,12 @@ public class PlayScreen implements Screen {
         if (localClient != null) {
             if (snakeList.get(0).isLeftMove()) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.send("inputA," + localClient.getWebsocketClient().getId());
+                localClient.getWebsocketClient().writeMsg(myId,new SnakeMove(true));
 
                 //snake.turnLeft();
             } else if (snakeList.get(0).isRightMove()) {
                 if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.send("inputD," + localClient.getWebsocketClient().getId());
+                localClient.getWebsocketClient().writeMsg(myId,new SnakeMove(false));
             }
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
                 for (Snake snake : snakeList) {
