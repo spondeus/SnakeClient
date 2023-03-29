@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
+import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.socket.Communication;
 
@@ -26,12 +27,13 @@ public class InputHandler extends InputAdapter {
         if (keycode == Input.Keys.A) snake.setLeftMove(true);
         else if (keycode == Input.Keys.D) snake.setRightMove(true);
         if(localClient!=null) {
+            ClientSocket socket=localClient.getWebsocketClient();
             if (keycode == Input.Keys.A) {
-                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.send("inputA," + localClient.getWebsocketClient().getId());
+                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+                socket.writeMsg(socket.getId(),new SnakeMove(true));
             } else if (keycode == Input.Keys.D) {
-                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.send("inputD," + localClient.getWebsocketClient().getId());
+                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+                socket.writeMsg(socket.getId(),new SnakeMove(false));
             }
         }
         return false;

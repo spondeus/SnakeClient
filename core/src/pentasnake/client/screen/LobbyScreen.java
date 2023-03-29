@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Timer;
 
 import com.google.gson.JsonObject;
+import org.java_websocket.client.WebSocketClient;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.messages.Message;
@@ -54,17 +55,9 @@ public class LobbyScreen implements Screen {
         waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         com = new Communication(game);
-        queue = com.getWebsocketClient().getMsgQueue();
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                if (com.getWebsocketClient().isOpen()) {
-                    SnakeColorChange snakeColorChange=new SnakeColorChange(Color.BLUE,null,null);
-                    com.getWebsocketClient().writeMsg(1,snakeColorChange);
-//                    com.send(msg);
-                }
-            }
-        }, 1);
+        final ClientSocket client=com.getWebsocketClient();
+        queue = client.getMsgQueue();
+        sendMyColor(client);
 //        Timer.schedule(new Timer.Task() {
 //            @Override
 //            public void run() {
@@ -73,6 +66,19 @@ public class LobbyScreen implements Screen {
 //                }
 //            }
 //        }, 1);
+    }
+
+    private static void sendMyColor(final ClientSocket client) {
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (client.isOpen()) {
+                    SnakeColorChange snakeColorChange=new SnakeColorChange(Color.BLUE,-1,-1);
+                    client.writeMsg(client.getId(),snakeColorChange);
+//                    com.send(msg);
+                }
+            }
+        }, 1);
     }
 
     @Override

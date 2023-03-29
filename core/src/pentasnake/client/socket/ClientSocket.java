@@ -37,7 +37,7 @@ public class ClientSocket extends WebSocketClient {
     private boolean cons;
     private Gson gson = new Gson();
 
-    private Queue<Message> msgQueue = new PriorityQueue();
+    private Queue<Message> msgQueue = new ArrayDeque<>();
 
     public ClientSocket(URI uri, SnakeGame game) {
         super(uri);
@@ -55,7 +55,7 @@ public class ClientSocket extends WebSocketClient {
     @Override
     public void onMessage(String s) {
         readMsg(s);
-        writeMsg(1, new SnakeMove(true));
+//        writeMsg(1, new SnakeMove(true));
 
 //        if (s.startsWith("id")) {
 //            String[] msgSPlt = s.split("#");
@@ -147,6 +147,7 @@ public class ClientSocket extends WebSocketClient {
             case "snakeMove":
                 innerJson = jsonObject.getAsJsonObject("data");
                 SnakeMove snakeMove = gson.fromJson(innerJson.toString(), SnakeMove.class);
+                snakeMove.setId(id);
                 System.out.println(snakeMove);
                 msgQueue.add(snakeMove);
                 break;

@@ -17,7 +17,9 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
+import pentasnake.client.messages.Message;
 import pentasnake.client.messages.SnakeMove;
+import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
@@ -128,33 +130,44 @@ public class PlayScreen implements Screen {
         pickupSpawner.getPickups().end();
 
         if (localClient != null) {
+            ClientSocket socket=localClient.getWebsocketClient();
             if (snakeList.get(0).isLeftMove()) {
-                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.getWebsocketClient().writeMsg(myId,new SnakeMove(true));
+                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+                socket.writeMsg(myId,new SnakeMove(true));
 
                 //snake.turnLeft();
             } else if (snakeList.get(0).isRightMove()) {
-                if (localClient.getWebsocketClient().isClosed()) Gdx.app.error("Client", "Connection closed");
-                localClient.getWebsocketClient().writeMsg(myId,new SnakeMove(false));
+                if (socket.isClosed()) Gdx.app.error("Client", "Connection closed");
+                socket.writeMsg(myId,new SnakeMove(false));
             }
-            for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
-                for (Snake snake : snakeList) {
-                    if (inputs.get(snake.getId()) != null) {
-                        switch (inputs.get(snake.getId())) {
-                            case "A":
-                                snake.turnLeft();
-                                break;
-                            case "D":
-                                snake.turnRight();
-                                break;
-                            default:
-                                Gdx.app.error("Inputs", "Unknown input");
-                                break;
-                        }
-                        inputs.remove(snake.getId());
-                    }
+            while(!socket.getMsgQueue().isEmpty()){
+                Message msg=socket.getMsgQueue().poll();
+                if(msg instanceof SnakeMove){
+                    SnakeMove snakeMove=(SnakeMove) msg;
+                    Snake snake=snakeList.get(snakeMove.getId());
+                    if(snake.isLeftMove()) snake.turnLeft();
+                    else snake.turnRight();
                 }
+
             }
+//            for (Map<Integer, String> inputs : socket.getCurrentInputs()) {
+//                for (Snake snake : snakeList) {
+//                    if (inputs.get(snake.getId()) != null) {
+//                        switch (inputs.get(snake.getId())) {
+//                            case "A":
+//                                snake.turnLeft();
+//                                break;
+//                            case "D":
+//                                snake.turnRight();
+//                                break;
+//                            default:
+//                                Gdx.app.error("Inputs", "Unknown input");
+//                                break;
+//                        }
+//                        inputs.remove(snake.getId());
+//                    }
+//                }
+//            }
         } else {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
