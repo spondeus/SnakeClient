@@ -34,13 +34,12 @@ public class LobbyScreen implements Screen {
     public LobbyScreen(SnakeGame game,boolean single) {
         this.game=game;
         this.single=single;
-
     }
 
     @Override
     public void show() {
         if(single) {
-            if(single) game.setScreen(new PlayScreen(game, snakes, com,single));
+            if(single) game.setScreen(new PlayScreen(game, snakes, com,single, com.getWebsocketClient().getPickups()));
             return;
         }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
@@ -85,7 +84,7 @@ public class LobbyScreen implements Screen {
                 }
             }
             com.getWebsocketClient().setCons(false);
-            game.setScreen(new PlayScreen(game, snakes, com,false));
+            game.setScreen(new PlayScreen(game, snakes, com,false, com.getWebsocketClient().getPickups()));
         }
     }
 
@@ -111,6 +110,5 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }

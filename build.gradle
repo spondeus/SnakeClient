@@ -88,10 +88,6 @@ project(":html") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
 
-        compileOnly 'org.projectlombok:lombok:1.18.26'
-        annotationProcessor 'org.projectlombok:lombok:1.18.26'
-
-
     }
 }
 
@@ -103,8 +99,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
         implementation 'org.java-websocket:java-websocket:1.3.3'
-        compileOnly 'org.projectlombok:lombok:1.18.26'
-        annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     }
 }

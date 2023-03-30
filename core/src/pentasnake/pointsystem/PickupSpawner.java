@@ -1,14 +1,15 @@
+/*
+
 package pentasnake.pointsystem;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
 
 public class PickupSpawner implements PickupHandler {
 
-    @Getter
+
     private final SnapshotArray<PickupItems> pickups;
     private final Stage mainStage;
     public final int MAX_TOTAL_PICKUPS = 10;
@@ -76,7 +77,12 @@ public class PickupSpawner implements PickupHandler {
             }
         } while (currentPickupsOnScreen <= MAX_TOTAL_PICKUPS);
     }
-       /* }
+
+    public SnapshotArray<PickupItems> getPickups(){
+        return pickups;
+    }
+
+    /* }
     }, 0, 1f / 60); // Spawn pickups at 60 frames per second*/
 
 
@@ -113,6 +119,7 @@ public class PickupSpawner implements PickupHandler {
             // create and spawn the new pickup item at the unoccupied location
             PickupItem newPickupItem = new PickupItem(newLocation);
             pickupItemLocations.add(newLocation);
-        }*/
+        }
 
 }
+ */

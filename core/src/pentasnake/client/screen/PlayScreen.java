@@ -13,13 +13,14 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
 import pentasnake.client.socket.Communication;
+import pentasnake.pointsystem.Food;
 import pentasnake.pointsystem.PickupItems;
-import pentasnake.pointsystem.PickupSpawner;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ public class PlayScreen implements Screen {
     private ArrayList<Snake> snakeList;
     private Table table;
 
-    private PickupSpawner pickupSpawner;
+    //private PickupSpawner pickupSpawner;
 
     private final SnakeGame game;
 
@@ -46,15 +47,22 @@ public class PlayScreen implements Screen {
     private final int myId;
 
     private boolean single;
+    SnapshotArray<PickupItems> pickups;
+    List<String> pickupCons;
 
-    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
+    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single, List<String> pickupCons) {
         this.single = single;
         mainStage = new Stage();
         uiStage = new Stage();
 
+        this.pickupCons = pickupCons;
+        Gdx.app.log("PlayScreen", pickupCons.toString());
+
         this.localClient = localClient;
-        if (localClient != null) myId = localClient.getWebsocketClient().getId();
-        else myId = 0;
+        if (localClient != null){
+            myId = localClient.getWebsocketClient().getId();
+        } else myId = 0;
+
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
@@ -83,7 +91,7 @@ public class PlayScreen implements Screen {
             mainStage.addActor(x);
         }
 
-        pickupSpawner = new PickupSpawner(mainStage);
+        //pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
     }
 
@@ -114,24 +122,29 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-        pickupSpawner.getPickups().begin();
-        for (PickupItems pickup : pickupSpawner.getPickups()) {
-            Snake snake = snakeList.get(0);
-            float x2 = snake.getHead().x % Gdx.graphics.getWidth();
-            if (x2 < 0) x2 += Gdx.graphics.getWidth();
-            float y2 = snake.getHead().y % Gdx.graphics.getHeight();
-            if (y2 < 0) y2 += Gdx.graphics.getHeight();
-            if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
-                    pickup.getBoundaryRectangle())) {
-                pickup.collectItem(snake);
-                pickup.applyEffect(snake);
-                System.out.println("Pickup:" + pickup);
-                pickupSpawner.getPickups().removeValue(pickup, true);
+        pickupCons = localClient.getWebsocketClient().getPickups();
+        newPickup();
+
+        pickups.begin();
+        for (PickupItems pickup : pickups) {
+            for(Snake snake: snakeList) {
+                float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+                if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+                if (y2 < 0) y2 += Gdx.graphics.getHeight();
+                if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
+                        pickup.getBoundaryRectangle())) {
+                    localClient.send("pickup"+pickup.getType()+","+pickup.getId());
+                    pickup.collectItem(snake);
+                    pickup.applyEffect(snake);
+
+                    System.out.println("Pickup:" + pickup);
+                    pickups.removeValue(pickup, true);
+                }
             }
         }
-        pickupSpawner.spawnPickups();
         myPoints.setText(snakeList.get(0).getPoints() + " p");
-        pickupSpawner.getPickups().end();
+        pickups.end();
 
         if (localClient != null) {
 
@@ -151,10 +164,10 @@ public class PlayScreen implements Screen {
                     if (inputs.get(snake.getId()) != null) {
                         switch (inputs.get(snake.getId())) {
                             case "A":
-                                snakeList.get(0).turnLeft();
+                                snake.turnLeft();
                                 break;
                             case "D":
-                                snakeList.get(0).turnRight();
+                                snake.turnRight();
                                 break;
                             default:
                                 Gdx.app.error("Inputs", "Unknown input");
@@ -168,10 +181,6 @@ public class PlayScreen implements Screen {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
-
-
-
-
     }
 
     public void render(float dt) {
@@ -212,4 +221,29 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
     }
+
+    private void newPickup(){
+        for(String s: pickupCons){
+            String[] split = s.split("#");
+
+            Gdx.app.log("PickupType", split[0]);
+
+            PickupItems newPickup = new Food(
+                    Integer.parseInt(split[3]),
+                    Integer.parseInt(split[2]),
+                    mainStage,
+                    Integer.parseInt(split[1])
+            );
+
+            pickups.add(newPickup);
+
+
+            switch (split[0]){
+
+            }
+
+            localClient.getWebsocketClient().getPickups().remove(s);
+        }
+    }
+
 }

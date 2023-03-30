@@ -1,10 +1,11 @@
 package pentasnake.client.socket;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import lombok.Getter;
+import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.PlayScreen;
+import pentasnake.pointsystem.PickupItems;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,12 +17,12 @@ public class Communication extends ApplicationAdapter {
         websocketClient.send(message);
     }
 
-    @Getter
+    private SnapshotArray<PickupItems> pickups;
+
     private ClientSocket websocketClient;
 
     private SnakeGame game;
 
-    @Getter
     private Snake snake;
 
     public Communication(SnakeGame game) {
@@ -43,7 +44,13 @@ public class Communication extends ApplicationAdapter {
     public void create() {
         super.create();
         websocketClient.connect();
+    }
 
+    public ClientSocket getWebsocketClient(){
+        return websocketClient;
+    }
 
+    public Snake getSnake(){
+        return snake;
     }
 }

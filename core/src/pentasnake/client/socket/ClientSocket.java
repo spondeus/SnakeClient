@@ -3,11 +3,13 @@ package pentasnake.client.socket;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.utils.Timer;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
-import pentasnake.client.screen.MenuScreen;
+import pentasnake.pointsystem.Food;
+import pentasnake.pointsystem.PickupItems;
 
 import java.net.URI;
 import java.util.*;
@@ -20,12 +22,17 @@ public class ClientSocket extends WebSocketClient {
 
     private Snake snake;
 
+    String msg;
     private String constMsg;
     private List<Map<Integer, String>> currentInputs;
+    private List<String> pickups;
     private int id;
 
     private boolean cons;
 
+    public List<String> getPickups(){
+        return pickups;
+    }
 
     public ClientSocket(URI uri, SnakeGame game) {
         super(uri);
@@ -42,6 +49,21 @@ public class ClientSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
+
+        if(s.startsWith("pickup")){
+            Gdx.app.log("Pickup",msg);
+            msg = s.substring("pickup#".length());
+
+            Timer.schedule(new Timer.Task()
+            {
+                @Override
+                public void run()
+                {
+                    pickups.add(msg);
+                    System.out.println(pickups);
+                }
+            }, 100).run();
+        }
 
         if (s.startsWith("id")) {
             String[] msgSPlt = s.split("#");

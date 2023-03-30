@@ -14,6 +14,18 @@ import pentasnake.temporaryclasses.BaseActorTEMP;
 
 public abstract class PickupItems extends BaseActorTEMP {
 
+    protected Type type;
+
+    public Type getType(){
+        return type;
+    }
+
+    private int id;
+
+    public int getId(){
+        return id;
+    }
+
     // For the MVP, only 4 pickup types, food and poison for score, energy drink and spider web for speed change
     // Need to come up with more pickup types for end product
     private int points;
@@ -36,14 +48,16 @@ public abstract class PickupItems extends BaseActorTEMP {
     public PickupItems() {
     }
 
-    public PickupItems(float x, float y, Stage stage){
+    public PickupItems(float x, float y, Stage stage, int id){
         super(x,y,stage);
         points = 0; // default value
+        this.id = id;
     }
 
-    public PickupItems(float x, float y, Stage stage, int points){
+    public PickupItems(float x, float y, Stage stage, int points, int id){
         super(x,y,stage);
         this.points = points;
+        this.id = id;
     }
 
     public int getPoints(){

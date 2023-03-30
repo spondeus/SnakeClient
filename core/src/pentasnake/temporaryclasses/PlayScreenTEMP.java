@@ -11,11 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.compression.lzma.Base;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 import pentasnake.pointsystem.PickupItems;
-import pentasnake.pointsystem.PickupSpawner;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -40,8 +37,11 @@ public class PlayScreenTEMP extends Game implements Screen, InputProcessor {
         mainStage = new Stage();
         uiStage = new Stage();
         batch = new SpriteBatch();
+        /*
         PickupSpawner spawner = new PickupSpawner(mainStage);
         pickups = spawner.getPickups();
+
+         */
         initialize();
     }
 
