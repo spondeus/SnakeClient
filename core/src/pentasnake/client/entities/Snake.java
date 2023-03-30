@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.badlogic.gdx.utils.Timer;
+import pentasnake.client.screen.PlayScreen;
 
 //import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -23,6 +25,15 @@ public class Snake extends Actor implements Comparable<Snake> {
     SnapshotArray<SnakePart> parts;
 
     private final SnakePart head;
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     private int speed;
     private int newSpeed;
     private static final int DEFAULT_SPEED = 400;
@@ -60,6 +71,18 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     private boolean leftMove, rightMove;
+
+    private boolean ghostModeActive;
+
+    public boolean isGhostModeActive() {
+        return ghostModeActive;
+    }
+
+    public void setDeadSnake(boolean deadSnake) {
+        this.deadSnake = deadSnake;
+    }
+
+    boolean deadSnake;
 
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, initialDirection);
@@ -124,6 +147,17 @@ public class Snake extends Actor implements Comparable<Snake> {
                     colliders.add(parts.get(j));
                     speed = 0;
                     return true;
+        // checks for self collision
+        if (!ghostModeActive) {
+            for (int i = 0; i < this.parts.size; i++) {
+                for (int j = 0; j < this.parts.size; j++) {
+                    if (Math.abs(i - j) < 2) continue;
+                    if (this.parts.get(i).overlaps(this.parts.get(j))) {
+                        colliders.add(parts.get(i));
+                        colliders.add(parts.get(j));
+                        speed=0;
+                        return true;
+                    }
                 }
             }
         }
@@ -212,19 +246,25 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     public void freeze() {
-        /*speed = 0;
+        speed = 0;
         head.setColor(Color.CYAN);
-            executor.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    speed = DEFAULT_SPEED;
-                    head.setColor(Color.ORANGE);
-                }
-            }, 5, TimeUnit.SECONDS);*/
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                speed = DEFAULT_SPEED;
+                head.setColor(Color.ORANGE);
+            }
+        }, 5);
     }
 
     public void ghostMode() {
-        // enables snake to go through obstacles, walls, other snakes, but not itself
+        ghostModeActive = true;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                ghostModeActive = false;
+            }
+        }, 10);
     }
 
     public SnakePart getHead() {

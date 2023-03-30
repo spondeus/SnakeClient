@@ -18,7 +18,6 @@ import pentasnake.client.messages.*;
 import pentasnake.pointsystem.Food;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.client.screen.MenuScreen;
-
 import java.net.URI;
 import java.util.*;
 

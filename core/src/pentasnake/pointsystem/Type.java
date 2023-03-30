@@ -1,25 +1,25 @@
 package pentasnake.pointsystem;
 
 public enum Type {
-    FOOD, POISON, DRINK, WEB, ICE, GHOST;
+    FOOD(6, 0.5f),
+    POISON(4, 0.25f),
+    DRINK(4, 0.2f),
+    WEB(3, 0.2f),
+    ICE(3, 0.15f),
+    GHOST(2, 0.1f);
 
-    public String getImagePath(Type pickupType) {
-        switch (pickupType) {
-            case FOOD:
-                return "food.png";
-            case POISON:
-                return "poison.png";
-            case WEB:
-                return "spiderweb.png";
-            case ICE:
-                return "iceblock.png";
-            case DRINK:
-                return "energydrink.png";
-            case GHOST:
-                return "ghost.png";
-            default:
-                throw new IllegalArgumentException("Invalid pickup type: " + pickupType);
-        }
+    private final int maxAmount;
+    private final float spawnRate;
+
+    Type(int maxAmount, float spawnRate) {
+        this.maxAmount = maxAmount;
+        this.spawnRate = spawnRate;
+    }
+    public int getMaxAmount() {
+        return maxAmount;
     }
 
+    public float getSpawnRate() {
+        return spawnRate;
+    }
 }

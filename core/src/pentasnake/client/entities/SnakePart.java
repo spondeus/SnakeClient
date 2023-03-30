@@ -25,7 +25,6 @@ public class SnakePart extends Circle {
         this.color = color;
         this.directionVector = direction;
     }
-
     public Color getColor() {
         return color;
     }

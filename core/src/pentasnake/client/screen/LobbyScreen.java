@@ -17,6 +17,7 @@ import pentasnake.client.messages.Message;
 import pentasnake.client.messages.SnakeColorChange;
 import pentasnake.client.messages.SnakeConstruct;
 import pentasnake.client.socket.ClientSocket;
+import pentasnake.client.entities.Wall;
 import pentasnake.client.socket.Communication;
 
 import java.util.*;

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Screen;
@@ -24,12 +26,12 @@ import pentasnake.client.messages.Pickup;
 import pentasnake.client.messages.PickupRemove;
 import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.socket.ClientSocket;
+import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.*;
 import pentasnake.pointsystem.PickupItems;
 
 import java.util.*;
-
 
 public class PlayScreen implements Screen {
 
@@ -44,13 +46,13 @@ public class PlayScreen implements Screen {
 
     //private PickupSpawner pickupSpawner;
 
+    private PickupSpawner pickupSpawner;
     private final SnakeGame game;
     List<Integer> points = new ArrayList<>();
     int counter=0;
 
     private final Communication localClient;
     private final int myId;
-
     private boolean single;
     MySnapshotArray pickups = new MySnapshotArray();
     List<String> pickupCons;
@@ -58,6 +60,11 @@ public class PlayScreen implements Screen {
     ClientSocket socket;
 
     int pickupUnderPicking=-1;
+    private SpriteBatch batch = new SpriteBatch();
+    SnapshotArray<WallPattern> wallList = new SnapshotArray<>();
+    protected Wall wall;
+    public boolean collidedWithWall;
+
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -93,7 +100,38 @@ public class PlayScreen implements Screen {
 
         labelSort(sortPoints());
         // refreshPoints();
+
+        wallList = Wall.spawnWalls();
+        wall = new Wall(wallList);
+        mainStage.addActor(wall);
+
+        pickupSpawner = new PickupSpawner(mainStage, wallList);
+
+        mainStage.addActor(snake);
     }
+
+    private void checkWallCollision(Wall wall) {
+        for (Snake snake : snakeList) {
+            if (snakeList.get(0).isGhostModeActive()) {
+                continue;
+            }
+                for (WallPattern pattern : wall.getParts()) {
+                    for (WallPart part : pattern.getParts()) {
+                        float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+                        if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                        float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+                        if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
+                            collidedWithWall = true;
+                            snakeList.get(0).setDeadSnake(true);
+                            snakeList.get(0).setSpeed(0);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+
 
     public void labelInitialize() {
         labelStyle = new Label.LabelStyle();
@@ -183,6 +221,8 @@ public class PlayScreen implements Screen {
 //                socket.writeMsg(socket.getId(),new SnakeMove(false));
 //            }
 //        }
+        pickupSpawner.getPickups().end();
+        checkWallCollision(wall);
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {

@@ -48,18 +48,19 @@ public class TutorialScreen implements Screen {
     @Override
     public void show() {
 
-        addButton("Back to main menu (Press B)").addListener(new ClickListener() {
+        addButton("(B)ACK TO MAIN MENU", true).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new MenuScreen(game));
                 table.left();
             }
         });
-        addButton("Got it, let's play! (Press P)").addListener(new ClickListener() {
+        addButton("GOT IT, LET'S (P)LAY!", false).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new LobbyScreen(game, true));
+                table.right();
                 game.setScreen(new LobbyScreen(game,true));
-                table.left();
             }
         });
         table.setFillParent(true);
@@ -91,6 +92,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.GOLD));
         titleLabel.setSize(COL_WIDTH * 2, ROW_HEIGHT * 2);
+        titleLabel.setFontScale(2);
         titleLabel.setPosition(CENTER_X - titleLabel.getWidth() / 2, CENTER_Y + ROW_HEIGHT * 2 + 50);
         titleLabel.setAlignment(Align.center);
         table.add(titleLabel);
@@ -102,6 +104,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
         goalLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        goalLabel.setFontScale(1.2f);
         goalLabel.setPosition(50, CENTER_Y + 210);
         goalLabel.setAlignment(Align.left);
         table.add(goalLabel);
@@ -112,6 +115,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
         controlsLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        controlsLabel.setFontScale(1.2f);
         controlsLabel.setPosition(50, CENTER_Y + 120);
         controlsLabel.setAlignment(Align.left);
         table.add(controlsLabel);
@@ -122,6 +126,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.RED));
         bewareLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        bewareLabel.setFontScale(1.2f);
         bewareLabel.setPosition(50, CENTER_Y + 60);
         bewareLabel.setAlignment(Align.left);
         table.add(bewareLabel);
@@ -132,7 +137,8 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
         pickupTypesLabel.setSize(COL_WIDTH, ROW_HEIGHT);
-        pickupTypesLabel.setPosition(50, CENTER_Y - 90);
+        pickupTypesLabel.setFontScale(1.2f);
+        pickupTypesLabel.setPosition(50, CENTER_Y - 120);
         pickupTypesLabel.setAlignment(Align.left);
         table.add(pickupTypesLabel);
         stage.addActor(pickupTypesLabel);
@@ -145,10 +151,10 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "food.png"))));
         Image foodIcon = new Image(foodImage);
-        foodIcon.setScale(0.3f);
+        foodIcon.setScale(0.17f);
         pickupImages.addActor(foodIcon);
         stage.addActor(foodIcon);
-        foodIcon.setPosition(CENTER_X + 100, CENTER_Y + 220);
+        foodIcon.setPosition(CENTER_X + 95, CENTER_Y + 220);
 
         TextureRegionDrawable poisonImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -212,6 +218,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         foodLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        foodLabel.setFontScale(1.2f);
         foodLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 200);
         foodLabel.setAlignment(Align.left);
         table.add(foodLabel);
@@ -222,6 +229,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         poisonLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        poisonLabel.setFontScale(1.2f);
         poisonLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 300);
         poisonLabel.setAlignment(Align.left);
         table.add(poisonLabel);
@@ -232,6 +240,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         drinkLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        drinkLabel.setFontScale(1.2f);
         drinkLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 400);
         drinkLabel.setAlignment(Align.left);
         table.add(drinkLabel);
@@ -242,6 +251,7 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         webLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        webLabel.setFontScale(1.2f);
         webLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 500);
         webLabel.setAlignment(Align.left);
         table.add(webLabel);
@@ -252,16 +262,18 @@ public class TutorialScreen implements Screen {
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         iceLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        iceLabel.setFontScale(1.2f);
         iceLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 600);
         iceLabel.setAlignment(Align.left);
         table.add(iceLabel);
         stage.addActor(iceLabel);
 
         Label ghostLabel = new Label(
-                "Enables the snake to go through walls and other snakes.\nIt's pretty rare so keep an eye out for it!"
+                "Enables the snake to go through walls\nand other snakes for 10 seconds.\nIt's pretty rare so keep an eye out for it!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         ghostLabel.setSize(COL_WIDTH, ROW_HEIGHT);
+        ghostLabel.setFontScale(1.2f);
         ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 700);
         ghostLabel.setAlignment(Align.left);
         table.add(ghostLabel);
@@ -270,9 +282,13 @@ public class TutorialScreen implements Screen {
 
     }
 
-    private TextButton addButton(String name) {
+    private TextButton addButton(String name, Boolean left) {
         TextButton button = new TextButton(name, skin);
-        table.add(button).width(380).height(60).padBottom(10);
+        if (left) {
+            table.add(button).width(380).height(60).padBottom(10).align(Align.left);
+        } else {
+            table.add(button).width(380).height(60).padBottom(10).align(Align.right);
+        }
         table.bottom();
         return button;
     }

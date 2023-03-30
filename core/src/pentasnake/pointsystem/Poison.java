@@ -9,8 +9,17 @@ import pentasnake.client.entities.Snake;
 public class Poison extends PickupItems {
     public Poison(float x, float y, Stage stage, int id) {
         super(x, y, stage, id);
+
+    @Getter
+    Type type = Type.POISON;
+    private static int count = 0;
+    public static int getCount() {
+        return count;
+    }
+
+    public Poison(float x, float y, Stage stage) {
+        super(x, y, stage);
         setPoints(-100);
-        setSpawnRate(0.5f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("poison.png")));
         setBoundaryRectangle();
 

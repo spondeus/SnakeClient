@@ -9,8 +9,17 @@ import pentasnake.client.entities.Snake;
 public class IceBlock extends PickupItems {
     public IceBlock(float x, float y, Stage stage, int id) {
         super(x, y, stage, id);
+
+    @Getter
+    Type type = Type.ICE;
+    private static int count = 0;
+    public static int getCount() {
+        return count;
+    }
+
+    public IceBlock(float x, float y, Stage stage) {
+        super(x, y, stage);
         setPoints(0);
-        setSpawnRate(0.25f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("iceblock.png")));
         setBoundaryRectangle();
 
