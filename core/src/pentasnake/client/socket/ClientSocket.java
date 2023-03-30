@@ -14,12 +14,9 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.client.messages.*;
 import pentasnake.pointsystem.Food;
 import pentasnake.pointsystem.PickupItems;
-import pentasnake.client.messages.Message;
-import pentasnake.client.messages.SnakeColorChange;
-import pentasnake.client.messages.SnakeConstruct;
-import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.screen.MenuScreen;
 
 import java.net.URI;
@@ -88,23 +85,23 @@ public class ClientSocket extends WebSocketClient {
 //            cons = true;
 //        }
 
-        if (s.startsWith("pickup")) {
-            Gdx.app.log("Pickup", msg);
-            msg = s.substring("pickup#".length());
-
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    pickups.add(msg);
-                    System.out.println(pickups);
-                }
-            }, 100).run();
-        }
-
-        if (s.startsWith("id")) {
-            String[] msgSPlt = s.split("#");
-            id = Integer.parseInt(msgSPlt[1]);
-        }
+//        if (s.startsWith("pickup")) {
+//            Gdx.app.log("Pickup", msg);
+//            msg = s.substring("pickup#".length());
+//
+//            Timer.schedule(new Timer.Task() {
+//                @Override
+//                public void run() {
+//                    pickups.add(msg);
+//                    System.out.println(pickups);
+//                }
+//            }, 100).run();
+//        }
+//
+//        if (s.startsWith("id")) {
+//            String[] msgSPlt = s.split("#");
+//            id = Integer.parseInt(msgSPlt[1]);
+//        }
     }
 
     public void writeMsg(int id, Message msg) {
@@ -151,6 +148,38 @@ public class ClientSocket extends WebSocketClient {
     }
 
     private void handlePickupMsg(JsonObject jsonObject) {
+        JsonElement type = jsonObject.get("type");
+        JsonObject innerJson;
+        String dataStr;
+        switch (type.getAsString()) {
+            case "pickupConst":
+                dataStr = jsonObject.get("data").getAsString();
+                Pickup pickup = gson.fromJson(dataStr, Pickup.class);
+                pickup.setId(id);
+                msgQueue.add(pickup);
+                break;
+            case "pickupRemove":
+
+                break;
+            case "snakeMove":
+                dataStr = jsonObject.get("data").getAsString();
+                SnakeMove snakeMove = gson.fromJson(dataStr, SnakeMove.class);
+                snakeMove.setId(id);
+                msgQueue.add(snakeMove);
+                break;
+            case "snakePointChange":
+                break;
+            case "snakeSpeedChange":
+                break;
+            case "snakeColorChange":
+                dataStr = jsonObject.get("data").getAsString();
+                SnakeColorChange snakeColorChange = gson.fromJson(dataStr, SnakeColorChange.class);
+                System.out.println(snakeColorChange);
+                break;
+            default:
+                System.err.println("Unknown snake message!");
+                break;
+        }
 
     }
 
