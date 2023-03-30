@@ -92,7 +92,7 @@ public class MenuScreen implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new EmptyScreen(game));
+                game.setScreen(new ColorSetting(game));
             }
         });
         stage.addActor(settingsButton);
@@ -116,7 +116,7 @@ public class MenuScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) game.setScreen(new LobbyScreen(game,true));
         if (Gdx.input.isKeyPressed(Input.Keys.C)) game.setScreen(new ScoreboardScreen(game));
         if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new TutorialScreen(game));
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new EmptyScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new ColorSetting(game));
     }
 
     @Override
