@@ -56,13 +56,12 @@ public class PlayScreen implements Screen {
     ClientSocket socket;
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
-    public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single, List<String> pickupCons) {
         this.single = single;
         mainStage = new Stage();
         uiStage = new Stage();
 
         this.pickupCons = pickupCons;
-        Gdx.app.log("PlayScreen", pickupCons.toString());
+//        Gdx.app.log("PlayScreen", pickupCons.toString());
 
         this.localClient = localClient;
         if (localClient != null){
@@ -123,28 +122,28 @@ public class PlayScreen implements Screen {
 
     public void update(float dt) {
         pickupCons = localClient.getWebsocketClient().getPickups();
-        newPickup();
+//        newPickup();
 
-        pickups.begin();
-        for (PickupItems pickup : pickups) {
-            for(Snake snake: snakeList) {
-                float x2 = snake.getHead().x % Gdx.graphics.getWidth();
-                if (x2 < 0) x2 += Gdx.graphics.getWidth();
-                float y2 = snake.getHead().y % Gdx.graphics.getHeight();
-                if (y2 < 0) y2 += Gdx.graphics.getHeight();
-                if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
-                        pickup.getBoundaryRectangle())) {
-                    localClient.send("pickup"+pickup.getType()+","+pickup.getId());
-                    pickup.collectItem(snake);
-                    pickup.applyEffect(snake);
-
-                    System.out.println("Pickup:" + pickup);
-                    pickups.removeValue(pickup, true);
-                }
-            }
-        }
-        myPoints.setText(snakeList.get(0).getPoints() + " p");
-        pickups.end();
+//        pickups.begin();
+//        for (PickupItems pickup : pickups) {
+//            for(Snake snake: snakeList) {
+//                float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+//                if (x2 < 0) x2 += Gdx.graphics.getWidth();
+//                float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+//                if (y2 < 0) y2 += Gdx.graphics.getHeight();
+//                if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
+//                        pickup.getBoundaryRectangle())) {
+//                    localClient.send("pickup"+pickup.getType()+","+pickup.getId());
+//                    pickup.collectItem(snake);
+//                    pickup.applyEffect(snake);
+//
+//                    System.out.println("Pickup:" + pickup);
+//                    pickups.removeValue(pickup, true);
+//                }
+//            }
+//        }
+//        myPoints.setText(snakeList.get(0).getPoints() + " p");
+//        pickups.end();
 
 //        if(localClient!=null) {
 //            ClientSocket socket=localClient.getWebsocketClient();

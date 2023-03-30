@@ -88,15 +88,13 @@ public class ClientSocket extends WebSocketClient {
 //            cons = true;
 //        }
 
-        if(s.startsWith("pickup")){
-            Gdx.app.log("Pickup",msg);
+        if (s.startsWith("pickup")) {
+            Gdx.app.log("Pickup", msg);
             msg = s.substring("pickup#".length());
 
-            Timer.schedule(new Timer.Task()
-            {
+            Timer.schedule(new Timer.Task() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     pickups.add(msg);
                     System.out.println(pickups);
                 }
@@ -107,6 +105,7 @@ public class ClientSocket extends WebSocketClient {
             String[] msgSPlt = s.split("#");
             id = Integer.parseInt(msgSPlt[1]);
         }
+    }
 
     public void writeMsg(int id, Message msg) {
         JsonObject jsonObject = new JsonObject();
@@ -146,6 +145,7 @@ public class ClientSocket extends WebSocketClient {
 
             }
         }
+    }
 
     private void handleWallMsg(JsonObject jsonObject) {
     }
