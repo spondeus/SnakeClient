@@ -5,22 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import lombok.Getter;
-import lombok.Setter;
 import pentasnake.client.entities.Snake;
 
 
 public class EnergyDrink extends PickupItems {
 
-    @Getter
-    Type type = Type.DRINK;
-
-    public EnergyDrink(float x, float y, Stage stage) {
-        super(x, y, stage);
+    public EnergyDrink(float x, float y, Stage stage, int id) {
+        super(x, y, stage, id);
         setPoints(0);
         setSpawnRate(0.75f);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("energydrink.png")));
         setBoundaryRectangle();
+
+        type = Type.DRINK;
     }
 
     @Override

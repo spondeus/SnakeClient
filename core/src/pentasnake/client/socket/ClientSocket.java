@@ -3,6 +3,7 @@ package pentasnake.client.socket;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.graphics.Color;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -13,6 +14,8 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
+import pentasnake.pointsystem.Food;
+import pentasnake.pointsystem.PickupItems;
 import pentasnake.client.messages.Message;
 import pentasnake.client.messages.SnakeColorChange;
 import pentasnake.client.messages.SnakeConstruct;
@@ -30,13 +33,18 @@ public class ClientSocket extends WebSocketClient {
 
     private Snake snake;
 
+    String msg;
     private String constMsg;
     private List<Map<Integer, String>> currentInputs;
+    private List<String> pickups;
     private int id;
 
     private boolean cons;
     private Gson gson = new Gson();
 
+    public List<String> getPickups(){
+        return pickups;
+    }
     private Queue<Message> msgQueue = new ArrayDeque<>();
 
     public ClientSocket(URI uri, SnakeGame game) {
@@ -80,7 +88,25 @@ public class ClientSocket extends WebSocketClient {
 //            cons = true;
 //        }
 
-    }
+        if(s.startsWith("pickup")){
+            Gdx.app.log("Pickup",msg);
+            msg = s.substring("pickup#".length());
+
+            Timer.schedule(new Timer.Task()
+            {
+                @Override
+                public void run()
+                {
+                    pickups.add(msg);
+                    System.out.println(pickups);
+                }
+            }, 100).run();
+        }
+
+        if (s.startsWith("id")) {
+            String[] msgSPlt = s.split("#");
+            id = Integer.parseInt(msgSPlt[1]);
+        }
 
     public void writeMsg(int id, Message msg) {
         JsonObject jsonObject = new JsonObject();
@@ -120,7 +146,6 @@ public class ClientSocket extends WebSocketClient {
 
             }
         }
-    }
 
     private void handleWallMsg(JsonObject jsonObject) {
     }

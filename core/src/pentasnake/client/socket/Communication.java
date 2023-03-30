@@ -1,7 +1,7 @@
 package pentasnake.client.socket;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import lombok.Getter;
+import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.PlayScreen;
@@ -42,12 +42,13 @@ public class Communication extends ApplicationAdapter {
     public void create() {
         super.create();
         websocketClient.connect();
-
-
     }
 
-    public ClientSocket getWebsocketClient() {
+    public ClientSocket getWebsocketClient(){
         return websocketClient;
     }
 
+    public Snake getSnake(){
+        return snake;
+    }
 }

@@ -2,13 +2,15 @@ package pentasnake.client;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import lombok.Getter;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.screen.MenuScreen;
 
 public class SnakeGame extends Game {
 
-    @Getter
+    public MenuScreen getMenu(){
+        return menu;
+    }
+
     public MenuScreen menu;
 
     @Override
