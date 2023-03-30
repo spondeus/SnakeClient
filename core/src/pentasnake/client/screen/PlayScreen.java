@@ -1,6 +1,7 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.pointsystem.PickupSpawner;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,8 +52,8 @@ public class PlayScreen implements Screen {
         uiStage = new Stage();
 
         this.localClient = localClient;
-        if(localClient!=null) myId = localClient.getWebsocketClient().getId();
-        else myId=0;
+        if (localClient != null) myId = localClient.getWebsocketClient().getId();
+        else myId = 0;
 
         this.game = game;
         snakeList = new ArrayList<>(snakes);
@@ -97,6 +98,29 @@ public class PlayScreen implements Screen {
         mainStage.addActor(snake);
     }
 
+    private void checkWallCollision(Wall wall) {
+        for (Snake snake : snakeList) {
+            if (snakeList.get(0).isGhostModeActive()) {
+                continue;
+            }
+                for (WallPattern pattern : wall.getParts()) {
+                    for (WallPart part : pattern.getParts()) {
+                        float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+                        if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                        float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+                        if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
+                            collidedWithWall = true;
+                            snakeList.get(0).setDeadSnake(true);
+                            snakeList.get(0).setSpeed(0);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
     public void labelInitialize() {
         labelStyle = new Label.LabelStyle();
         labelStyle.font = new BitmapFont();
@@ -135,9 +159,9 @@ public class PlayScreen implements Screen {
         pickupSpawner.spawnPickups();
         myPoints.setText(snakeList.get(0).getPoints() + " p");
         pickupSpawner.getPickups().end();
-        wallCollision(wall);
+        checkWallCollision(wall);
 
-        if(localClient!=null){
+        if (localClient != null) {
             for (Map<Integer, String> inputs : localClient.getWebsocketClient().getCurrentInputs()) {
                 for (Snake snake : snakeList) {
                     if (inputs.get(snake.getId()) != null) {
@@ -159,7 +183,7 @@ public class PlayScreen implements Screen {
         }
     }
 
-    public void wallCollision(Wall wall) {
+    /*public void wallCollision(Wall wall) {
         // checks for wall collision
         if (!snakeList.get(0).isGhostModeActive()) {
             Circle head = snakeList.get(0).getParts().first();
@@ -174,7 +198,7 @@ public class PlayScreen implements Screen {
                 }
             }
         }
-    }
+    }*/
 
     public void render(float dt) {
         uiStage.act(dt);

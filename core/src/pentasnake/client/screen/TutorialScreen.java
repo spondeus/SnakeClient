@@ -269,7 +269,7 @@ public class TutorialScreen implements Screen {
         stage.addActor(iceLabel);
 
         Label ghostLabel = new Label(
-                "Enables the snake to go through walls\nand other snakes.\nIt's pretty rare so keep an eye out for it!"
+                "Enables the snake to go through walls\nand other snakes for 10 seconds.\nIt's pretty rare so keep an eye out for it!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         ghostLabel.setSize(COL_WIDTH, ROW_HEIGHT);
