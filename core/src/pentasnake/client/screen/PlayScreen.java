@@ -1,6 +1,5 @@
 package pentasnake.client.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -11,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -25,6 +26,8 @@ import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.*;
+import pentasnake.pointsystem.PickupItems;
+import pentasnake.pointsystem.PickupSpawner;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,13 +42,16 @@ public class PlayScreen implements Screen {
     protected Stage mainStage;
     protected Stage uiStage;
     private Label myPoints;
-    private List<Label> pointsLabel;
+    private List<Label> pointsLabel = new ArrayList<>();
     private ArrayList<Snake> snakeList;
     private Table table;
 
     //private PickupSpawner pickupSpawner;
 
     private final SnakeGame game;
+    List<Integer> points = new ArrayList<>();
+    private PickupSpawner pickupSpawner;
+    int counter=0;
 
     private final Communication localClient;
     private final int myId;
@@ -90,6 +96,8 @@ public class PlayScreen implements Screen {
         mainStage.addActor(x);
         labelInitialize();
 
+        labelSort(sortPoints());
+        // refreshPoints();
     }
 
     public void labelInitialize() {
@@ -104,7 +112,10 @@ public class PlayScreen implements Screen {
         pointsLabel.add(new Label("20 p", labelStyle));
         pointsLabel.add(new Label("30 p", labelStyle));
         Table pointTable = new Table();
-        for (Label label : pointsLabel) {
+        for (Snake snake : snakeList) {
+            Label label = new Label(snake.getName() + ":" + snake.getPoints() + "p", labelStyle);
+            label.setColor(snake.getColor());
+            pointsLabel.add(label);
             pointTable.add(label).row();
         }
         table.add(myPoints).top();
@@ -113,11 +124,55 @@ public class PlayScreen implements Screen {
         table.setFillParent(true);
         uiStage.addActor(table);
     }
-
+    public void labelSort(List<Snake> snakeList){
+        for (int i = 0; i <pointsLabel.size(); i++) {
+                Label label=pointsLabel.get(i);
+             //   Integer index=points.get(i);
+               Snake mySnake = snakeList.get(i);
+               label.setText(mySnake.getName()+":"+mySnake.getPoints()+"p");
+               label.setColor(mySnake.getParts().get(1).getColor());
+        }
+    }
     public AssetManager getAssetManager() {
         return assetManager;
     }
 
+    public void refreshPoints(int id, int pointChange) {
+        // Kígyó keresése azonosító alapján
+        Snake snake = snakeList.get(id);
+            // Kígyó pontjainak frissítése
+            snake.setPoints(snake.getPoints() + pointChange);
+            // Label frissítése
+            int index = 0;
+            for (int i = 0; i < snakeList.size(); i++) {
+                if (snakeList.get(i).equals(snake)) {
+                    index = i;
+                }
+            }
+            Label optionalLabel = pointsLabel.get(index);
+            optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
+        }
+
+
+    public List<Snake> sortPoints() {
+        points =new ArrayList<>();
+//        int maximum = Integer.MIN_VALUE;
+//        int index = 0;
+        List<Snake> copyList = new ArrayList<>(snakeList);
+        Collections.sort(copyList);
+        Collections.reverse(copyList);
+//        while (!copyList.isEmpty()) {
+////            for (int i = 0; i < copyList.size(); i++) {
+////                if (copyList.get(i).getPoints() > maximum) {
+////                    maximum = copyList.get(i).getPoints();
+////                    index = i;
+////                }
+////            }
+//            points.add(index);
+//            copyList.remove(index);
+//        }
+        return copyList;
+    }
     public void update(float dt) {
 //        pickupCons = localClient.getWebsocketClient().getPickups();
 //        newPickup();
@@ -242,6 +297,12 @@ public class PlayScreen implements Screen {
 //                    System.out.println("Pickup:" + pickup);
                 }
             }
+        }
+       counter++;
+        if(counter % 200 ==0){
+            randomize();
+            labelSort(sortPoints());
+           // refreshPoints();
         }
     }
 

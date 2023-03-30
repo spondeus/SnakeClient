@@ -14,7 +14,7 @@ import java.util.List;
 
 //import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
-public class Snake extends Actor {
+public class Snake extends Actor implements Comparable<Snake> {
 
     public SnapshotArray<SnakePart> getParts() {
         return parts;
@@ -269,6 +269,11 @@ public class Snake extends Actor {
 
     public int getSpeed() {
         return speed;
+    }
+
+    @Override
+    public int compareTo(Snake o) {
+        return this.points - o.points;
     }
 }
 
