@@ -68,12 +68,12 @@ public class LobbyScreen implements Screen {
 //        }, 1);
     }
 
-    private static void sendMyColor(final ClientSocket client) {
+    private void sendMyColor(final ClientSocket client) {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if (client.isOpen()) {
-                    SnakeColorChange snakeColorChange = new SnakeColorChange(Color.BLUE, -1, -1);
+                    SnakeColorChange snakeColorChange = new SnakeColorChange(game.getColor(), -1, -1);
                     client.writeMsg(client.getId(), snakeColorChange);
 //                    com.send(msg);
                 }

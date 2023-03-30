@@ -27,12 +27,8 @@ import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.socket.Communication;
 import pentasnake.pointsystem.*;
 import pentasnake.pointsystem.PickupItems;
-import pentasnake.pointsystem.PickupSpawner;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class PlayScreen implements Screen {
@@ -50,7 +46,6 @@ public class PlayScreen implements Screen {
 
     private final SnakeGame game;
     List<Integer> points = new ArrayList<>();
-    private PickupSpawner pickupSpawner;
     int counter=0;
 
     private final Communication localClient;
@@ -107,10 +102,6 @@ public class PlayScreen implements Screen {
         labelStyle.fontColor = Color.GOLD;
         myPoints = new Label(snakeList.get(myId).getPoints() + " p", labelStyle);
         pointsLabel = new LinkedList<>();
-        pointsLabel.add(new Label(snakeList.get(myId).getPoints() + " p", labelStyle));
-        pointsLabel.add(new Label("10 p", labelStyle));
-        pointsLabel.add(new Label("20 p", labelStyle));
-        pointsLabel.add(new Label("30 p", labelStyle));
         Table pointTable = new Table();
         for (Snake snake : snakeList) {
             Label label = new Label(snake.getName() + ":" + snake.getPoints() + "p", labelStyle);
@@ -298,12 +289,6 @@ public class PlayScreen implements Screen {
                 }
             }
         }
-       counter++;
-        if(counter % 200 ==0){
-            randomize();
-            labelSort(sortPoints());
-           // refreshPoints();
-        }
     }
 
     public void render(float dt) {
@@ -345,28 +330,5 @@ public class PlayScreen implements Screen {
     public void dispose() {
     }
 
-    private void newPickup() {
-        for (String s : pickupCons) {
-            String[] split = s.split("#");
-
-            Gdx.app.log("PickupType", split[0]);
-
-            PickupItems newPickup = new Food(
-                    Integer.parseInt(split[3]),
-                    Integer.parseInt(split[2]),
-                    mainStage,
-                    Integer.parseInt(split[1])
-            );
-
-            pickups.add(newPickup);
-
-
-            switch (split[0]) {
-
-            }
-
-            localClient.getWebsocketClient().getPickups().remove(s);
-        }
-    }
 
 }
