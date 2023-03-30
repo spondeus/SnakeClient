@@ -3,12 +3,12 @@ package pentasnake.client.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 
-public class WallParts extends Rectangle {
+public class WallPart extends Rectangle {
 
     private Color wallColor;
-    public WallParts() {
+    public WallPart() {
     }
-    public WallParts(float x, float y, float width, float height, Color color){
+    public WallPart(float x, float y, float width, float height, Color color){
         super(x,y, width, height);
         this.wallColor = color;
     }

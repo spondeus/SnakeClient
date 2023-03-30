@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -90,50 +89,6 @@ public class PlayScreen implements Screen {
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
-        /*WallParts bottomLeft1 = new WallParts(100, 100, 200, 50, Color.FIREBRICK);
-        WallParts bottomLeft2 = new WallParts(100, 150, 50, 150, Color.FIREBRICK);
-
-        WallParts bottomRight1 = new WallParts(900, 100, 200, 50, Color.FIREBRICK);
-        WallParts bottomRight2 = new WallParts(1050, 150, 50, 150, Color.FIREBRICK);
-
-        WallParts upperRight1 = new WallParts(900, 650, 200, 50, Color.FIREBRICK);
-        WallParts upperRight2 = new WallParts(1050, 500, 50, 150, Color.FIREBRICK);
-
-        WallParts upperLeft1 = new WallParts(100, 650, 200, 50, Color.FIREBRICK);
-        WallParts upperLeft2 = new WallParts(100, 500, 50, 150, Color.FIREBRICK);
-
-        WallParts straightLong = new WallParts(450, 500, 350, 50, Color.FIREBRICK);
-
-        WallParts crossVertical = new WallParts(550, 600, 50, 150, Color.FIREBRICK);
-        WallParts crossHorizontal = new WallParts(500, 650, 150, 50, Color.FIREBRICK);
-
-        WallParts diagonal1 = new WallParts(220, 450, 50, 50, Color.FIREBRICK);
-        WallParts diagonal2 = new WallParts(270, 400, 50, 50, Color.FIREBRICK);
-        WallParts diagonal3 = new WallParts(320, 350, 50, 50, Color.FIREBRICK);
-        WallParts diagonal4 = new WallParts(370, 300, 50, 50, Color.FIREBRICK);
-
-        WallParts landingPad1 = new WallParts(600, 300, 150, 50, Color.FIREBRICK);
-        WallParts landingPad2 = new WallParts(650, 150, 50, 200, Color.FIREBRICK);
-        WallParts landingPad3 = new WallParts(600, 100, 150, 50, Color.FIREBRICK);
-
-        wallPartsList.add(bottomLeft1);
-        wallPartsList.add(bottomLeft2);
-        wallPartsList.add(upperLeft1);
-        wallPartsList.add(upperLeft2);
-        wallPartsList.add(upperRight1);
-        wallPartsList.add(upperRight2);
-        wallPartsList.add(bottomRight1);
-        wallPartsList.add(bottomRight2);
-        wallPartsList.add(straightLong);
-        wallPartsList.add(crossVertical);
-        wallPartsList.add(crossHorizontal);
-        wallPartsList.add(diagonal1);
-        wallPartsList.add(diagonal2);
-        wallPartsList.add(diagonal3);
-        wallPartsList.add(diagonal4);
-        wallPartsList.add(landingPad1);
-        wallPartsList.add(landingPad2);
-        wallPartsList.add(landingPad3);*/
         wall = new Wall(wallList);
         wallList = wall.spawnWalls();
         mainStage.addActor(wall);
@@ -206,7 +161,7 @@ public class PlayScreen implements Screen {
         // checks for wall collision
         if(!snakeList.get(0).isGhostModeActive()) {
             Circle head = snakeList.get(0).getParts().first();
-            for (WallParts wallPart : wall.getParts()) {
+            for (WallPart wallPart : wall.getParts()) {
                 if (Intersector.overlaps(head, wallPart)) {
                     collidedWithWall = true;
                     snakeList.get(0).setDeadSnake(true);
