@@ -10,9 +10,6 @@ public class WallPattern {
     }
     private final SnapshotArray<WallPart> parts;
 
-    public SnapshotArray<WallPart> getWallParts(){
-        return this.parts;
-    }
     public WallPattern(SnapshotArray<WallPart> parts) {
         this.parts = parts;
     }

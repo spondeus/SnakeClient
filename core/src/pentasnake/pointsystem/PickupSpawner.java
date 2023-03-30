@@ -14,7 +14,7 @@ public class PickupSpawner implements PickupHandler {
 
     @Getter
     private final SnapshotArray<PickupItems> pickups;
-    private final SnapshotArray<WallPattern> wallList;
+    private SnapshotArray<WallPattern> wallList;
     private final Stage mainStage;
     public final int MAX_TOTAL_PICKUPS = 10;
     public static int numFood = 0;
@@ -128,7 +128,7 @@ public class PickupSpawner implements PickupHandler {
         }
         // checking wall and pickup overlap
         for (WallPattern wallPattern : wallList) {
-            for (WallPart wallPart : wallPattern.getWallParts()) {
+            for (WallPart wallPart : wallPattern.getParts()) {
                 float distanceSquared = (x - wallPart.getX()) * (x - wallPart.getX()) + (y - wallPart.getY()) * (y - wallPart.getY());
                 if (distanceSquared < (radius + wallPart.getRadius()) * (radius + wallPart.getRadius())) {
                     return true;
