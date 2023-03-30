@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import pentasnake.client.Repository.Repository;
 import pentasnake.client.SnakeGame;
+import pentasnake.client.entities.score.ResultClass;
 
 public class ScoreboardScreen implements Screen {
 
@@ -26,6 +28,10 @@ public class ScoreboardScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"), atlas);
     private final Game game;
 
+    private java.util.List<ResultClass> results;
+
+    Repository repository=new Repository();
+
     public ScoreboardScreen(Game game) {
         this.game = game;
     }
@@ -37,17 +43,31 @@ public class ScoreboardScreen implements Screen {
         scoreboardTitle.setPosition(Gdx.graphics.getWidth() / 2f - scoreboardTitle.getWidth() + 20, Gdx.graphics.getHeight() / 1.1f);
         stage.addActor(scoreboardTitle);
 
-        for (int i = 0; i < 10; i++) {
-            TextButton labelName = new TextButton("Anonymus" + (i + 1), skin);
+        results=repository.getTop10BasedOnScore();
+
+        for (ResultClass result: results) {
+            TextButton labelName = new TextButton(result.getName(), skin);
             tableName.add(labelName).width(300).height(60).padBottom(5);
             tableName.row();
-            TextButton labelScore = new TextButton(String.valueOf(10000 - (i * 1000)), skin);
+            TextButton labelScore = new TextButton(result.getResult().toString(), skin);
             tableScore.add(labelScore).width(300).height(60).padBottom(5);
             tableScore.row();
-            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
-            tableTime.add(labelTime).width(300).height(60).padBottom(5);
-            tableTime.row();
+//            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
+//            tableTime.add(labelTime).width(300).height(60).padBottom(5);
+//            tableTime.row();
         }
+
+//        for (int i = 0; i < 10; i++) {
+//            TextButton labelName = new TextButton("Anonymus" + (i + 1), skin);
+//            tableName.add(labelName).width(300).height(60).padBottom(5);
+//            tableName.row();
+//            TextButton labelScore = new TextButton(String.valueOf(10000 - (i * 1000)), skin);
+//            tableScore.add(labelScore).width(300).height(60).padBottom(5);
+//            tableScore.row();
+//            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
+//            tableTime.add(labelTime).width(300).height(60).padBottom(5);
+//            tableTime.row();
+//        }
 
         tableScore.setPosition(Gdx.graphics.getWidth() / 2f - tableScore.getWidth() / 2, Gdx.graphics.getHeight() / 2f - tableScore.getHeight() / 2);
         tableName.setPosition(Gdx.graphics.getWidth() / 4f - tableName.getWidth() - 2, Gdx.graphics.getHeight() / 2f - tableName.getHeight() / 2);
