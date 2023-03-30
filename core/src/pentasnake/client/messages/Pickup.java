@@ -4,20 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 import pentasnake.pointsystem.Type;
 
 public class Pickup extends Message{
-    private final String msg = "pickup";
     private Type type;
 
-    private int pickupId;
+    private int pickUpId;
 
     private Vector2 position;
 
-    public int getPickupId() {
-        return pickupId;
-    }
 
     public Pickup(Type type, int id, Vector2 position){
         this.type = type;
-        this.pickupId = id;
         this.position = position;
     }
 //
@@ -29,13 +24,36 @@ public class Pickup extends Message{
 //    }
 
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public int getPickUpId() {
+        return pickUpId;
+    }
+
+    public void setPickUpId(int pickUpId) {
+        this.pickUpId = pickUpId;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "Pickup{" +
-                "msg='" + msg + '\'' +
                 ", type=" + type +
-                ", pickupId=" + pickupId +
+                ", pickupId=" + pickUpId +
                 ", position=" + position +
                 '}';
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Vector2 getPosition() {
+        return position;
     }
 }

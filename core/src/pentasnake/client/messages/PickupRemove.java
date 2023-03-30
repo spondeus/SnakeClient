@@ -4,6 +4,10 @@ public class PickupRemove extends Message{
 
     int pickupId;
 
+    public PickupRemove(int pickupId) {
+        this.pickupId = pickupId;
+    }
+
     public int getPickupId() {
         return pickupId;
     }

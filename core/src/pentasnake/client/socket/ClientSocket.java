@@ -39,9 +39,10 @@ public class ClientSocket extends WebSocketClient {
     private boolean cons;
     private Gson gson = new Gson();
 
-    public List<String> getPickups(){
+    public List<String> getPickups() {
         return pickups;
     }
+
     private Queue<Message> msgQueue = new ArrayDeque<>();
 
     public ClientSocket(URI uri, SnakeGame game) {
@@ -111,6 +112,7 @@ public class ClientSocket extends WebSocketClient {
         if (msg instanceof SnakeMove) type = "snakeMove";
         else if (msg instanceof SnakeConstruct) type = "snakeConstruct";
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
+        else if (msg instanceof PickupRemove) type = "pickupRemove";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
@@ -133,6 +135,12 @@ public class ClientSocket extends WebSocketClient {
         else {
             switch (type) {
                 case "id":
+                    if (clientId == -1) {
+                        Message msg=new Message();
+                        msg.setId(clientId);
+                        msgQueue.add(msg);
+                        return;
+                    }
                     id = clientId;
                     break;
                 case "die":
@@ -155,29 +163,16 @@ public class ClientSocket extends WebSocketClient {
             case "pickupConst":
                 dataStr = jsonObject.get("data").getAsString();
                 Pickup pickup = gson.fromJson(dataStr, Pickup.class);
-                pickup.setId(id);
                 msgQueue.add(pickup);
                 break;
             case "pickupRemove":
-
-                break;
-            case "snakeMove":
                 dataStr = jsonObject.get("data").getAsString();
-                SnakeMove snakeMove = gson.fromJson(dataStr, SnakeMove.class);
-                snakeMove.setId(id);
-                msgQueue.add(snakeMove);
-                break;
-            case "snakePointChange":
-                break;
-            case "snakeSpeedChange":
-                break;
-            case "snakeColorChange":
-                dataStr = jsonObject.get("data").getAsString();
-                SnakeColorChange snakeColorChange = gson.fromJson(dataStr, SnakeColorChange.class);
-                System.out.println(snakeColorChange);
+                PickupRemove pickupRemove = gson.fromJson(dataStr, PickupRemove.class);
+                pickupRemove.setId(id);
+                msgQueue.add(pickupRemove);
                 break;
             default:
-                System.err.println("Unknown snake message!");
+                System.err.println("Unknown pickup message!");
                 break;
         }
 

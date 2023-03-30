@@ -41,7 +41,7 @@ public class MenuScreen implements Screen {
         addButton("ST(A)RT").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LobbyScreen(game,true));
+                game.setScreen(new LobbyScreen(game,false));
             }
         });
         addButton("(T)UTORIAL").addListener(new ClickListener() {
@@ -113,7 +113,7 @@ public class MenuScreen implements Screen {
     }
 
     public void update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) game.setScreen(new LobbyScreen(game,false));
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) game.setScreen(new LobbyScreen(game,true));
         if (Gdx.input.isKeyPressed(Input.Keys.C)) game.setScreen(new ScoreboardScreen(game));
         if (Gdx.input.isKeyPressed(Input.Keys.T)) game.setScreen(new TutorialScreen(game));
         if (Gdx.input.isKeyPressed(Input.Keys.S)) game.setScreen(new EmptyScreen(game));

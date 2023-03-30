@@ -48,14 +48,14 @@ public class LobbyScreen implements Screen {
     @Override
     public void show() {
         if (single) {
-            if (single) game.setScreen(new PlayScreen(game, snakes, com, single));
+            game.setScreen(new PlayScreen(game, snakes, com, single));
             return;
         }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
         waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         com = new Communication(game);
-        final ClientSocket client=com.getWebsocketClient();
+        final ClientSocket client = com.getWebsocketClient();
         queue = client.getMsgQueue();
         sendMyColor(client);
 //        Timer.schedule(new Timer.Task() {
@@ -73,8 +73,8 @@ public class LobbyScreen implements Screen {
             @Override
             public void run() {
                 if (client.isOpen()) {
-                    SnakeColorChange snakeColorChange=new SnakeColorChange(Color.BLUE,-1,-1);
-                    client.writeMsg(client.getId(),snakeColorChange);
+                    SnakeColorChange snakeColorChange = new SnakeColorChange(Color.BLUE, -1, -1);
+                    client.writeMsg(client.getId(), snakeColorChange);
 //                    com.send(msg);
                 }
             }
@@ -83,15 +83,14 @@ public class LobbyScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        processMsg();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         waiting.draw(batch, 1);
         batch.end();
-
-        processMsg();
-
 
 //        if (com.getWebsocketClient().isCons()) {
 //            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
@@ -118,7 +117,7 @@ public class LobbyScreen implements Screen {
 
     private void processMsg() {
         while (!queue.isEmpty()) {
-            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
+//            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
             Message message = queue.poll();
             if (message instanceof SnakeConstruct) {
                 SnakeConstruct snakeConstruct = (SnakeConstruct) message;
@@ -126,8 +125,12 @@ public class LobbyScreen implements Screen {
                         snakeConstruct.getColor(), snakeConstruct.getId());
                 snakes.add(newSnake);
             }
-            game.setScreen(new PlayScreen(game, snakes, com, false));
+            if (message.getId() == -1){
+                game.setScreen(new PlayScreen(game, snakes, com, false));
+                break;
+            }
         }
+
     }
 
     @Override
