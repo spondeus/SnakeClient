@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 public class PlayScreen implements Screen {
 
     private AssetManager assetManager;
@@ -89,8 +88,8 @@ public class PlayScreen implements Screen {
         pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
+        wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
-        wallList = wall.spawnWalls();
         mainStage.addActor(wall);
         mainStage.addActor(snake);
     }
@@ -159,14 +158,16 @@ public class PlayScreen implements Screen {
 
     public void wallCollision(Wall wall) {
         // checks for wall collision
-        if(!snakeList.get(0).isGhostModeActive()) {
+        if (!snakeList.get(0).isGhostModeActive()) {
             Circle head = snakeList.get(0).getParts().first();
-            for (WallPart wallPart : wall.getParts()) {
-                if (Intersector.overlaps(head, wallPart)) {
-                    collidedWithWall = true;
-                    snakeList.get(0).setDeadSnake(true);
-                    snakeList.get(0).setSpeed(0);
-                    return;
+            for (WallPattern pattern : wall.getParts()) {
+                for (WallPart part : pattern.getParts()) {
+                    if (Intersector.overlaps(head, part)) {
+                        collidedWithWall = true;
+                        snakeList.get(0).setDeadSnake(true);
+                        snakeList.get(0).setSpeed(0);
+                        return;
+                    }
                 }
             }
         }

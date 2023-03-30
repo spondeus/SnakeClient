@@ -5,13 +5,17 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 public class WallPattern {
 
+    public SnapshotArray<WallPart> getParts() {
+        return parts;
+    }
+
     private SnapshotArray<WallPart> parts;
 
     public WallPattern(SnapshotArray<WallPart> parts) {
         this.parts = parts;
     }
 
-    public SnapshotArray<WallPattern> createWallPatterns() {
+    public static SnapshotArray<WallPattern> createWallPatterns() {
 
         SnapshotArray<WallPattern> wallPatterns = new SnapshotArray<>();
 

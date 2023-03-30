@@ -4,43 +4,43 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import static pentasnake.client.entities.WallPattern.createWallPatterns;
 
 public class Wall extends Actor {
-    SnapshotArray<WallPart> parts;
-    public SnapshotArray<WallPart> getParts() {
+    SnapshotArray<WallPattern> parts;
+    public SnapshotArray<WallPattern> getParts() {
         return parts;
     }
     private final ShapeRenderer sr = new ShapeRenderer();
 
-    private WallPattern pattern;
-
     public Wall(SnapshotArray<WallPattern> patterns){
-
+        this.parts = patterns;
     }
 
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        for (WallPart part : parts) {
-            sr.setColor(part.getWallColor());
-            sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
+        for (WallPattern pattern : parts) {
+            for (WallPart part : pattern.getParts()) {
+                sr.setColor(part.getWallColor());
+                sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
+            }
         }
         sr.end();
         batch.begin();
     }
 
-    public SnapshotArray<WallPattern> spawnWalls(){
+    public static SnapshotArray<WallPattern> spawnWalls(){
 
         final int MAX_WALLS_TO_SPAWN = 4;
         final int NUM_WALL_PATTERNS = 8;
 
-        SnapshotArray<WallPattern> wallPatterns = pattern.createWallPatterns();
+        SnapshotArray<WallPattern> wallPatterns = createWallPatterns();
         SnapshotArray<WallPattern> randomlySelectedWalls = new SnapshotArray<>();
 
         List<Integer> selectedIndices = new ArrayList<>();
