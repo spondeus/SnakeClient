@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
+import lombok.Getter;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.*;
@@ -85,12 +86,14 @@ public class PlayScreen implements Screen {
         snakeList.add(snake);
 
         Gdx.input.setInputProcessor(new InputHandler(snake, localClient));
-        pickupSpawner = new PickupSpawner(mainStage);
         labelInitialize();
 
         wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
         mainStage.addActor(wall);
+
+        pickupSpawner = new PickupSpawner(mainStage, wallList);
+
         mainStage.addActor(snake);
     }
 

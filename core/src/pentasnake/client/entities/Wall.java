@@ -5,27 +5,26 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import static pentasnake.client.entities.WallPattern.createWallPatterns;
 
 public class Wall extends Actor {
-    SnapshotArray<WallPattern> parts;
+    SnapshotArray<WallPattern> patterns;
     public SnapshotArray<WallPattern> getParts() {
-        return parts;
+        return patterns;
     }
     private final ShapeRenderer sr = new ShapeRenderer();
 
     public Wall(SnapshotArray<WallPattern> patterns){
-        this.parts = patterns;
+        this.patterns = patterns;
     }
 
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        for (WallPattern pattern : parts) {
+        for (WallPattern pattern : patterns) {
             for (WallPart part : pattern.getParts()) {
                 sr.setColor(part.getWallColor());
                 sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());

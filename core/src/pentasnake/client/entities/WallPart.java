@@ -16,4 +16,8 @@ public class WallPart extends Rectangle {
     public Color getWallColor(){
         return this.wallColor;
     }
+
+    public float getRadius() {
+        return 50;
+    }
 }

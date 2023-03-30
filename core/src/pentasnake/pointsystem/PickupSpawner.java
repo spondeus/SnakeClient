@@ -5,11 +5,16 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import lombok.Getter;
+import pentasnake.client.entities.Wall;
+import pentasnake.client.entities.WallPart;
+import pentasnake.client.entities.WallPattern;
+import pentasnake.client.screen.PlayScreen;
 
 public class PickupSpawner implements PickupHandler {
 
     @Getter
     private final SnapshotArray<PickupItems> pickups;
+    private final SnapshotArray<WallPattern> wallList;
     private final Stage mainStage;
     public final int MAX_TOTAL_PICKUPS = 10;
     public static int numFood = 0;
@@ -21,8 +26,9 @@ public class PickupSpawner implements PickupHandler {
     public int currentPickupsOnScreen;
     float padding = 60f;
 
-    public PickupSpawner(Stage mainStage) {
+    public PickupSpawner(Stage mainStage, SnapshotArray<WallPattern> wallList) {
         this.mainStage = mainStage;
+        this.wallList = wallList;
         pickups = new SnapshotArray<>();
     }
 
@@ -112,6 +118,7 @@ public class PickupSpawner implements PickupHandler {
     }
 
     public boolean isOverlapping(float x, float y) {
+        // checking pickup overlap
         float radius = 50f;
         for (PickupItems pickup : pickups) {
             float distanceSquared = (x - pickup.getX()) * (x - pickup.getX()) + (y - pickup.getY()) * (y - pickup.getY());
@@ -119,45 +126,15 @@ public class PickupSpawner implements PickupHandler {
                 return true;
             }
         }
+        // checking wall and pickup overlap
+        for (WallPattern wallPattern : wallList) {
+            for (WallPart wallPart : wallPattern.getWallParts()) {
+                float distanceSquared = (x - wallPart.getX()) * (x - wallPart.getX()) + (y - wallPart.getY()) * (y - wallPart.getY());
+                if (distanceSquared < (radius + wallPart.getRadius()) * (radius + wallPart.getRadius())) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
-       /* }
-    }, 0, 1f / 60); // Spawn pickups at 60 frames per second*/
-
-
-    // Should spawn pickups in the game world randomly
-    // Spawn rate will be different for each pickup
-
-
-    // will try this
-
-        /*// define an ArrayList to store the locations of all existing pickup items
-        ArrayList<Vector2> pickupItemLocations = new ArrayList<Vector2>();
-
-// generate a new pickup item
-        public void spawnPickupItem() {
-            Vector2 newLocation;
-            boolean locationOccupied;
-
-            // repeat until an unoccupied location is found
-            do {
-                // generate a random location for the new pickup item
-                newLocation = new Vector2(MathUtils.random(0, screenWidth - pickupItemSize),
-                        MathUtils.random(0, screenHeight - pickupItemSize));
-                locationOccupied = false;
-
-                // check if the generated location is already occupied by an existing pickup item
-                for (Vector2 existingLocation : pickupItemLocations) {
-                    if (existingLocation.equals(newLocation)) {
-                        locationOccupied = true;
-                        break;
-                    }
-                }
-            } while (locationOccupied);
-
-            // create and spawn the new pickup item at the unoccupied location
-            PickupItem newPickupItem = new PickupItem(newLocation);
-            pickupItemLocations.add(newLocation);
-        }*/
-
 }

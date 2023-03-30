@@ -8,13 +8,14 @@ public class WallPattern {
     public SnapshotArray<WallPart> getParts() {
         return parts;
     }
+    private final SnapshotArray<WallPart> parts;
 
-    private SnapshotArray<WallPart> parts;
-
+    public SnapshotArray<WallPart> getWallParts(){
+        return this.parts;
+    }
     public WallPattern(SnapshotArray<WallPart> parts) {
         this.parts = parts;
     }
-
     public static SnapshotArray<WallPattern> createWallPatterns() {
 
         SnapshotArray<WallPattern> wallPatterns = new SnapshotArray<>();
@@ -52,12 +53,21 @@ public class WallPattern {
         straightLong.add(straight);
         wallPatterns.add(new WallPattern(straightLong));
 
-        SnapshotArray<WallPart> crossShaped = new SnapshotArray<>();
-        WallPart crossVertical = new WallPart(550, 600, 50, 150, Color.FIREBRICK);
+        /*SnapshotArray<WallPart> crossShaped = new SnapshotArray<>();
+        WallPart crossVertical = new WallPart(550, 630, 50, 150, Color.FIREBRICK);
         WallPart crossHorizontal = new WallPart(500, 650, 150, 50, Color.FIREBRICK);
         crossShaped.add(crossVertical);
         crossShaped.add(crossHorizontal);
-        wallPatterns.add(new WallPattern(crossShaped));
+        wallPatterns.add(new WallPattern(crossShaped));*/
+
+        SnapshotArray<WallPart> uShaped = new SnapshotArray<>();
+        WallPart uLeft = new WallPart(500, 700, 50, 30, Color.FIREBRICK);
+        WallPart uMiddle = new WallPart(500, 650, 250, 50, Color.FIREBRICK);
+        WallPart uRight = new WallPart(700, 700, 50, 30, Color.FIREBRICK);
+        uShaped.add(uLeft);
+        uShaped.add(uMiddle);
+        uShaped.add(uRight);
+        wallPatterns.add(new WallPattern(uShaped));
 
         SnapshotArray<WallPart> diagonalPieces = new SnapshotArray<>();
         WallPart diagonal1 = new WallPart(220, 450, 50, 50, Color.FIREBRICK);
