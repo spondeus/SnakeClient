@@ -11,8 +11,8 @@ public class Food extends PickupItems {
 
     public int getMAX_FOOD() {
         return MAX_FOOD;
+    }
 
-    @Getter
     Type type = Type.FOOD;
     private static int count = 0;
     public static int getCount() {

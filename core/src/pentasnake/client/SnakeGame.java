@@ -24,7 +24,7 @@ public class SnakeGame extends Game {
         this.color = color;
     }
 
-  private Color color;
+  private Color color=Color.GREEN;
     @Override
     public void create() {
         menu = new MenuScreen(this);

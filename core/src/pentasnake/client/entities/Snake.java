@@ -139,15 +139,7 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     private boolean selfCollision() {
-        for (int i = 0; i < this.parts.size; i++) {
-            for (int j = 0; j < this.parts.size; j++) {
-                if (Math.abs(i - j) < 2) continue;
-                if (this.parts.get(i).overlaps(this.parts.get(j))) {
-                    colliders.add(parts.get(i));
-                    colliders.add(parts.get(j));
-                    speed = 0;
-                    return true;
-        // checks for self collision
+         // checks for self collision
         if (!ghostModeActive) {
             for (int i = 0; i < this.parts.size; i++) {
                 for (int j = 0; j < this.parts.size; j++) {
@@ -305,10 +297,6 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     public boolean isRightMove() {
         return rightMove;
-    }
-
-    public int getSpeed() {
-        return speed;
     }
 
     @Override

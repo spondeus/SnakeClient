@@ -49,7 +49,7 @@ public class PlayScreen implements Screen {
     private PickupSpawner pickupSpawner;
     private final SnakeGame game;
     List<Integer> points = new ArrayList<>();
-    int counter=0;
+    int counter = 0;
 
     private final Communication localClient;
     private final int myId;
@@ -59,7 +59,7 @@ public class PlayScreen implements Screen {
 
     ClientSocket socket;
 
-    int pickupUnderPicking=-1;
+    int pickupUnderPicking = -1;
     private SpriteBatch batch = new SpriteBatch();
     SnapshotArray<WallPattern> wallList = new SnapshotArray<>();
     protected Wall wall;
@@ -105,32 +105,37 @@ public class PlayScreen implements Screen {
         wall = new Wall(wallList);
         mainStage.addActor(wall);
 
-        pickupSpawner = new PickupSpawner(mainStage, wallList);
 
-        mainStage.addActor(snake);
+        if(localClient==null){
+            pickupSpawner = new PickupSpawner(mainStage, wallList);
+            pickupSpawner.spawnPickups();
+            pickups=(MySnapshotArray) pickupSpawner.getPickups();
+        }
+
+        mainStage.addActor(snakeList.get(0));
     }
 
     private void checkWallCollision(Wall wall) {
         for (Snake snake : snakeList) {
-            if (snakeList.get(0).isGhostModeActive()) {
+            if (snake.isGhostModeActive()) {
                 continue;
             }
-                for (WallPattern pattern : wall.getParts()) {
-                    for (WallPart part : pattern.getParts()) {
-                        float x2 = snake.getHead().x % Gdx.graphics.getWidth();
-                        if (x2 < 0) x2 += Gdx.graphics.getWidth();
-                        float y2 = snake.getHead().y % Gdx.graphics.getHeight();
-                        if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
-                            collidedWithWall = true;
-                            snakeList.get(0).setDeadSnake(true);
-                            snakeList.get(0).setSpeed(0);
-                            return;
-                        }
+            for (WallPattern pattern : wall.getParts()) {
+                for (WallPart part : pattern.getParts()) {
+                    float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+                    if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                    float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+                    if (y2 < 0) y2 += Gdx.graphics.getHeight();
+                    if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
+                        collidedWithWall = true;
+                        snakeList.get(0).setDeadSnake(true);
+                        snakeList.get(0).setSpeed(0);
+                        return;
                     }
                 }
             }
         }
-
+    }
 
 
     public void labelInitialize() {
@@ -153,15 +158,17 @@ public class PlayScreen implements Screen {
         table.setFillParent(true);
         uiStage.addActor(table);
     }
-    public void labelSort(List<Snake> snakeList){
-        for (int i = 0; i <pointsLabel.size(); i++) {
-                Label label=pointsLabel.get(i);
-             //   Integer index=points.get(i);
-               Snake mySnake = snakeList.get(i);
-               label.setText(mySnake.getName()+":"+mySnake.getPoints()+"p");
-               label.setColor(mySnake.getParts().get(1).getColor());
+
+    public void labelSort(List<Snake> snakeList) {
+        for (int i = 0; i < pointsLabel.size(); i++) {
+            Label label = pointsLabel.get(i);
+            //   Integer index=points.get(i);
+            Snake mySnake = snakeList.get(i);
+            label.setText(mySnake.getName() + ":" + mySnake.getPoints() + "p");
+            label.setColor(mySnake.getParts().get(1).getColor());
         }
     }
+
     public AssetManager getAssetManager() {
         return assetManager;
     }
@@ -169,22 +176,22 @@ public class PlayScreen implements Screen {
     public void refreshPoints(int id, int pointChange) {
         // Kígyó keresése azonosító alapján
         Snake snake = snakeList.get(id);
-            // Kígyó pontjainak frissítése
-            snake.setPoints(snake.getPoints() + pointChange);
-            // Label frissítése
-            int index = 0;
-            for (int i = 0; i < snakeList.size(); i++) {
-                if (snakeList.get(i).equals(snake)) {
-                    index = i;
-                }
+        // Kígyó pontjainak frissítése
+        snake.setPoints(snake.getPoints() + pointChange);
+        // Label frissítése
+        int index = 0;
+        for (int i = 0; i < snakeList.size(); i++) {
+            if (snakeList.get(i).equals(snake)) {
+                index = i;
             }
-            Label optionalLabel = pointsLabel.get(index);
-            optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
         }
+        Label optionalLabel = pointsLabel.get(index);
+        optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
+    }
 
 
     public List<Snake> sortPoints() {
-        points =new ArrayList<>();
+        points = new ArrayList<>();
 //        int maximum = Integer.MIN_VALUE;
 //        int index = 0;
         List<Snake> copyList = new ArrayList<>(snakeList);
@@ -202,6 +209,7 @@ public class PlayScreen implements Screen {
 //        }
         return copyList;
     }
+
     public void update(float dt) {
 //        pickupCons = localClient.getWebsocketClient().getPickups();
 //        newPickup();
@@ -221,7 +229,7 @@ public class PlayScreen implements Screen {
 //                socket.writeMsg(socket.getId(),new SnakeMove(false));
 //            }
 //        }
-        pickupSpawner.getPickups().end();
+//        pickupSpawner.getPickups().end();
         checkWallCollision(wall);
 
         if (localClient != null) {
@@ -321,10 +329,16 @@ public class PlayScreen implements Screen {
                 if (y2 < 0) y2 += Gdx.graphics.getHeight();
                 if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
                         pickup.getBoundaryRectangle())) {
-                    if(pickup.getId()==pickupUnderPicking) continue;
-                    pickupUnderPicking=pickup.getId();
-                    socket.writeMsg(myId,
-                            new PickupRemove(pickup.getId()));
+                    if(localClient==null){
+                        pickup.collectItem(snake);
+                        pickup.applyEffect(snake);
+                        pickups.removeValue(pickup, true);
+                    }else{
+                        if (pickup.getId() == pickupUnderPicking) continue;
+                        pickupUnderPicking = pickup.getId();
+                        socket.writeMsg(myId,
+                                new PickupRemove(pickup.getId()));
+                    }
 //                    System.out.println("Pickup:" + pickup);
                 }
             }
@@ -337,8 +351,10 @@ public class PlayScreen implements Screen {
         mainStage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         mainStage.draw();
         uiStage.draw();
+        batch.end();
     }
 
 

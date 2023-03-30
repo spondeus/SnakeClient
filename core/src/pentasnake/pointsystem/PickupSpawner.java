@@ -1,5 +1,3 @@
-/*
-
 package pentasnake.pointsystem;
 
 import com.badlogic.gdx.Gdx;
@@ -10,12 +8,15 @@ import lombok.Getter;
 import pentasnake.client.entities.Wall;
 import pentasnake.client.entities.WallPart;
 import pentasnake.client.entities.WallPattern;
+import pentasnake.client.screen.MySnapshotArray;
 import pentasnake.client.screen.PlayScreen;
+
+import java.util.Random;
 
 public class PickupSpawner implements PickupHandler {
 
 
-    private final SnapshotArray<PickupItems> pickups;
+    private final MySnapshotArray pickups;
     private SnapshotArray<WallPattern> wallList;
     private final Stage mainStage;
     public final int MAX_TOTAL_PICKUPS = 10;
@@ -28,10 +29,12 @@ public class PickupSpawner implements PickupHandler {
     public int currentPickupsOnScreen;
     float padding = 60f;
 
+    Random random=new Random();
+
     public PickupSpawner(Stage mainStage, SnapshotArray<WallPattern> wallList) {
         this.mainStage = mainStage;
         this.wallList = wallList;
-        pickups = new SnapshotArray<>();
+        pickups = new MySnapshotArray();
     }
 
     @Override
@@ -48,7 +51,7 @@ public class PickupSpawner implements PickupHandler {
                     x = MathUtils.random(padding, WIDTH - padding);
                     y = MathUtils.random(padding, HEIGHT - padding);
                 } while (isOverlapping(x, y));
-                pickups.add(new Food(x, y, mainStage));
+                pickups.add(new Food(x, y, mainStage,0));
                 numFood++;
                 currentPickupsOnScreen++;
             }
@@ -84,7 +87,7 @@ public class PickupSpawner implements PickupHandler {
                     x = MathUtils.random(padding, WIDTH - padding);
                     y = MathUtils.random(padding, HEIGHT - padding);
                 } while (isOverlapping(x, y));
-                pickups.add(new IceBlock(x, y, mainStage));
+                pickups.add(new IceBlock(x, y, mainStage,0));
                 numIceBlock++;
                 currentPickupsOnScreen++;
             }
@@ -93,7 +96,7 @@ public class PickupSpawner implements PickupHandler {
                     x = MathUtils.random(padding, WIDTH - padding);
                     y = MathUtils.random(padding, HEIGHT - padding);
                 } while (isOverlapping(x, y));
-                pickups.add(new Ghost(x, y, mainStage));
+                pickups.add(new Ghost(x, y, mainStage,0));
                 numGhost++;
                 currentPickupsOnScreen++;
             }
@@ -148,4 +151,3 @@ public class PickupSpawner implements PickupHandler {
         return false;
     }
 }
- */
