@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.utils.Timer;
 import pentasnake.client.screen.PlayScreen;
+import pentasnake.pointsystem.PickupItems;
 
 //import static pentasnake.client.entities.Snake.SnakeDirection.*;
 
@@ -61,14 +62,12 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     private int id;
 
-    private int pickupUnderPicking = -1;
+    private SnapshotArray<Integer> pickupUnderPicking = new SnapshotArray();
 
-    public int getPickupUnderPicking() {
-        return pickupUnderPicking;
-    }
+    public boolean isUnderPicking(int p){return pickupUnderPicking.contains(p,false);};
 
-    public void setPickupUnderPicking(int pickupUnderPicking) {
-        this.pickupUnderPicking = pickupUnderPicking;
+    public void addPickupUnderPicking(int p) {
+        pickupUnderPicking.add(p);
     }
 
     public int getId() {

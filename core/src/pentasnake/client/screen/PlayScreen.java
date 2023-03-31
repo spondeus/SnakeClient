@@ -358,9 +358,9 @@ public class PlayScreen implements Screen {
         int pickupId = pickupRemove.getPickupId();
         PickupItems pickup = pickups.getById(pickupId);
         for (Snake snake:snakeList) {
-            if(pickup.getId()==snake.getPickupUnderPicking()) return;
+            if(snake.isUnderPicking(pickup.getId())) return;
         }
-        snakeList.get(cId).setPickupUnderPicking(pickup.getId());
+        snakeList.get(cId).addPickupUnderPicking(pickup.getId());
         pickup.collectItem(snakeList.get(cId));
         pickup.applyEffect(snakeList.get(cId));
         pickups.removeValue(pickup, true);
@@ -380,8 +380,8 @@ public class PlayScreen implements Screen {
                         pickup.applyEffect(snake);
                         pickups.removeValue(pickup, true);
                     } else {
-                        if (pickup.getId() == snake.getPickupUnderPicking()) continue;
-                        snake.setPickupUnderPicking(pickup.getId());
+                        if ( snake.isUnderPicking(pickup.getId())) continue;
+                        snake.addPickupUnderPicking(pickup.getId());
                         socket.writeMsg(myId,
                                 new PickupRemove(pickup.getId()));
                     }
