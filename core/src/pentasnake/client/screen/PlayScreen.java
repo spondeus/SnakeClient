@@ -128,8 +128,8 @@ public class PlayScreen implements Screen {
                     if (y2 < 0) y2 += Gdx.graphics.getHeight();
                     if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
                         collidedWithWall = true;
-                        snakeList.get(0).setDeadSnake(true);
-                        snakeList.get(0).setSpeed(0);
+                        snake.setDeadSnake(true);
+                        snake.setSpeed(0);
                         return;
                     }
                 }
@@ -245,8 +245,8 @@ public class PlayScreen implements Screen {
                 if (msg instanceof SnakeMove) {
                     SnakeMove snakeMove = (SnakeMove) msg;
                     Snake snake = snakeList.get(snakeMove.getId());
-                    if (snakeMove.isLeft()) snake.turnLeft();
-                    else snake.turnRight();
+                    if (snakeMove.isLeft()) snakeList.get(snakeMove.getId()).turnLeft();
+                    else snakeList.get(snakeMove.getId()).turnRight();
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
 

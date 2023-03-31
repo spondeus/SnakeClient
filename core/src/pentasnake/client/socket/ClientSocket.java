@@ -203,6 +203,7 @@ public class ClientSocket extends WebSocketClient {
             case "snakeColorChange":
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeColorChange snakeColorChange = gson.fromJson(dataStr, SnakeColorChange.class);
+                snakeColorChange.setId(id);
                 System.out.println(snakeColorChange);
                 break;
             default:

@@ -79,7 +79,7 @@ public class LobbyScreen implements Screen {
 //                    com.send(msg);
                 }
             }
-        }, 1);
+        }, 2);
     }
 
     @Override

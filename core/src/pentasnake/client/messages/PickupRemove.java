@@ -4,6 +4,13 @@ public class PickupRemove extends Message{
 
     int pickupId;
 
+    int snakeId;
+
+    public PickupRemove(int pickupId, int snakeId) {
+        this.pickupId = pickupId;
+        this.snakeId = snakeId;
+    }
+
     public PickupRemove(int pickupId) {
         this.pickupId = pickupId;
     }
@@ -21,5 +28,13 @@ public class PickupRemove extends Message{
         return "PickupRemove{" +
                 "pickupId=" + pickupId +
                 '}';
+    }
+
+    public int getSnakeId() {
+        return snakeId;
+    }
+
+    public void setSnakeId(int snakeId) {
+        this.snakeId = snakeId;
     }
 }
