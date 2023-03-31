@@ -112,7 +112,7 @@ public class PlayScreen implements Screen {
 
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake = snakeList.get(i);
-//            for (SnakePart part : snake.getParts()) {
+////            for (SnakePart part : snake.getParts()) {
 //                switch (myId) {
 //                    case 1:
 ////                        part.setDirectionVector(new Vector2(-1,0));
@@ -125,7 +125,7 @@ public class PlayScreen implements Screen {
 //                        break;
 //                }
 //            }
-            mainStage.addActor(snakeList.get(i));
+            mainStage.addActor(snake);
         }
     }
 
