@@ -197,11 +197,11 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     public void turnRight() {
-        head.rotate(-speed / 140);
+        head.rotate(-speed / 100);
     }
 
     public void turnLeft() {
-        head.rotate(speed / 140);
+        head.rotate(speed / 100);
     }
 
     public void slowDown() {
