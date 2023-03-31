@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputMultiplexer;
@@ -114,7 +115,7 @@ public class PlayScreen implements Screen {
             for (SnakePart part:snake.getParts() ) {
                 switch (myId) {
                     case 1:
-                        part.rotate(180);
+                        part.setDirectionVector(new Vector2(-1,0));
                         break;
                     case 2:
                         part.rotate(-90);
