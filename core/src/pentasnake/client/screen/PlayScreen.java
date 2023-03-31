@@ -86,7 +86,8 @@ public class PlayScreen implements Screen {
         if (snakeList.size() == 0)
             if (!single) Gdx.app.error("Server", "No snake found");
             else
-                snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, game.getColor(), 0));
+                for (int i = 0; i < snakes.size(); i++)
+                    snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, game.getColor(), i));
 
         initialize();
     }
@@ -112,16 +113,16 @@ public class PlayScreen implements Screen {
 
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake = snakeList.get(i);
-            for (SnakePart part:snake.getParts() ) {
+            for (SnakePart part : snake.getParts()) {
                 switch (myId) {
                     case 1:
-                        part.setDirectionVector(new Vector2(-1,0));
+//                        part.setDirectionVector(new Vector2(-1,0));
                         break;
                     case 2:
-                        part.rotate(-90);
+//                        part.rotate(-90);
                         break;
                     case 3:
-                        part.rotate(90);
+//                        part.rotate(90);
                         break;
                 }
             }
