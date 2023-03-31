@@ -103,7 +103,7 @@ public class PlayScreen implements Screen {
 
         wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
-//        mainStage.addActor(wall);
+        mainStage.addActor(wall);
 
 
         if (localClient == null) {
@@ -258,7 +258,7 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
-//        checkWallCollision(wall);
+        checkWallCollision(wall);
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {
