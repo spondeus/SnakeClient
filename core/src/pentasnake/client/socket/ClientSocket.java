@@ -178,6 +178,8 @@ public class ClientSocket extends WebSocketClient {
     }
 
     private void handleSnakeMsg(JsonObject jsonObject) {
+        JsonPrimitive id=jsonObject.getAsJsonPrimitive("id");
+        int goodId=id.getAsInt();
         JsonElement type = jsonObject.get("type");
         JsonObject innerJson;
         String dataStr;
@@ -185,7 +187,7 @@ public class ClientSocket extends WebSocketClient {
             case "snakeConstruct":
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeConstruct snakeConstruct = gson.fromJson(dataStr, SnakeConstruct.class);
-                snakeConstruct.setId(id);
+                snakeConstruct.setId(goodId);
                 msgQueue.add(snakeConstruct);
                 break;
             case "snakeCollision":
@@ -193,7 +195,7 @@ public class ClientSocket extends WebSocketClient {
             case "snakeMove":
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeMove snakeMove = gson.fromJson(dataStr, SnakeMove.class);
-                snakeMove.setId(id);
+                snakeMove.setId(goodId);
                 msgQueue.add(snakeMove);
                 break;
             case "snakePointChange":
@@ -203,7 +205,7 @@ public class ClientSocket extends WebSocketClient {
             case "snakeColorChange":
                 dataStr = jsonObject.get("data").getAsString();
                 SnakeColorChange snakeColorChange = gson.fromJson(dataStr, SnakeColorChange.class);
-                snakeColorChange.setId(id);
+                snakeColorChange.setId(goodId);
                 System.out.println(snakeColorChange);
                 break;
             default:
