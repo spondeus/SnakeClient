@@ -106,10 +106,10 @@ public class PlayScreen implements Screen {
 //        mainStage.addActor(wall);
 
 
-        if(localClient==null){
+        if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
             pickupSpawner.spawnPickups();
-            pickups=(MySnapshotArray) pickupSpawner.getPickups();
+            pickups = (MySnapshotArray) pickupSpawner.getPickups();
         }
 
         mainStage.addActor(snakeList.get(0));
@@ -130,6 +130,34 @@ public class PlayScreen implements Screen {
                         collidedWithWall = true;
                         snake.setDeadSnake(true);
                         snake.setSpeed(0);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkSnakeCollision() {
+        for (int i = 0; i < snakeList.size(); i++) {
+            Snake snake1 = snakeList.get(i);
+            if (snake1.isGhostModeActive()) continue;
+            for (int j = i + 1; j < snakeList.size(); j++) {
+                Snake snake2 = snakeList.get(j);
+                if (snake2.isGhostModeActive()) continue;
+                SnakePart snake1head = snake1.getHead();
+                for (SnakePart snake2part : snake2.getParts()) {
+                    float x = snake1head.x % Gdx.graphics.getWidth();
+                    if (x < 0) x += Gdx.graphics.getWidth();
+                    float y = snake1head.y % Gdx.graphics.getHeight();
+                    if (y < 0) y += Gdx.graphics.getHeight();
+                    float x2 = snake2part.x % Gdx.graphics.getWidth();
+                    if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                    float y2 = snake2part.y % Gdx.graphics.getHeight();
+                    if (y2 < 0) y2 += Gdx.graphics.getHeight();
+                    if ((Intersector.overlaps(new Circle(x, y, snake1head.radius),
+                            new Circle(x2, y2, snake2part.radius)))) {
+                        snake1.setDeadSnake(true);
+                        snake1.setSpeed(0);
                         return;
                     }
                 }
@@ -329,11 +357,11 @@ public class PlayScreen implements Screen {
                 if (y2 < 0) y2 += Gdx.graphics.getHeight();
                 if (Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius),
                         pickup.getBoundaryRectangle())) {
-                    if(localClient==null){
+                    if (localClient == null) {
                         pickup.collectItem(snake);
                         pickup.applyEffect(snake);
                         pickups.removeValue(pickup, true);
-                    }else{
+                    } else {
                         if (pickup.getId() == pickupUnderPicking) continue;
                         pickupUnderPicking = pickup.getId();
                         socket.writeMsg(myId,
