@@ -95,16 +95,13 @@ public class PlayScreen implements Screen {
         System.out.println("myid?" + myId);
         Snake x = snakeList.get(myId);
         Gdx.input.setInputProcessor(new InputHandler(x, localClient));
-        mainStage.addActor(x);
+//        mainStage.addActor(x);
         labelInitialize();
-
         labelSort(sortPoints());
         // refreshPoints();
-
         wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
         mainStage.addActor(wall);
-
 
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
@@ -112,7 +109,23 @@ public class PlayScreen implements Screen {
             pickups = (MySnapshotArray) pickupSpawner.getPickups();
         }
 
-        mainStage.addActor(snakeList.get(0));
+        for (int i = 0; i < snakeList.size(); i++) {
+            Snake snake = snakeList.get(i);
+            for (SnakePart part:snake.getParts() ) {
+                switch (myId) {
+                    case 1:
+                        part.rotate(180);
+                        break;
+                    case 2:
+                        part.rotate(-90);
+                        break;
+                    case 3:
+                        part.rotate(90);
+                        break;
+                }
+            }
+            mainStage.addActor(snakeList.get(0));
+        }
     }
 
     private void checkWallCollision(Wall wall) {
