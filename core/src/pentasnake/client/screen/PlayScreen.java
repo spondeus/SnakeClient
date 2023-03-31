@@ -60,7 +60,7 @@ public class PlayScreen implements Screen {
 
     ClientSocket socket;
 
-    int pickupUnderPicking = -1;
+
     private SpriteBatch batch = new SpriteBatch();
     SnapshotArray<WallPattern> wallList = new SnapshotArray<>();
     protected Wall wall;
@@ -289,9 +289,6 @@ public class PlayScreen implements Screen {
                     Snake snake = snakeList.get(snakeMove.getId());
                     if (snakeMove.isLeft()) snake.turnLeft();
                     else snake.turnRight();
-                    for (Snake sn:snakeList ) {
-                        System.out.println(sn.getId()+" "+sn.isLeftMove());
-                    }
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
 
@@ -360,6 +357,10 @@ public class PlayScreen implements Screen {
         int cId = pickupRemove.getId();
         int pickupId = pickupRemove.getPickupId();
         PickupItems pickup = pickups.getById(pickupId);
+        for (Snake snake:snakeList) {
+            if(pickup.getId()==snake.getPickupUnderPicking()) return;
+        }
+        snakeList.get(cId).setPickupUnderPicking(pickup.getId());
         pickup.collectItem(snakeList.get(cId));
         pickup.applyEffect(snakeList.get(cId));
         pickups.removeValue(pickup, true);
@@ -379,8 +380,8 @@ public class PlayScreen implements Screen {
                         pickup.applyEffect(snake);
                         pickups.removeValue(pickup, true);
                     } else {
-                        if (pickup.getId() == pickupUnderPicking) continue;
-                        pickupUnderPicking = pickup.getId();
+                        if (pickup.getId() == snake.getPickupUnderPicking()) continue;
+                        snake.setPickupUnderPicking(pickup.getId());
                         socket.writeMsg(myId,
                                 new PickupRemove(pickup.getId()));
                     }

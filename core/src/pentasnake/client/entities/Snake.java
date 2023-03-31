@@ -61,6 +61,15 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     private int id;
 
+    private int pickupUnderPicking = -1;
+
+    public int getPickupUnderPicking() {
+        return pickupUnderPicking;
+    }
+
+    public void setPickupUnderPicking(int pickupUnderPicking) {
+        this.pickupUnderPicking = pickupUnderPicking;
+    }
 
     public int getId() {
         return id;
