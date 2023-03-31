@@ -129,8 +129,9 @@ public class PickupSpawner implements PickupHandler {
         // checking wall and pickup overlap
         for (WallPattern wallPattern : wallList) {
             for (WallPart wallPart : wallPattern.getParts()) {
-                float distanceSquared = (x - wallPart.getX()) * (x - wallPart.getX()) + (y - wallPart.getY()) * (y - wallPart.getY());
-                if (distanceSquared < (radius + wallPart.getRadius()) * (radius + wallPart.getRadius())) {
+                //float distanceSquared = (x - wallPart.getX()) * (x - wallPart.getX()) + (y - wallPart.getY()) * (y - wallPart.getY());
+                if (wallPart.getBoundaryRectangle().contains(x, y)) {
+                    System.out.println(wallPart.getBoundaryRectangle());
                     return true;
                 }
             }
