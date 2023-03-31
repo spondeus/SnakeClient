@@ -57,7 +57,7 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
-    private static final Vector2 initialDirection = new Vector2(1, 0);
+    private final Vector2 initialDirection = new Vector2(1, 0);
 
     private int id;
 
@@ -116,8 +116,8 @@ public class Snake extends Actor implements Comparable<Snake> {
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
         sr.setAutoShapeType(true);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
         for (SnakePart part : this.parts) {
-            sr.begin(ShapeRenderer.ShapeType.Filled);
             sr.setColor(part.getColor());
             if (colliders.contains(part, true)) sr.setColor(Color.RED);
             float x2 = part.x % Gdx.graphics.getWidth();
@@ -133,8 +133,8 @@ public class Snake extends Actor implements Comparable<Snake> {
                 sr.circle(innerEye1.x, innerEye1.y, innerEye1.radius);
                 sr.circle(innerEye2.x, innerEye2.y, innerEye2.radius);
             }
-            sr.end();
         }
+        sr.end();
         batch.begin();
     }
 

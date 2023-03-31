@@ -287,8 +287,11 @@ public class PlayScreen implements Screen {
                 if (msg instanceof SnakeMove) {
                     SnakeMove snakeMove = (SnakeMove) msg;
                     Snake snake = snakeList.get(snakeMove.getId());
-                    if (snakeMove.isLeft()) snakeList.get(msg.getId()).turnLeft();
-                    else snakeList.get(msg.getId()).turnRight();
+                    if (snakeMove.isLeft()) snake.turnLeft();
+                    else snake.turnRight();
+                    for (Snake sn:snakeList ) {
+                        System.out.println(sn.getId()+" "+sn.isLeftMove());
+                    }
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
 
