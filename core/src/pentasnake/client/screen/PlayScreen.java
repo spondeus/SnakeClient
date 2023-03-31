@@ -85,9 +85,8 @@ public class PlayScreen implements Screen {
         snakeList = new ArrayList<>(snakes);
         if (snakeList.size() == 0)
             if (!single) Gdx.app.error("Server", "No snake found");
-            else
-                for (int i = 0; i < snakes.size(); i++)
-                    snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, game.getColor(), i));
+
+//                    snakeList.add(new Snake(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 20, game.getColor(), i));
 
         initialize();
     }
