@@ -62,13 +62,6 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     private int id;
 
-    private SnapshotArray<Integer> pickupUnderPicking = new SnapshotArray();
-
-    public boolean isUnderPicking(int p){return pickupUnderPicking.contains(p,false);};
-
-    public void addPickupUnderPicking(int p) {
-        pickupUnderPicking.add(p);
-    }
 
     public int getId() {
         return id;

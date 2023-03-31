@@ -155,7 +155,8 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake1 = snakeList.get(i);
             if (snake1.isGhostModeActive()) continue;
-            for (int j = i + 1; j < snakeList.size(); j++) {
+            for (int j = 0; j < snakeList.size(); j++) {
+                if(i==j) continue;
                 Snake snake2 = snakeList.get(j);
                 if (snake2.isGhostModeActive()) continue;
                 SnakePart snake1head = snake1.getHead();
@@ -172,6 +173,10 @@ public class PlayScreen implements Screen {
                             new Circle(x2, y2, snake2part.radius)))) {
                         snake1.setDeadSnake(true);
                         snake1.setSpeed(0);
+                        if(snake2part==snake2.getHead()){
+                            snake2.setDeadSnake(true);
+                            snake2.setSpeed(0);
+                        }
                         return;
                     }
                 }
@@ -273,6 +278,7 @@ public class PlayScreen implements Screen {
 //        }
 //        pickupSpawner.getPickups().end();
         checkWallCollision(wall);
+        checkSnakeCollision();
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {
@@ -356,11 +362,13 @@ public class PlayScreen implements Screen {
         PickupRemove pickupRemove = msg;
         int cId = pickupRemove.getId();
         int pickupId = pickupRemove.getPickupId();
+        int whichSnake=pickupRemove.getSnakeId();
+        if(whichSnake==myId) return;
         PickupItems pickup = pickups.getById(pickupId);
-        for (Snake snake:snakeList) {
-            if(snake.isUnderPicking(pickup.getId())) return;
-        }
-        snakeList.get(cId).addPickupUnderPicking(pickup.getId());
+//        for (Snake snake:snakeList) {
+//            if(snake.isUnderPicking(pickup.getId())) return;
+//        }
+//        snakeList.get(cId).addPickupUnderPicking(pickup.getId());
         pickup.collectItem(snakeList.get(cId));
         pickup.applyEffect(snakeList.get(cId));
         pickups.removeValue(pickup, true);
@@ -380,8 +388,13 @@ public class PlayScreen implements Screen {
                         pickup.applyEffect(snake);
                         pickups.removeValue(pickup, true);
                     } else {
-                        if ( snake.isUnderPicking(pickup.getId())) continue;
-                        snake.addPickupUnderPicking(pickup.getId());
+//                        if ( snake.isUnderPicking(pickup.getId())) continue;
+//                        snake.addPickupUnderPicking(pickup.getId());
+
+                        pickup.collectItem(snake);
+                        pickup.applyEffect(snake);
+                        pickups.removeValue(pickup, true);
+
                         socket.writeMsg(myId,
                                 new PickupRemove(pickup.getId()));
                     }
