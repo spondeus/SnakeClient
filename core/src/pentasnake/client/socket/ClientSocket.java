@@ -147,6 +147,11 @@ public class ClientSocket extends WebSocketClient {
                         msg.setId(clientId);
                         msgQueue.add(msg);
                         return;
+                    } else if (clientId==999) {
+                        Message msg = new Message();
+                        msg.setId(999);
+                        msgQueue.add(msg);
+                        return;
                     } else id = clientId;
                     break;
                 default:
@@ -155,6 +160,7 @@ public class ClientSocket extends WebSocketClient {
             }
         }
     }
+
 
     private void handleWallMsg(JsonObject jsonObject) {
     }

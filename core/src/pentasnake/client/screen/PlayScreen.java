@@ -141,9 +141,9 @@ public class PlayScreen implements Screen {
                     if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
                         collidedWithWall = true;
                         snake.setDeadSnake(true);
-                        dieMessage(i,snake);
+                        dieMessage(i, snake);
                         snake.setSpeed(0);
-                        mainStage.getActors().removeValue(snake,true);
+                        mainStage.getActors().removeValue(snake, true);
                         return;
                     }
                 }
@@ -151,9 +151,9 @@ public class PlayScreen implements Screen {
         }
     }
 
-    private void dieMessage(int i,Snake snake) {
-        ScoreMessage score=new ScoreMessage(snake.getPoints());
-        socket.writeMsg(i,score);
+    private void dieMessage(int i, Snake snake) {
+        ScoreMessage score = new ScoreMessage(snake.getPoints());
+        socket.writeMsg(i, score);
         Message deathMsg = new Message();
         deathMsg.setId(myId - 100);
         socket.writeMsg(i, deathMsg);
@@ -179,13 +179,13 @@ public class PlayScreen implements Screen {
                     if (y2 < 0) y2 += Gdx.graphics.getHeight();
                     if ((Intersector.overlaps(new Circle(x, y, snake1head.radius),
                             new Circle(x2, y2, snake2part.radius)))) {
-                        if(!snake1.isDeadSnake()) dieMessage(i,snake1);
-                        mainStage.getActors().removeValue(snake1,true);
+                        if (!snake1.isDeadSnake()) dieMessage(i, snake1);
+                        mainStage.getActors().removeValue(snake1, true);
                         snake1.setDeadSnake(true);
                         snake1.setSpeed(0);
                         if (snake2part == snake2.getHead()) {
 //                            if(!snake2.isDeadSnake()) dieMessage(j);
-                            mainStage.getActors().removeValue(snake2,true);
+                            mainStage.getActors().removeValue(snake2, true);
                             snake2.setDeadSnake(true);
                             snake2.setSpeed(0);
                         }
@@ -312,6 +312,10 @@ public class PlayScreen implements Screen {
                 else if (msg.getId() < -1) {
                     int snakeId = msg.getId() + 100;
                     snakeList.get(snakeId).setDeadSnake(true);
+                } else if (msg.getId() == 999) {
+                    if (!snakeList.get(myId).isDeadSnake()) {
+                        dieMessage(myId, snakeList.get(myId));
+                    }
                 } else {
                     System.out.println("unknown playscreen msg type");
                 }
