@@ -143,6 +143,7 @@ public class PlayScreen implements Screen {
                         snake.setDeadSnake(true);
                         dieMessage(i,snake);
                         snake.setSpeed(0);
+                        mainStage.getActors().removeValue(snake,true);
                         return;
                     }
                 }
@@ -179,10 +180,12 @@ public class PlayScreen implements Screen {
                     if ((Intersector.overlaps(new Circle(x, y, snake1head.radius),
                             new Circle(x2, y2, snake2part.radius)))) {
                         if(!snake1.isDeadSnake()) dieMessage(i,snake1);
+                        mainStage.getActors().removeValue(snake1,true);
                         snake1.setDeadSnake(true);
                         snake1.setSpeed(0);
                         if (snake2part == snake2.getHead()) {
 //                            if(!snake2.isDeadSnake()) dieMessage(j);
+                            mainStage.getActors().removeValue(snake2,true);
                             snake2.setDeadSnake(true);
                             snake2.setSpeed(0);
                         }
