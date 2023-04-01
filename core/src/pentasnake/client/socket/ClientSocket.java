@@ -163,6 +163,9 @@ public class ClientSocket extends WebSocketClient {
 
 
     private void handleWallMsg(JsonObject jsonObject) {
+        String dataStr = jsonObject.get("data").getAsString();
+        WallMessage wallMessage= gson.fromJson(dataStr, WallMessage.class);
+        msgQueue.add(wallMessage);
     }
 
     private void handlePickupMsg(JsonObject jsonObject) {

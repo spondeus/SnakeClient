@@ -99,7 +99,7 @@ public class PlayScreen implements Screen {
         // refreshPoints();
         wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
-//        mainStage.addActor(wall);
+        mainStage.addActor(wall);
 
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
@@ -289,7 +289,7 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
-//        checkWallCollision(wall);
+        checkWallCollision(wall);
         checkSnakeCollision();
 
         if (localClient != null) {
@@ -309,6 +309,7 @@ public class PlayScreen implements Screen {
                     else snake.turnRight();
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
+                else if(msg instanceof WallMessage) placeWall((WallMessage)msg);
                 else if (msg.getId() < -1) {
                     int snakeId = msg.getId() + 100;
                     snakeList.get(snakeId).setDeadSnake(true);
@@ -343,6 +344,12 @@ public class PlayScreen implements Screen {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
+    }
+
+    private void placeWall(WallMessage msg) {
+        wallList = msg.getWallList();
+        wall = new Wall(wallList);
+        mainStage.addActor(wall);
     }
 
     private void putNewPickup(Pickup msg) {
