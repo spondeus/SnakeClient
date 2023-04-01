@@ -97,10 +97,10 @@ public class PlayScreen implements Screen {
         labelInitialize();
         labelSort(sortPoints());
         // refreshPoints();
-        wallList = Wall.spawnWalls();
-        wall = new Wall(wallList);
-        mainStage.addActor(wall);
-
+//        wallList = Wall.spawnWalls();
+//        wall = new Wall(wallList);
+//        mainStage.addActor(wall);
+//
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
             pickupSpawner.spawnPickups();
@@ -289,8 +289,6 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
-        checkWallCollision(wall);
-        checkSnakeCollision();
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {
@@ -344,6 +342,8 @@ public class PlayScreen implements Screen {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
         }
+        checkWallCollision(wall);
+        checkSnakeCollision();
     }
 
     private void placeWall(WallMessage msg) {
