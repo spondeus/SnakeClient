@@ -102,7 +102,7 @@ public class PlayScreen implements Screen {
         // refreshPoints();
         wallList = Wall.spawnWalls();
         wall = new Wall(wallList);
-        mainStage.addActor(wall);
+//        mainStage.addActor(wall);
 
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
@@ -287,7 +287,7 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
-        checkWallCollision(wall);
+//        checkWallCollision(wall);
         checkSnakeCollision();
 
         if (localClient != null) {
