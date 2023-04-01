@@ -129,7 +129,7 @@ public class PlayScreen implements Screen {
     private void checkWallCollision(Wall wall) {
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake = snakeList.get(i);
-            if (snake.isGhostModeActive()) {
+            if (snake.isGhostModeActive() || snake.isDeadSnake()) {
                 continue;
             }
             for (WallPattern pattern : wall.getParts()) {
@@ -162,11 +162,11 @@ public class PlayScreen implements Screen {
     private void checkSnakeCollision() {
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake1 = snakeList.get(i);
-            if (snake1.isGhostModeActive()) continue;
+            if (snake1.isGhostModeActive() || snake1.isDeadSnake()) continue;
             for (int j = 0; j < snakeList.size(); j++) {
                 if (i == j) continue;
                 Snake snake2 = snakeList.get(j);
-                if (snake2.isGhostModeActive()) continue;
+                if (snake2.isGhostModeActive() || snake2.isDeadSnake()) continue;
                 SnakePart snake1head = snake1.getHead();
                 for (SnakePart snake2part : snake2.getParts()) {
                     float x = snake1head.x % Gdx.graphics.getWidth();
