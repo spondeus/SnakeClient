@@ -183,7 +183,7 @@ public class PlayScreen implements Screen {
                         snake1.setDeadSnake(true);
                         snake1.setSpeed(0);
                         if (snake2part == snake2.getHead()) {
-                            if(!snake2.isDeadSnake()) dieMessage(j);
+//                            if(!snake2.isDeadSnake()) dieMessage(j);
                             snake2.setDeadSnake(true);
                             snake2.setSpeed(0);
                         }

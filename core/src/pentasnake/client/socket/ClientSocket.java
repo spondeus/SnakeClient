@@ -113,23 +113,23 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof SnakeConstruct) type = "snakeConstruct";
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
         else if (msg instanceof PickupRemove) type = "pickupRemove";
-        else if (msg.getId() < -1) type = "die";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
         jsonObject.add("data", new JsonPrimitive(innerJson));
         String outerJson = gson.toJson(jsonObject);
         send(outerJson);
-        System.out.println("sent:" + jsonObject);
+        if(msg instanceof SnakeMove) ;
+        else System.out.println("sent:" + jsonObject);
     }
 
     public void readMsg(String s) {
-        System.out.println(" got:" + s);
         JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
         JsonElement cId = jsonObject.get("id");
         int clientId = cId.getAsInt();
         JsonElement msgType = jsonObject.get("type");
         String type = msgType.getAsString();
+        if(!type.equals("snakeMove")) System.out.println(" got:" + s);
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
