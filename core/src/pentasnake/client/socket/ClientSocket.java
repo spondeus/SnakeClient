@@ -18,6 +18,7 @@ import pentasnake.client.messages.*;
 import pentasnake.pointsystem.Food;
 import pentasnake.pointsystem.PickupItems;
 import pentasnake.client.screen.MenuScreen;
+
 import java.net.URI;
 import java.util.*;
 
@@ -112,6 +113,7 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof SnakeConstruct) type = "snakeConstruct";
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
         else if (msg instanceof PickupRemove) type = "pickupRemove";
+        else if (msg.getId() < -1) type = "die";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
@@ -135,7 +137,7 @@ public class ClientSocket extends WebSocketClient {
             switch (type) {
                 case "id":
                     if (clientId == -1) {
-                        Message msg=new Message();
+                        Message msg = new Message();
                         msg.setId(clientId);
                         msgQueue.add(msg);
                         return;
@@ -143,7 +145,10 @@ public class ClientSocket extends WebSocketClient {
                     id = clientId;
                     break;
                 case "die":
-                    break;
+                    Message msg = new Message();
+                    msg.setId(clientId);
+                    msgQueue.add(msg);
+                    return;
                 default:
                     System.err.println("Unknown message type!");
 
@@ -178,8 +183,8 @@ public class ClientSocket extends WebSocketClient {
     }
 
     private void handleSnakeMsg(JsonObject jsonObject) {
-        JsonPrimitive id=jsonObject.getAsJsonPrimitive("id");
-        int goodId=id.getAsInt();
+        JsonPrimitive id = jsonObject.getAsJsonPrimitive("id");
+        int goodId = id.getAsInt();
         JsonElement type = jsonObject.get("type");
         JsonObject innerJson;
         String dataStr;
