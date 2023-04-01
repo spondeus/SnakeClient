@@ -385,8 +385,8 @@ public class PlayScreen implements Screen {
 //            if(snake.isUnderPicking(pickup.getId())) return;
 //        }
 //        snakeList.get(cId).addPickupUnderPicking(pickup.getId());
-        pickup.collectItem(snakeList.get(cId));
-        pickup.applyEffect(snakeList.get(cId));
+        pickup.collectItem(snakeList.get(whichSnake));
+        pickup.applyEffect(snakeList.get(whichSnake));
         pickups.removeValue(pickup, true);
     }
 
