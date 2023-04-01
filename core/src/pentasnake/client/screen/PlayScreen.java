@@ -63,7 +63,7 @@ public class PlayScreen implements Screen {
     protected Wall wall;
     public boolean collidedWithWall;
 
-    private final int gameEndCode=999;
+    private final int gameEndCode = 999;
 
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
@@ -309,45 +309,29 @@ public class PlayScreen implements Screen {
                     else snake.turnRight();
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
-                else if(msg instanceof WallMessage) placeWall((WallMessage)msg);
+                else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
                 else if (msg.getId() < -1) {
                     int snakeId = msg.getId() + 100;
                     snakeList.get(snakeId).setDeadSnake(true);
                 } else if (msg.getId() == gameEndCode) {
                     if (!snakeList.get(myId).isDeadSnake()) {
                         dieMessage(myId, snakeList.get(myId));
-                        snakeList.get(myId).setSpeed(0);
-                        mainStage.getActors().removeValue(snakeList.get(myId), true);
+                        for (Snake snake : snakeList) {
+                            snake.setSpeed(0);
+                        }
+                    } else {
+                        System.out.println("unknown playscreen msg type");
                     }
+                    for (Snake snake : snakeList) mainStage.getActors().removeValue(snakeList.get(myId), true);
                 } else {
-                    System.out.println("unknown playscreen msg type");
+                    if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
+                    else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
                 }
-
             }
-//            for (Map<Integer, String> inputs : socket.getCurrentInputs()) {
-//                for (Snake snake : snakeList) {
-//                    if (inputs.get(snake.getId()) != null) {
-//                        switch (inputs.get(snake.getId())) {
-//                            case "A":
-//                                snake.turnLeft();
-//                                break;
-//                            case "D":
-//                                snake.turnRight();
-//                                break;
-//                            default:
-//                                Gdx.app.error("Inputs", "Unknown input");
-//                                break;
-//                        }
-//                        inputs.remove(snake.getId());
-//                    }
-//                }
-//            }
-        } else {
-            if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
-            else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
+            checkWallCollision(wall);
+            checkSnakeCollision();
+
         }
-        checkWallCollision(wall);
-        checkSnakeCollision();
     }
 
     private void placeWall(WallMessage msg) {
