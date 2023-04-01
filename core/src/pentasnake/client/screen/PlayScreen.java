@@ -179,12 +179,12 @@ public class PlayScreen implements Screen {
                     if (y2 < 0) y2 += Gdx.graphics.getHeight();
                     if ((Intersector.overlaps(new Circle(x, y, snake1head.radius),
                             new Circle(x2, y2, snake2part.radius)))) {
+                        if(!snake1.isDeadSnake()) dieMessage(i);
                         snake1.setDeadSnake(true);
-                        dieMessage(i);
                         snake1.setSpeed(0);
                         if (snake2part == snake2.getHead()) {
+                            if(!snake2.isDeadSnake()) dieMessage(j);
                             snake2.setDeadSnake(true);
-                            dieMessage(j);
                             snake2.setSpeed(0);
                         }
                         return;

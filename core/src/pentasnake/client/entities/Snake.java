@@ -85,6 +85,10 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     boolean deadSnake;
 
+    public boolean isDeadSnake() {
+        return deadSnake;
+    }
+
     public Snake(int x, int y, int radius, Color bodyColor, int id) {
         head = new SnakePart(x, y, radius, Color.ORANGE, initialDirection);
         this.parts = new SnapshotArray<>();
