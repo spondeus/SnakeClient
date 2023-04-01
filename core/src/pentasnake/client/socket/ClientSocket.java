@@ -113,13 +113,14 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof SnakeConstruct) type = "snakeConstruct";
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
         else if (msg instanceof PickupRemove) type = "pickupRemove";
+        else if (msg instanceof ScoreMessage) type = "score";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
         jsonObject.add("data", new JsonPrimitive(innerJson));
         String outerJson = gson.toJson(jsonObject);
         send(outerJson);
-        if(msg instanceof SnakeMove) ;
+        if (msg instanceof SnakeMove) ;
         else System.out.println("sent:" + jsonObject);
     }
 
@@ -129,7 +130,7 @@ public class ClientSocket extends WebSocketClient {
         int clientId = cId.getAsInt();
         JsonElement msgType = jsonObject.get("type");
         String type = msgType.getAsString();
-        if(!type.equals("snakeMove")) System.out.println(" got:" + s);
+        if (!type.equals("snakeMove")) System.out.println(" got:" + s);
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
@@ -141,14 +142,13 @@ public class ClientSocket extends WebSocketClient {
                         msg.setId(clientId);
                         msgQueue.add(msg);
                         return;
-                    }
-                    id = clientId;
+                    } else if (clientId < -1) {
+                        Message msg = new Message();
+                        msg.setId(clientId);
+                        msgQueue.add(msg);
+                        return;
+                    } else id = clientId;
                     break;
-                case "die":
-                    Message msg = new Message();
-                    msg.setId(clientId);
-                    msgQueue.add(msg);
-                    return;
                 default:
                     System.err.println("Unknown message type!");
 

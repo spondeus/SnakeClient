@@ -22,10 +22,7 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
-import pentasnake.client.messages.Message;
-import pentasnake.client.messages.Pickup;
-import pentasnake.client.messages.PickupRemove;
-import pentasnake.client.messages.SnakeMove;
+import pentasnake.client.messages.*;
 import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
@@ -144,7 +141,7 @@ public class PlayScreen implements Screen {
                     if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
                         collidedWithWall = true;
                         snake.setDeadSnake(true);
-                        dieMessage(i);
+                        dieMessage(i,snake);
                         snake.setSpeed(0);
                         return;
                     }
@@ -153,7 +150,9 @@ public class PlayScreen implements Screen {
         }
     }
 
-    private void dieMessage(int i) {
+    private void dieMessage(int i,Snake snake) {
+        ScoreMessage score=new ScoreMessage(snake.getPoints());
+        socket.writeMsg(i,score);
         Message deathMsg = new Message();
         deathMsg.setId(myId - 100);
         socket.writeMsg(i, deathMsg);
@@ -179,7 +178,7 @@ public class PlayScreen implements Screen {
                     if (y2 < 0) y2 += Gdx.graphics.getHeight();
                     if ((Intersector.overlaps(new Circle(x, y, snake1head.radius),
                             new Circle(x2, y2, snake2part.radius)))) {
-                        if(!snake1.isDeadSnake()) dieMessage(i);
+                        if(!snake1.isDeadSnake()) dieMessage(i,snake1);
                         snake1.setDeadSnake(true);
                         snake1.setSpeed(0);
                         if (snake2part == snake2.getHead()) {
