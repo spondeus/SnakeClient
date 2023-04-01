@@ -63,6 +63,8 @@ public class PlayScreen implements Screen {
     protected Wall wall;
     public boolean collidedWithWall;
 
+    private final int gameEndCode=999;
+
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -311,9 +313,11 @@ public class PlayScreen implements Screen {
                 else if (msg.getId() < -1) {
                     int snakeId = msg.getId() + 100;
                     snakeList.get(snakeId).setDeadSnake(true);
-                } else if (msg.getId() == 999) {
+                } else if (msg.getId() == gameEndCode) {
                     if (!snakeList.get(myId).isDeadSnake()) {
                         dieMessage(myId, snakeList.get(myId));
+                        snakeList.get(myId).setSpeed(0);
+                        mainStage.getActors().removeValue(snakeList.get(myId), true);
                     }
                 } else {
                     System.out.println("unknown playscreen msg type");
