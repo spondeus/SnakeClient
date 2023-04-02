@@ -310,14 +310,14 @@ public class PlayScreen implements Screen {
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
-                else if (msg.getId() == gameEndCode) {
-                    if (!snakeList.get(myId).isDeadSnake()) {
-                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
-                        for (Snake snake : snakeList) {
-                            snake.setSpeed(0);
-                        }
-                    }
-                } else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
+//                else if (msg.getId() == gameEndCode) {
+//                    if (!snakeList.get(myId).isDeadSnake()) {
+//                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
+//                        for (Snake snake : snakeList) {
+//                            snake.setSpeed(0);
+//                        }
+//                    }
+                else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
                     game.setScreen(new MenuScreen(game));
                 } else if (msg instanceof Death) {  // kill the snake
                     int snakeId = msg.getId();
