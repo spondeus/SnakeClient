@@ -21,10 +21,7 @@ import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.entities.SnakePart;
-import pentasnake.client.messages.Message;
-import pentasnake.client.messages.Pickup;
-import pentasnake.client.messages.PickupRemove;
-import pentasnake.client.messages.SnakeMove;
+import pentasnake.client.messages.*;
 import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
@@ -249,6 +246,24 @@ public class PlayScreen implements Screen {
                     else snakeList.get(snakeMove.getId()).turnRight();
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
+                else if (msg instanceof TimedPickup){
+                    TimedPickup tp = (TimedPickup) msg;
+                    for(Snake snake: snakeList){
+                        if(snake.getId() == tp.getId())
+                            if(tp.isGhost())
+                                snake.setGhostModeActive(tp.isEffect());
+                            else{
+                                if(tp.isEffect()){
+                                    snake.setSpeed(0);
+                                    snake.getHead().setColor(Color.CYAN);
+                                }
+                                else {
+                                    snake.setSpeed(Snake.getDefaultSpeed());
+                                    snake.getHead().setColor(Color.ORANGE);
+                                }
+                            }
+                    }
+                }
 
             }
 //            for (Map<Integer, String> inputs : socket.getCurrentInputs()) {
