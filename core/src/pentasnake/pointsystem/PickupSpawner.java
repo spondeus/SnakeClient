@@ -23,14 +23,15 @@ public class PickupSpawner implements PickupHandler {
     public static int webCount = 0;
     public static int iceCount = 0;
     public static int ghostCount = 0;
-
     float padding = 60f;
     private static final float INITIAL_SPAWN_DELAY = 3f; // first spawn in 3 seconds after game starts
-    private static final float SPAWN_INTERVAL = 10f; // 10 seconds between pickups spawn
+   // private static final float SPAWN_INTERVAL = 10f; // 10 seconds between pickups spawn
     private static final int MAX_SPAWN_PER_INTERVAL = 1; // 1 pickup at a time
     private float spawnDelay = INITIAL_SPAWN_DELAY;
     private float timeSinceLastSpawn = 0f;
     private int numPickupsToSpawn = 1;
+
+    private static int pickupId = 0;
 
     public PickupSpawner(Stage mainStage, SnapshotArray<WallPattern> wallList) {
         this.mainStage = mainStage;
@@ -39,38 +40,22 @@ public class PickupSpawner implements PickupHandler {
     }
 
     @Override
-    public void getNewPickup() {
+    public Pickup getNewPickup() {
 
         final float HEIGHT = Gdx.graphics.getHeight();
         final float WIDTH = Gdx.graphics.getWidth();
         float x, y;
 
-        if (timeSinceLastSpawn >= spawnDelay && currentPickupsOnScreen < MAX_TOTAL_PICKUPS) {
-            for (int i = 0; i < numPickupsToSpawn; i++) {
+        if (currentPickupsOnScreen < MAX_TOTAL_PICKUPS) {
                 x = MathUtils.random(padding, WIDTH - padding);
                 y = MathUtils.random(padding, HEIGHT - padding);
-                Pickup item = PickupFactory.createRandomPickup(x, y, mainStage, pickups);
-                if (item != null) {
-                    items.add(item);
-                    currentPickupsOnScreen++;
-                }
-                if (currentPickupsOnScreen >= MAX_TOTAL_PICKUPS) {
-                    break;
-                }
-                timeSinceLastSpawn = 0f;
-                numPickupsToSpawn = Math.min(numPickupsToSpawn + 1, MAX_SPAWN_PER_INTERVAL);
-                spawnDelay = SPAWN_INTERVAL;
-
-
+                return PickupFactory.createRandomPickup(x, y, mainStage, pickups);
             }
-            timeSinceLastSpawn = 0f;
-            numPickupsToSpawn = Math.min(numPickupsToSpawn + 1, MAX_SPAWN_PER_INTERVAL);
-            spawnDelay = SPAWN_INTERVAL;
-        }
+        return null;
     }
 
-    public SnapshotArray<PickupItems> getPickups() {
-        return pickups;
+    public SnapshotArray<Pickup> getPickups() {
+        return items;
     }
 
     @Override
@@ -107,7 +92,7 @@ public class PickupSpawner implements PickupHandler {
                 return null;
             }
             Type type = Type.getRandomType();
-            switch (type) {
+            /*switch (type) {
                 case FOOD:
                     if (foodCount > Type.FOOD.getMaxAmount() || !MathUtils.randomBoolean(Type.FOOD.getSpawnRate())) {
                         return null;
@@ -140,10 +125,10 @@ public class PickupSpawner implements PickupHandler {
                     break;
                 default:
                     return null;
-            }
+            }*/
+            pickupId++;
             Vector2 position = new Vector2(x, y);
-            Pickup pickup = new Pickup(type, 1, position);
-            items.add(pickup);
+            Pickup pickup = new Pickup(type, pickupId, position);
             return pickup;
         }
     }

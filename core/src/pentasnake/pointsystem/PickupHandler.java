@@ -1,7 +1,9 @@
 package pentasnake.pointsystem;
 
+import pentasnake.client.messages.Pickup;
+
 public interface PickupHandler {
 
-    void getNewPickup();
+    Pickup getNewPickup();
     void pickupCollected(PickupItems item);
 }

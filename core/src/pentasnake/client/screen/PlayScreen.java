@@ -50,6 +50,8 @@ public class PlayScreen implements Screen {
     private final int myId;
     private boolean single;
     MySnapshotArray pickups = new MySnapshotArray();
+
+    SnapshotArray<Pickup> pickupList = new SnapshotArray<>();
     List<String> pickupCons;
 
     ClientSocket socket;
@@ -105,8 +107,10 @@ public class PlayScreen implements Screen {
 
         if(localClient==null){
             pickupSpawner = new PickupSpawner(mainStage, wallList);
-            pickupSpawner.getNewPickup();
-            pickups=(MySnapshotArray) pickupSpawner.getPickups();
+            for (int i = 0; i < 10; i++) {
+                putNewPickup(pickupSpawner.getNewPickup());
+            }
+            pickupList = pickupSpawner.getPickups();
         }
 
         mainStage.addActor(snakeList.get(0));
