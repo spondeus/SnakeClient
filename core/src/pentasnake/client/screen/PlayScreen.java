@@ -65,6 +65,8 @@ public class PlayScreen implements Screen {
     protected Wall wall;
     public boolean collidedWithWall;
 
+    private float delta;
+
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -108,7 +110,7 @@ public class PlayScreen implements Screen {
 
         if(localClient==null){
             pickupSpawner = new PickupSpawner(mainStage, wallList);
-            pickupSpawner.spawnPickups();
+            pickupSpawner.spawnPickups(delta);
             pickups=(MySnapshotArray) pickupSpawner.getPickups();
         }
 
