@@ -312,7 +312,9 @@ public class PlayScreen implements Screen {
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
                 else if (msg.getId() < -1) {
                     int snakeId = msg.getId() + 100;
+                    snakeList.get(snakeId).setSpeed(0);
                     snakeList.get(snakeId).setDeadSnake(true);
+                    mainStage.getActors().removeValue(snakeList.get(snakeId), true);
                 } else if (msg.getId() == gameEndCode) {
                     if (!snakeList.get(myId).isDeadSnake()) {
                         dieMessage(myId, snakeList.get(myId));   // kill the last snake
