@@ -108,7 +108,7 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
         else if (msg instanceof PickupRemove) type = "pickupRemove";
         else if (msg instanceof ScoreMessage) type = "score";
-        else if(msg instanceof Death) type="death";
+        else if (msg instanceof Death) type = "death";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
@@ -129,8 +129,8 @@ public class ClientSocket extends WebSocketClient {
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
-        else if(type.equals("death")) handleDieMsg(clientId);
-        else handleIdMsg(clientId, type,jsonObject);
+        else if (type.equals("death")) handleDieMsg(clientId);
+        else handleIdMsg(clientId, type, jsonObject);
     }
 
     private void handleDieMsg(int clientId) {
@@ -148,14 +148,20 @@ public class ClientSocket extends WebSocketClient {
                     msg.setId(clientId);
                     msgQueue.add(msg);
                     return;
-                } else if (clientId ==999) {   //end game
+                } else if (clientId == 999) {   //end game
                     Message msg = new Message();
                     msg.setId(999);
                     msgQueue.add(msg);
                     return;
+                } else if (clientId == 1000) {   //end game
+                    Message msg = new Message();
+                    msg.setId(1000);
+                    msgQueue.add(msg);
+                    return;
                 } else {   // got id
                     id = clientId;
-                };
+                }
+                ;
                 break;
             default:
                 System.err.println("Unknown message type!");
@@ -166,7 +172,7 @@ public class ClientSocket extends WebSocketClient {
 
     private void handleWallMsg(JsonObject jsonObject) {
         String dataStr = jsonObject.get("data").getAsString();
-        WallMessage wallMessage= gson.fromJson(dataStr, WallMessage.class);
+        WallMessage wallMessage = gson.fromJson(dataStr, WallMessage.class);
         msgQueue.add(wallMessage);
     }
 

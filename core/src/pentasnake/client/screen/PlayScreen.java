@@ -311,7 +311,7 @@ public class PlayScreen implements Screen {
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
                 else if (msg.getId() == gameEndCode) {
-                    if (!snakeList.get(myId).isDeadSnake()) {
+                    if (mainStage.getActors().contains(snakeList.get(myId), true)) {
                         snakeList.get(myId).setSpeed(0);
 //                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
 //                        for (Snake snake : snakeList) {
@@ -319,7 +319,9 @@ public class PlayScreen implements Screen {
 //                        }
                     }
                 } else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
+                    dieMessage(myId,snakeList.get(myId));
                     game.setScreen(new MenuScreen(game));
+                    return;
                 } else if (msg instanceof Death) {  // kill the snake
                     int snakeId = msg.getId();
                     snakeList.get(snakeId).setSpeed(0);

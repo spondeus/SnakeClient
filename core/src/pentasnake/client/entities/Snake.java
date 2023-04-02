@@ -163,6 +163,7 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     public void act(float delta) {
         if (selfCollision()) return;
+        if(speed==0) return;
         if (newSpeed != speed) {
             if (newSpeed > speed) speed++;
             else speed--;
