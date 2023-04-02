@@ -129,10 +129,10 @@ public class PlayScreen implements Screen {
     }
 
     private void checkWallCollision(Wall wall) {
-        for (int i = 0; i < snakeList.size(); i++) {
-            Snake snake = snakeList.get(i);
+//        for (int i = 0; i < snakeList.size(); i++) {
+            Snake snake = snakeList.get(myId);
             if (snake.isGhostModeActive() || snake.isDeadSnake()) {
-                continue;
+                return;//continue;
             }
             for (WallPattern pattern : wall.getParts()) {
                 for (WallPart part : pattern.getParts()) {
@@ -143,14 +143,14 @@ public class PlayScreen implements Screen {
                     if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
                         collidedWithWall = true;
                         snake.setDeadSnake(true);
-                        dieMessage(i, snake);
+                        dieMessage(myId, snake);
                         snake.setSpeed(0);
                         mainStage.getActors().removeValue(snake, true);
                         return;
                     }
                 }
             }
-        }
+//        }
     }
 
     private void dieMessage(int i, Snake snake) {
