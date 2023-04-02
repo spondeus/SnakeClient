@@ -156,8 +156,8 @@ public class PlayScreen implements Screen {
     private void dieMessage(int i, Snake snake) {
         ScoreMessage score = new ScoreMessage(snake.getPoints());
         socket.writeMsg(i, score);
-        Message deathMsg = new Message();
-        deathMsg.setId(myId - 100);
+        Message deathMsg = new Death();
+        deathMsg.setId(myId);
         socket.writeMsg(i, deathMsg);
     }
 
@@ -318,8 +318,8 @@ public class PlayScreen implements Screen {
                         }
                     }
                     for (Snake snake : snakeList) mainStage.getActors().removeValue(snakeList.get(myId), true);
-                }else if(msg instanceof Message){  // kill the snake
-                    int snakeId = msg.getId()+100;
+                }else if(msg instanceof Death){  // kill the snake
+                    int snakeId = msg.getId();
                     snakeList.get(snakeId).setSpeed(0);
                     snakeList.get(snakeId).setDeadSnake(true);
                     mainStage.getActors().removeValue(snakeList.get(snakeId), true);

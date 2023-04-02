@@ -108,6 +108,7 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof SnakeColorChange) type = "snakeColorChange";
         else if (msg instanceof PickupRemove) type = "pickupRemove";
         else if (msg instanceof ScoreMessage) type = "score";
+        else if(msg instanceof Death) type="death";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
@@ -128,8 +129,16 @@ public class ClientSocket extends WebSocketClient {
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
+        else if(type.equals("death")) handleDieMsg(clientId);
         else handleIdMsg(clientId, type,jsonObject);
     }
+
+    private void handleDieMsg(int clientId) {
+        Message msg = new Message();
+        msg.setId(clientId);
+        msgQueue.add(msg);
+    }
+
 
     private void handleIdMsg(int clientId, String type, JsonObject jsonObject) {
         switch (type) {
@@ -137,12 +146,6 @@ public class ClientSocket extends WebSocketClient {
                 if (clientId == -1) {  // constructs sent
                     Message msg = new Message();
                     msg.setId(clientId);
-                    msgQueue.add(msg);
-                    return;
-                } else if (!jsonObject.get("data").isJsonNull()) {    // death
-                    int innerId = jsonObject.get("data").getAsJsonObject().get("id").getAsInt();
-                    Message msg = new Message();
-                    msg.setId(innerId);
                     msgQueue.add(msg);
                     return;
                 } else if (clientId ==999) {   //end game
