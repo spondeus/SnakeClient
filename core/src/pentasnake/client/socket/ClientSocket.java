@@ -3,21 +3,15 @@ package pentasnake.client.socket;
 
 import com.badlogic.gdx.Gdx;
 
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.graphics.Color;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.messages.*;
-import pentasnake.pointsystem.Food;
-import pentasnake.pointsystem.PickupItems;
-import pentasnake.client.screen.MenuScreen;
 
 import java.net.URI;
 import java.util.*;
@@ -134,30 +128,35 @@ public class ClientSocket extends WebSocketClient {
         if (type.startsWith("snake")) handleSnakeMsg(jsonObject);
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
-        else {
-            switch (type) {
-                case "id":
-                    if (clientId == -1) {
-                        Message msg = new Message();
-                        msg.setId(clientId);
-                        msgQueue.add(msg);
-                        return;
-                    } else if (clientId < -1) {
-                        Message msg = new Message();
-                        msg.setId(clientId);
-                        msgQueue.add(msg);
-                        return;
-                    } else if (clientId==999) {
-                        Message msg = new Message();
-                        msg.setId(999);
-                        msgQueue.add(msg);
-                        return;
-                    } else id = clientId;
-                    break;
-                default:
-                    System.err.println("Unknown message type!");
+        else handleIdMsg(clientId, type,jsonObject);
+    }
 
-            }
+    private void handleIdMsg(int clientId, String type, JsonObject jsonObject) {
+        switch (type) {
+            case "id":
+                if (clientId == -1) {  // constructs sent
+                    Message msg = new Message();
+                    msg.setId(clientId);
+                    msgQueue.add(msg);
+                    return;
+                } else if (!jsonObject.get("data").isJsonNull()) {    // death
+                    int innerId = jsonObject.get("data").getAsJsonObject().get("id").getAsInt();
+                    Message msg = new Message();
+                    msg.setId(innerId);
+                    msgQueue.add(msg);
+                    return;
+                } else if (clientId ==999) {   //end game
+                    Message msg = new Message();
+                    msg.setId(999);
+                    msgQueue.add(msg);
+                    return;
+                } else {   // got id
+                    id = clientId;
+                };
+                break;
+            default:
+                System.err.println("Unknown message type!");
+
         }
     }
 

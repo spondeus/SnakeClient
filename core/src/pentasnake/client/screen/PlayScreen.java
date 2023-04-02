@@ -310,21 +310,21 @@ public class PlayScreen implements Screen {
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
-                else if (msg.getId() < -1) {
-                    int snakeId = msg.getId() + 100;
-                    snakeList.get(snakeId).setSpeed(0);
-                    snakeList.get(snakeId).setDeadSnake(true);
-                    mainStage.getActors().removeValue(snakeList.get(snakeId), true);
-                } else if (msg.getId() == gameEndCode) {
+                else if (msg.getId() == gameEndCode) {
                     if (!snakeList.get(myId).isDeadSnake()) {
                         dieMessage(myId, snakeList.get(myId));   // kill the last snake
                         for (Snake snake : snakeList) {
                             snake.setSpeed(0);
                         }
-                    } else {
-                        System.out.println("unknown playscreen msg type");
                     }
                     for (Snake snake : snakeList) mainStage.getActors().removeValue(snakeList.get(myId), true);
+                }else if(msg instanceof Message){  // kill the snake
+                    int snakeId = msg.getId()+100;
+                    snakeList.get(snakeId).setSpeed(0);
+                    snakeList.get(snakeId).setDeadSnake(true);
+                    mainStage.getActors().removeValue(snakeList.get(snakeId), true);
+                } else {
+                    System.out.println("unknown playscreen msg type");
                 }
             }
             checkWallCollision(wall);
