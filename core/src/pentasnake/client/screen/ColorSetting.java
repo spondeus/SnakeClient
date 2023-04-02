@@ -36,10 +36,13 @@ public class ColorSetting implements Screen  {
 
     public ColorSetting(SnakeGame game) {
         this.game = game;
+
     }
 
     @Override
     public void show() {
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -48,17 +51,8 @@ public class ColorSetting implements Screen  {
         Gdx.gl.glClearColor(0, 2, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
-        addSettingsButton(Color.BLUE, "Collors/blue2.png",  0.25,0.2);
-        addSettingsButton(Color.BROWN, "Collors/brown2.png", 0.4, 0.2);
-        addSettingsButton(Color.GRAY, "Collors/gray2.png", 0.55, 0.2);
-        addSettingsButton(Color.GREEN, "Collors/green2.png", 0.25, 0.4);
-        addSettingsButton(Color.ORANGE, "Collors/orange3.png", 0.4, 0.4);
-        addSettingsButton(Color.PINK, "Collors/pink2.png", 0.55, 0.4);
-        addSettingsButton(Color.PURPLE, "Collors/purple2.png", 0.25, 0.6);
-        addSettingsButton(Color.RED, "Collors/red2.jpg", 0.4, 0.6);
-        addSettingsButton(Color.YELLOW, "Collors/yellow.png", 0.55, 0.6);
         stage.draw();
-        Gdx.input.setInputProcessor(stage);
+
     }
 
     private void addSettingsButton(final Color color, final String colorPath, double x, double y){
@@ -84,6 +78,15 @@ public class ColorSetting implements Screen  {
         verticalUnit = (height)/13.0f;
         buttonHeight = verticalUnit * 3;
         buttonWeight = horizontalUnit*2;
+        addSettingsButton(Color.BLUE, "Collors/blue2.png",  0.25,0.2);
+        addSettingsButton(Color.BROWN, "Collors/brown2.png", 0.4, 0.2);
+        addSettingsButton(Color.GRAY, "Collors/gray2.png", 0.55, 0.2);
+        addSettingsButton(Color.GREEN, "Collors/green2.png", 0.25, 0.4);
+        addSettingsButton(Color.ORANGE, "Collors/orange3.png", 0.4, 0.4);
+        addSettingsButton(Color.PINK, "Collors/pink2.png", 0.55, 0.4);
+        addSettingsButton(Color.PURPLE, "Collors/purple2.png", 0.25, 0.6);
+        addSettingsButton(Color.RED, "Collors/red2.jpg", 0.4, 0.6);
+        addSettingsButton(Color.YELLOW, "Collors/yellow.png", 0.55, 0.6);
     }
 
     @Override
@@ -104,6 +107,7 @@ public class ColorSetting implements Screen  {
     public void dispose() {
 //        spriteBatch.dispose();
         stage.dispose();
+        Gdx.input.setInputProcessor(null);
     }
 
     public void update() {
