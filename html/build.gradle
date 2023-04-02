@@ -87,6 +87,9 @@ tasks.checkGwt.dependsOn(addSource)
 checkGwt.war = file("war")
 
 sourceCompatibility = 1.8
+dependencies {
+    implementation project(path: ':core')
+}
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-html"

@@ -19,7 +19,7 @@ public class MenuScreen implements Screen {
 
     private final SnakeGame game;
 
-    private final Viewport viewport = new ScreenViewport();
+    private Viewport viewport = new ScreenViewport();
     private final Stage stage = new Stage(viewport);
     private final Stage stageSnakes = new Stage(viewport);
 
@@ -55,8 +55,6 @@ public class MenuScreen implements Screen {
     }
 
     public void show() {
-
-
         table.setFillParent(true);
         stage.addActor(table);
 
@@ -121,6 +119,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
         viewport.update(width, height, true);
         stageSnakes.clear();
         snakesPrint(width, height);
@@ -140,7 +139,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        viewport=null;
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.messages.*;
+import pentasnake.client.screen.MenuScreen;
 
 import java.net.URI;
 import java.util.*;
@@ -240,7 +241,7 @@ public class ClientSocket extends WebSocketClient {
     public void onClose(int i, String s, boolean b) {
         System.out.println("disconnected");
         Gdx.app.error("Client", "no server");
-        game.setScreen(game.menu);
+//        game.setScreen(new MenuScreen(game));
     }
 
     @Override
