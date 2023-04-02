@@ -12,9 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import pentasnake.client.Repository.Repository;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.score.ResultClass;
+import pentasnake.client.messages.Message;
+import pentasnake.client.messages.Points;
+import pentasnake.client.messages.Top10;
+import pentasnake.client.socket.ClientSocket;
+import pentasnake.client.socket.Communication;
+
+import java.util.ArrayList;
+import java.util.Queue;
 
 public class ScoreboardScreen implements Screen {
 
@@ -28,9 +35,9 @@ public class ScoreboardScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("skin/dark-hdpi/Holo-dark-hdpi.json"), atlas);
     private final Game game;
 
-    private java.util.List<ResultClass> results;
+    private java.util.List<ResultClass> results = new ArrayList<>();
 
-    Repository repository=new Repository();
+    Queue<Message> msgQueue;
 
     public ScoreboardScreen(Game game) {
         this.game = game;
@@ -43,9 +50,19 @@ public class ScoreboardScreen implements Screen {
         scoreboardTitle.setPosition(Gdx.graphics.getWidth() / 2f - scoreboardTitle.getWidth() + 20, Gdx.graphics.getHeight() / 1.1f);
         stage.addActor(scoreboardTitle);
 
-        results=repository.getTop10BasedOnScore();
+        ClientSocket client = new Communication((SnakeGame) game).getWebsocketClient();
+        Message msg = new Points();
+        msg.setId(client.getId());
+        while(!client.isOpen()) wait(client);
+        client.writeMsg(client.getId(), msg);
+        msgQueue = client.getMsgQueue();
+        while (msgQueue.isEmpty()) wait(client);
+        while (!msgQueue.isEmpty()) {
+            Message inMsg = msgQueue.poll();
+            if (inMsg instanceof Top10) results = new ArrayList<>(((Top10) inMsg).getResults());
+        }
 
-        for (ResultClass result: results) {
+        for (ResultClass result : results) {
             TextButton labelName = new TextButton(result.getName(), skin);
             tableName.add(labelName).width(300).height(60).padBottom(5);
             tableName.row();
@@ -86,6 +103,15 @@ public class ScoreboardScreen implements Screen {
         });
         stageBack.addActor(backButton);
         Gdx.input.setInputProcessor(stageBack);
+
+    }
+
+    private static void wait(ClientSocket client) {
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void update() {

@@ -56,48 +56,6 @@ public class ClientSocket extends WebSocketClient {
     @Override
     public void onMessage(String s) {
         readMsg(s);
-//        writeMsg(1, new SnakeMove(true));
-
-//        if (s.startsWith("id")) {
-//            String[] msgSPlt = s.split("#");
-//            id = Integer.parseInt(msgSPlt[1]);
-//        }
-//
-//        if (s.startsWith("input")) {
-//            Gdx.app.log("Input", s);
-//            final String[] split = s.split("#");
-//            String input = split[1];
-//            int id = Integer.parseInt(split[2]);
-//            Map<Integer, String> newInput = new HashMap<>();
-//            newInput.put(id, input);
-//
-//            currentInputs.add(newInput);
-//        }
-//
-//        if (!s.contains("#"))
-//            Gdx.app.log("Server", s);
-//        if (s.startsWith("cons")) {
-//            constMsg = s;
-//            cons = true;
-//        }
-
-//        if (s.startsWith("pickup")) {
-//            Gdx.app.log("Pickup", msg);
-//            msg = s.substring("pickup#".length());
-//
-//            Timer.schedule(new Timer.Task() {
-//                @Override
-//                public void run() {
-//                    pickups.add(msg);
-//                    System.out.println(pickups);
-//                }
-//            }, 100).run();
-//        }
-//
-//        if (s.startsWith("id")) {
-//            String[] msgSPlt = s.split("#");
-//            id = Integer.parseInt(msgSPlt[1]);
-//        }
     }
 
     public void writeMsg(int id, Message msg) {
@@ -110,6 +68,7 @@ public class ClientSocket extends WebSocketClient {
         else if (msg instanceof PickupRemove) type = "pickupRemove";
         else if (msg instanceof ScoreMessage) type = "score";
         else if (msg instanceof Death) type = "death";
+        else if (msg instanceof Points) type = "points";
         else type = "id";
         jsonObject.add("type", new JsonPrimitive(type));
         String innerJson = gson.toJson(msg);
@@ -131,7 +90,14 @@ public class ClientSocket extends WebSocketClient {
         else if (type.startsWith("pickup")) handlePickupMsg(jsonObject);
         else if (type.startsWith("wall")) handleWallMsg(jsonObject);
         else if (type.equals("death")) handleDieMsg(clientId);
+        else if (type.equals("top10")) handleTopMsg(jsonObject);
         else handleIdMsg(clientId, type, jsonObject);
+    }
+
+    private void handleTopMsg(JsonObject jsonObject) {
+        String dataStr = jsonObject.get("data").getAsString();
+        Top10 top10Message = gson.fromJson(dataStr, Top10.class);
+        msgQueue.add(top10Message);
     }
 
     private void handleDieMsg(int clientId) {
@@ -162,11 +128,9 @@ public class ClientSocket extends WebSocketClient {
                 } else {   // got id
                     id = clientId;
                 }
-                ;
                 break;
             default:
                 System.err.println("Unknown message type!");
-
         }
     }
 
