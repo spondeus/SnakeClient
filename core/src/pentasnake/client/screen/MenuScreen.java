@@ -34,9 +34,6 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(SnakeGame game) {
         this.game = game;
-    }
-
-    public void show() {
         addButton("ST(A)RT").addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,6 +52,10 @@ public class MenuScreen implements Screen {
                 game.setScreen(new ScoreboardScreen(game));
             }
         });
+    }
+
+    public void show() {
+
 
         table.setFillParent(true);
         stage.addActor(table);
