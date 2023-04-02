@@ -23,6 +23,15 @@ public class Ghost extends PickupItems {
         type = Type.GHOST;
     }
 
+    public Ghost(float x, float y, Stage stage) {
+        super(x, y, stage, 0);
+        setPoints(0);
+        this.region = new TextureRegion(new Texture(Gdx.files.internal("ghost.png")));
+        setBoundaryRectangle();
+
+        type = Type.GHOST;
+    }
+
     @Override
     public void applyEffect(Snake snake) {
         snake.ghostMode();

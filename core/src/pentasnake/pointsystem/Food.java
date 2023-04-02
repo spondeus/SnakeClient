@@ -7,16 +7,19 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import pentasnake.client.entities.Snake;
 
 public class Food extends PickupItems {
-    public final int MAX_FOOD = 6;
 
-    public int getMAX_FOOD() {
-        return MAX_FOOD;
-    }
-
-    Type type = Type.FOOD;
+    Type type;
     private static int count = 0;
     public static int getCount() {
         return count;
+    }
+
+    public Food(float x, float y, Stage stage) {
+        super(x, y, stage, 0);
+        setPoints(50);
+        this.region = new TextureRegion(new Texture(Gdx.files.internal("food.png")));
+        setBoundaryRectangle();
+        type= Type.FOOD;
     }
 
     public Food(float x, float y, Stage stage, int id) {
@@ -24,7 +27,6 @@ public class Food extends PickupItems {
         setPoints(50);
         this.region = new TextureRegion(new Texture(Gdx.files.internal("food.png")));
         setBoundaryRectangle();
-
         type= Type.FOOD;
     }
     @Override

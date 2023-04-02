@@ -22,4 +22,8 @@ public enum Type {
     public float getSpawnRate() {
         return spawnRate;
     }
+
+    public static Type getRandomType() {
+        return values()[(int) (Math.random() * values().length)];
+    }
 }

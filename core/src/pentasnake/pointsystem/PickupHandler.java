@@ -2,6 +2,6 @@ package pentasnake.pointsystem;
 
 public interface PickupHandler {
 
-    void spawnPickups(float delta);
+    void getNewPickup();
     void pickupCollected(PickupItems item);
 }

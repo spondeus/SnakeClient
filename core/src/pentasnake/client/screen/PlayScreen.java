@@ -1,7 +1,6 @@
 package pentasnake.client.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -9,18 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
-import pentasnake.client.entities.SnakePart;
 import pentasnake.client.messages.Message;
 import pentasnake.client.messages.Pickup;
 import pentasnake.client.messages.PickupRemove;
@@ -110,7 +105,7 @@ public class PlayScreen implements Screen {
 
         if(localClient==null){
             pickupSpawner = new PickupSpawner(mainStage, wallList);
-            pickupSpawner.spawnPickups(delta);
+            pickupSpawner.getNewPickup();
             pickups=(MySnapshotArray) pickupSpawner.getPickups();
         }
 
@@ -129,6 +124,7 @@ public class PlayScreen implements Screen {
                     float y2 = snake.getHead().y % Gdx.graphics.getHeight();
                     if (y2 < 0) y2 += Gdx.graphics.getHeight();
                     if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
+                        snake.getHead().setColor(Color.RED);
                         collidedWithWall = true;
                         snake.setDeadSnake(true);
                         snake.setSpeed(0);
