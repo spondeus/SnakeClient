@@ -134,7 +134,7 @@ public class ClientSocket extends WebSocketClient {
     }
 
     private void handleDieMsg(int clientId) {
-        Message msg = new Message();
+        Death msg = new Death();
         msg.setId(clientId);
         msgQueue.add(msg);
     }
