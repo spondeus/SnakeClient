@@ -61,6 +61,7 @@ public class ScoreboardScreen implements Screen {
             Message inMsg = msgQueue.poll();
             if (inMsg instanceof Top10) results = new ArrayList<>(((Top10) inMsg).getResults());
         }
+        client.close();
 
         for (ResultClass result : results) {
             TextButton labelName = new TextButton(result.getName(), skin);
