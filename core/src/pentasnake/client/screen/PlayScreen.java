@@ -130,26 +130,26 @@ public class PlayScreen implements Screen {
 
     private void checkWallCollision(Wall wall) {
 //        for (int i = 0; i < snakeList.size(); i++) {
-            Snake snake = snakeList.get(myId);
-            if (snake.isGhostModeActive() || snake.isDeadSnake()) {
-                return;//continue;
-            }
-            for (WallPattern pattern : wall.getParts()) {
-                for (WallPart part : pattern.getParts()) {
-                    float x2 = snake.getHead().x % Gdx.graphics.getWidth();
-                    if (x2 < 0) x2 += Gdx.graphics.getWidth();
-                    float y2 = snake.getHead().y % Gdx.graphics.getHeight();
-                    if (y2 < 0) y2 += Gdx.graphics.getHeight();
-                    if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
-                        collidedWithWall = true;
-                        snake.setDeadSnake(true);
-                        dieMessage(myId, snake);
-                        snake.setSpeed(0);
-                        mainStage.getActors().removeValue(snake, true);
-                        return;
-                    }
+        Snake snake = snakeList.get(myId);
+        if (snake.isGhostModeActive() || snake.isDeadSnake()) {
+            return;//continue;
+        }
+        for (WallPattern pattern : wall.getParts()) {
+            for (WallPart part : pattern.getParts()) {
+                float x2 = snake.getHead().x % Gdx.graphics.getWidth();
+                if (x2 < 0) x2 += Gdx.graphics.getWidth();
+                float y2 = snake.getHead().y % Gdx.graphics.getHeight();
+                if (y2 < 0) y2 += Gdx.graphics.getHeight();
+                if ((Intersector.overlaps(new Circle(x2, y2, snake.getHead().radius), part))) {
+                    collidedWithWall = true;
+                    snake.setDeadSnake(true);
+                    dieMessage(myId, snake);
+                    snake.setSpeed(0);
+                    mainStage.getActors().removeValue(snake, true);
+                    return;
                 }
             }
+        }
 //        }
     }
 
@@ -317,8 +317,9 @@ public class PlayScreen implements Screen {
                             snake.setSpeed(0);
                         }
                     }
-                    for (Snake snake : snakeList) mainStage.getActors().removeValue(snakeList.get(myId), true);
-                }else if(msg instanceof Death){  // kill the snake
+                } else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
+                    game.setScreen(new MenuScreen(game));
+                } else if (msg instanceof Death) {  // kill the snake
                     int snakeId = msg.getId();
                     snakeList.get(snakeId).setSpeed(0);
                     snakeList.get(snakeId).setDeadSnake(true);
