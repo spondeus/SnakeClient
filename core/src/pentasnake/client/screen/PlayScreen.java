@@ -315,7 +315,7 @@ public class PlayScreen implements Screen {
                     snakeList.get(snakeId).setDeadSnake(true);
                 } else if (msg.getId() == gameEndCode) {
                     if (!snakeList.get(myId).isDeadSnake()) {
-                        dieMessage(myId, snakeList.get(myId));
+                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
                         for (Snake snake : snakeList) {
                             snake.setSpeed(0);
                         }
@@ -323,13 +323,13 @@ public class PlayScreen implements Screen {
                         System.out.println("unknown playscreen msg type");
                     }
                     for (Snake snake : snakeList) mainStage.getActors().removeValue(snakeList.get(myId), true);
-                } else {
-                    if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
-                    else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
                 }
             }
             checkWallCollision(wall);
             checkSnakeCollision();
+        } else {
+            if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
+            else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
 
         }
     }
