@@ -113,7 +113,7 @@ public class PlayScreen implements Screen {
         for (int i = 0; i < snakeList.size(); i++) {
             Snake snake = snakeList.get(i);
 //            for (SnakePart part : snake.getParts()) {
-            switch (myId) {
+            switch (snake.getId()) {
                 case 1:
                     snake.getHead().rotate(180);
                     break;
