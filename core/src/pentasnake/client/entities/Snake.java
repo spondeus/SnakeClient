@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.badlogic.gdx.utils.Timer;
 import pentasnake.client.screen.PlayScreen;
 import pentasnake.pointsystem.PickupItems;
@@ -95,13 +96,39 @@ public class Snake extends Actor implements Comparable<Snake> {
         this.parts.begin();
         this.parts.add(head);
         for (int i = 1; i <= initialParts; i++) {
-            x -= 2 * radius;
-            y = y;
+            switch (id) {
+                case 0:
+                    x -= 2 * radius;
+                    break;
+                case 1:
+                case 4:
+                    x += 2 * radius;
+                    break;
+                case 2:
+                    y += 2 * radius;
+                    break;
+                case 3:
+                    y -= 2 * radius;
+                    break;
+            }
             SnakePart body = new SnakePart(x, y, radius, bodyColor, initialDirection);
             this.parts.add(body);
         }
-        x -= 1.5 * radius;
-        y = y;
+        switch (id) {
+            case 0:
+                x -= 1.5 * radius;
+                break;
+            case 1:
+            case 4:
+                x += 1.5 * radius;
+                break;
+            case 2:
+                y += 1.5 * radius;
+                break;
+            case 3:
+                y -= 1.5 * radius;
+                break;
+        }
         SnakePart tail = new SnakePart(x, y, radius / 2.0f, bodyColor, initialDirection);
         this.parts.add(tail);
         this.parts.end();
@@ -144,7 +171,7 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     private boolean selfCollision() {
-         // checks for self collision
+        // checks for self collision
         if (!ghostModeActive) {
             for (int i = 0; i < this.parts.size; i++) {
                 for (int j = 0; j < this.parts.size; j++) {
@@ -152,7 +179,7 @@ public class Snake extends Actor implements Comparable<Snake> {
                     if (this.parts.get(i).overlaps(this.parts.get(j))) {
                         colliders.add(parts.get(i));
                         colliders.add(parts.get(j));
-                        speed=0;
+                        speed = 0;
                         return true;
                     }
                 }
@@ -163,7 +190,7 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     public void act(float delta) {
         if (selfCollision()) return;
-        if(speed==0) return;
+        if (speed == 0) return;
         if (newSpeed != speed) {
             if (newSpeed > speed) speed++;
             else speed--;
