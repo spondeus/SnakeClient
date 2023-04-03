@@ -231,7 +231,7 @@ public class PlayScreen implements Screen {
             Label label = pointsLabel.get(i);
             //   Integer index=points.get(i);
             Snake mySnake = snakeList.get(i);
-            label.setText(mySnake.getName() + ":" + mySnake.getPoints() + "p");
+            label.setText(mySnake.getPoints() + "p");
             label.setColor(mySnake.getParts().get(1).getColor());
         }
     }
@@ -350,6 +350,7 @@ public class PlayScreen implements Screen {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                    localClient.getWebsocketClient().close();
                     game.setScreen(new MenuScreen(game));
                     return;
                 } else if (msg instanceof Death) {  // kill the snake
@@ -452,14 +453,11 @@ public class PlayScreen implements Screen {
                     pickup.applyEffect(snake);
                     pickups.removeValue(pickup, true);
                 } else {
-//                        if ( snake.isUnderPicking(pickup.getId())) continue;
-//                        snake.addPickupUnderPicking(pickup.getId());
-
                     pickup.collectItem(snake);
                     pickup.applyEffect(snake);
-                    pickups.removeValue(pickup, true);
                     if(pickup instanceof Food || pickup instanceof  Poison)
                         refreshPoints(snake.getId(),pickup.getPoints());
+                    pickups.removeValue(pickup, true);
                     socket.writeMsg(myId,
                             new PickupRemove(pickup.getId(), myId));
                 }
