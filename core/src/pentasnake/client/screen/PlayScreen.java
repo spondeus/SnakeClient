@@ -333,13 +333,13 @@ public class PlayScreen implements Screen {
                     }
                 }
                 else if (msg.getId() == gameEndCode) {
-                    if (mainStage.getActors().contains(snakeList.get(myId), true)) {
-                        snakeList.get(myId).setSpeed(0);
+                    for (Snake snake:snakeList ) {
+                        snake.setSpeed(0);
+                    }
 //                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
 //                        for (Snake snake : snakeList) {
 //                            snake.setSpeed(0);
 //                        }
-                    }
                 } else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
                     if (mainStage.getActors().contains(snakeList.get(myId), true)) dieMessage(myId,snakeList.get(myId));
                     game.setScreen(new MenuScreen(game));
