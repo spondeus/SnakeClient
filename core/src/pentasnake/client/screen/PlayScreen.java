@@ -102,7 +102,7 @@ public class PlayScreen implements Screen {
         labelInitialize();
 
         labelSort(sortPoints());
-        // refreshPoints();
+
 //        wallList = Wall.spawnWalls();
 //        wall = new Wall(wallList);
 //        mainStage.addActor(wall);
@@ -214,7 +214,7 @@ public class PlayScreen implements Screen {
         pointsLabel = new LinkedList<>();
         Table pointTable = new Table();
         for (Snake snake : snakeList) {
-            Label label = new Label(snake.getName() + ":" + snake.getPoints() + "p", labelStyle);
+            Label label = new Label(snake.getPoints() + "p", labelStyle);
             label.setColor(snake.getColor());
             pointsLabel.add(label);
             pointTable.add(label).row();
@@ -253,7 +253,7 @@ public class PlayScreen implements Screen {
             }
         }
         Label optionalLabel = pointsLabel.get(index);
-        optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
+        optionalLabel.setText(snake.getPoints() + "p");
     }
 
 
@@ -453,7 +453,8 @@ public class PlayScreen implements Screen {
                     pickup.collectItem(snake);
                     pickup.applyEffect(snake);
                     pickups.removeValue(pickup, true);
-
+                    if(pickup instanceof Food || pickup instanceof  Poison)
+                        refreshPoints(snake.getId(),pickup.getPoints());
                     socket.writeMsg(myId,
                             new PickupRemove(pickup.getId(), myId));
                 }

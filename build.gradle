@@ -100,7 +100,7 @@ project(":core") {
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
-        implementation group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.3.3'
+        implementation group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.5.3'
         implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 
         implementation group: 'org.json', name: 'json', version: '20230227'
