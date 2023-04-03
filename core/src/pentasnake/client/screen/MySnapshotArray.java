@@ -1,7 +1,7 @@
 package pentasnake.client.screen;
 
 import com.badlogic.gdx.utils.SnapshotArray;
-import pentasnake.pointsystem.PickupItems;
+import pentasnake.pickups.PickupItems;
 
 public class MySnapshotArray extends SnapshotArray<PickupItems> {
 

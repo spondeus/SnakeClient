@@ -1,4 +1,4 @@
-package pentasnake.pointsystem;
+package pentasnake.pickups;
 
 public enum Type {
     FOOD(6, 0.5f),

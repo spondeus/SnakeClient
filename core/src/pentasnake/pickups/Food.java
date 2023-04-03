@@ -1,4 +1,4 @@
-package pentasnake.pointsystem;
+package pentasnake.pickups;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,10 +9,6 @@ import pentasnake.client.entities.Snake;
 public class Food extends PickupItems {
 
     Type type;
-    private static int count = 0;
-    public static int getCount() {
-        return count;
-    }
 
     public Food(float x, float y, Stage stage) {
         super(x, y, stage, 0);

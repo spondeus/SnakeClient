@@ -5,10 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,8 +26,8 @@ import pentasnake.client.messages.SnakeMove;
 import pentasnake.client.socket.ClientSocket;
 import pentasnake.client.entities.*;
 import pentasnake.client.socket.Communication;
-import pentasnake.pointsystem.*;
-import pentasnake.pointsystem.PickupItems;
+import pentasnake.pickups.*;
+import pentasnake.pickups.PickupItems;
 
 import java.util.*;
 
@@ -62,7 +65,8 @@ public class PlayScreen implements Screen {
     protected Wall wall;
     public boolean collidedWithWall;
 
-    private float delta;
+    Texture backgroundTexture = new Texture("floor1.jpg");
+    TextureRegion backgroundRegion = new TextureRegion(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
@@ -104,13 +108,15 @@ public class PlayScreen implements Screen {
         wall = new Wall(wallList);
         mainStage.addActor(wall);
 
+        final int MAX_TOTAL_PICKUPS = 10;
+        int currentPickupsOnScreen;
 
         if(localClient==null){
             pickupSpawner = new PickupSpawner(mainStage, wallList);
-            for (int i = 0; i < 10; i++) {
-                putNewPickup(pickupSpawner.getNewPickup());
-            }
-            pickupList = pickupSpawner.getPickups();
+                for (int i = 0; i < 10; i++) {
+                    putNewPickup(pickupSpawner.getNewPickup(pickupList));
+                }
+                //pickupList = pickupSpawner.getPickups();
         }
 
         mainStage.addActor(snakeList.get(0));
@@ -347,6 +353,27 @@ public class PlayScreen implements Screen {
         }
     }
 
+    public boolean isOverlapping(Vector2 position) {
+        // checking pickup overlap
+        float radius = 50f;
+        for (PickupItems pickup : pickups) {
+            Vector2 pickupPosition = new Vector2(pickup.getX(), pickup.getY());
+            float distanceSquared = pickupPosition.dst2(pickup.getX(), pickup.getY());
+            if (distanceSquared < (radius + pickup.getRadius()) * (radius + pickup.getRadius())) {
+                return true;
+            }
+        }
+        // checking wall and pickup overlap
+        /*for (WallPattern wallPattern : wallList) {
+            for (WallPart wallPart : wallPattern.getParts()) {
+                if (wallPart.getBoundaryRectangle().contains(x, y)) {
+                    return true;
+                }
+            }
+        }*/
+        return false;
+    }
+
     public void render(float dt) {
         update(dt);
         uiStage.act(dt);
@@ -354,6 +381,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+       // batch.draw(backgroundRegion, 0, 0);
         mainStage.draw();
         uiStage.draw();
         batch.end();

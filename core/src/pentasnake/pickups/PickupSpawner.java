@@ -1,7 +1,8 @@
-package pentasnake.pointsystem;
+package pentasnake.pickups;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -28,10 +29,9 @@ public class PickupSpawner implements PickupHandler {
    // private static final float SPAWN_INTERVAL = 10f; // 10 seconds between pickups spawn
     private static final int MAX_SPAWN_PER_INTERVAL = 1; // 1 pickup at a time
     private float spawnDelay = INITIAL_SPAWN_DELAY;
-    private float timeSinceLastSpawn = 0f;
-    private int numPickupsToSpawn = 1;
 
     private static int pickupId = 0;
+    private static int nextPickupId = pickupId++;
 
     public PickupSpawner(Stage mainStage, SnapshotArray<WallPattern> wallList) {
         this.mainStage = mainStage;
@@ -40,18 +40,20 @@ public class PickupSpawner implements PickupHandler {
     }
 
     @Override
-    public Pickup getNewPickup() {
+    public Pickup getNewPickup(SnapshotArray<Pickup> pickupList) {
 
         final float HEIGHT = Gdx.graphics.getHeight();
         final float WIDTH = Gdx.graphics.getWidth();
-        float x, y;
+        float x,y;
 
-        if (currentPickupsOnScreen < MAX_TOTAL_PICKUPS) {
-                x = MathUtils.random(padding, WIDTH - padding);
-                y = MathUtils.random(padding, HEIGHT - padding);
-                return PickupFactory.createRandomPickup(x, y, mainStage, pickups);
-            }
-        return null;
+        do {
+            x = MathUtils.random(padding, WIDTH - padding);
+            y = MathUtils.random(padding, HEIGHT - padding);
+
+        } while (isOverlapping(x, y, pickupList));
+
+
+        return PickupFactory.createRandomPickup(x, y, mainStage, pickups);
     }
 
     public SnapshotArray<Pickup> getPickups() {
@@ -64,12 +66,13 @@ public class PickupSpawner implements PickupHandler {
         currentPickupsOnScreen--;
     }
 
-    public boolean isOverlapping(float x, float y) {
+    public boolean isOverlapping(float x, float y, SnapshotArray<Pickup> pickupList) {
         // checking pickup overlap
         float radius = 50f;
-        for (PickupItems pickup : pickups) {
-            float distanceSquared = (x - pickup.getX()) * (x - pickup.getX()) + (y - pickup.getY()) * (y - pickup.getY());
-            if (distanceSquared < (radius + pickup.getRadius()) * (radius + pickup.getRadius())) {
+        for (Pickup pickup : pickupList) {
+            Rectangle rectangle = new Rectangle(pickup.getPosition().x, pickup.getPosition().y, pickup.getHeight(), pickup.getWidth());
+
+            if (distanceSquared < (radius + 30f) * (radius + 30f)) {
                 return true;
             }
         }
@@ -85,51 +88,10 @@ public class PickupSpawner implements PickupHandler {
     }
 
     private static class PickupFactory {
-        public static final int MAX_TOTAL_PICKUPS = 10;
-
         public static Pickup createRandomPickup(float x, float y, Stage mainStage, MySnapshotArray pickups) {
-            if (currentPickupsOnScreen >= MAX_TOTAL_PICKUPS) {
-                return null;
-            }
             Type type = Type.getRandomType();
-            /*switch (type) {
-                case FOOD:
-                    if (foodCount > Type.FOOD.getMaxAmount() || !MathUtils.randomBoolean(Type.FOOD.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                case POISON:
-                    if (poisonCount > Type.POISON.getMaxAmount() || !MathUtils.randomBoolean(Type.POISON.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                case DRINK:
-                    if (drinkCount > Type.DRINK.getMaxAmount() || !MathUtils.randomBoolean(Type.DRINK.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                case WEB:
-                    if (webCount > Type.WEB.getMaxAmount() || !MathUtils.randomBoolean(Type.WEB.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                case ICE:
-                    if (iceCount > Type.ICE.getMaxAmount() || !MathUtils.randomBoolean(Type.ICE.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                case GHOST:
-                    if (ghostCount > Type.GHOST.getMaxAmount() || !MathUtils.randomBoolean(Type.GHOST.getSpawnRate())) {
-                        return null;
-                    }
-                    break;
-                default:
-                    return null;
-            }*/
-            pickupId++;
             Vector2 position = new Vector2(x, y);
-            Pickup pickup = new Pickup(type, pickupId, position);
-            return pickup;
+            return new Pickup(type, nextPickupId, position);
         }
     }
 }

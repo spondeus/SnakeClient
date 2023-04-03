@@ -3,21 +3,16 @@ package pentasnake.client.socket;
 
 import com.badlogic.gdx.Gdx;
 
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.graphics.Color;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.json.JSONObject;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
 import pentasnake.client.messages.*;
-import pentasnake.pointsystem.Food;
-import pentasnake.pointsystem.PickupItems;
-import pentasnake.client.screen.MenuScreen;
+
 import java.net.URI;
 import java.util.*;
 

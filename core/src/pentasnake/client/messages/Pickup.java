@@ -1,15 +1,24 @@
 package pentasnake.client.messages;
 
 import com.badlogic.gdx.math.Vector2;
-import pentasnake.pointsystem.Type;
+import pentasnake.pickups.Type;
 
 public class Pickup extends Message{
     private Type type;
-
     private int pickUpId;
-
     private Vector2 position;
 
+    private int height = 60;
+
+    private int width = 60;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 
     public Pickup(Type type, int id, Vector2 position){
         this.type = type;
