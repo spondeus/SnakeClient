@@ -40,6 +40,8 @@ public class LobbyScreen implements Screen {
 
     Queue<Message> queue;
 
+    int ind=0;
+
     public LobbyScreen(SnakeGame game, boolean single) {
         this.game = game;
         this.single = single;
@@ -120,11 +122,10 @@ public class LobbyScreen implements Screen {
         while (!queue.isEmpty()) {
 //            Gdx.app.log("Client-state", String.valueOf(com.getWebsocketClient().getReadyState()));
             Message message = queue.poll();
-            int index=0;
             if (message instanceof SnakeConstruct) {
                 SnakeConstruct snakeConstruct = (SnakeConstruct) message;
                 Snake newSnake = new Snake(snakeConstruct.getX(), snakeConstruct.getY(), snakeConstruct.getRadius(),
-                        snakeConstruct.getColor(), index++);
+                        snakeConstruct.getColor(), ind++);
                 newSnake.setSpeed(0);
                 snakes.add(newSnake);
             }
