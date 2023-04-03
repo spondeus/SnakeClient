@@ -4,20 +4,37 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import static pentasnake.client.entities.WallPattern.createWallPatterns;
 
 public class Wall extends Actor {
     SnapshotArray<WallPattern> patterns;
+
     public SnapshotArray<WallPattern> getParts() {
         return patterns;
     }
+
     private final ShapeRenderer sr = new ShapeRenderer();
 
-    public Wall(SnapshotArray<WallPattern> patterns){
-        this.patterns = patterns;
+    public Wall(SnapshotArray<WallPattern> patterns, int w, int h) {
+        this.patterns = convertToRel(patterns, w, h);
+    }
+
+    private SnapshotArray<WallPattern> convertToRel(SnapshotArray<WallPattern> patterns, int w, int h) {
+        SnapshotArray<WallPattern> newList = new SnapshotArray<>();
+        for (WallPattern pattern : patterns) {
+            SnapshotArray newPattern = new SnapshotArray<WallPart>();
+            for (WallPart wallPart : pattern.getParts()) {
+                newPattern.add(new WallPart(wallPart.x / 1200 * w, wallPart.y / 800 * h, wallPart.width / 1200 * w, wallPart.height / 800 * h, wallPart.getWallColor()));
+            }
+            WallPattern newWallPattern = new WallPattern(newPattern);
+            newList.add(newWallPattern);
+        }
+        return newList;
     }
 
     public void draw(Batch batch, float parentAlpha) {
@@ -34,7 +51,7 @@ public class Wall extends Actor {
         batch.begin();
     }
 
-    public static SnapshotArray<WallPattern> spawnWalls(){
+    public static SnapshotArray<WallPattern> spawnWalls() {
 
         final int MAX_WALLS_TO_SPAWN = 4;
         final int NUM_WALL_PATTERNS = 8;
@@ -46,7 +63,7 @@ public class Wall extends Actor {
         Random random = new Random();
         while (selectedIndices.size() < MAX_WALLS_TO_SPAWN) {
             int i = random.nextInt(NUM_WALL_PATTERNS);
-            if (!selectedIndices.contains(i)){
+            if (!selectedIndices.contains(i)) {
                 selectedIndices.add(i);
             }
         }

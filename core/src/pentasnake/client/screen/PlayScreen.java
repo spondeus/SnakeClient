@@ -365,7 +365,7 @@ public class PlayScreen implements Screen {
 
     private void placeWall(WallMessage msg) {
         wallList = msg.getWallList();
-        wall = new Wall(wallList);
+        wall = new Wall(wallList,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         mainStage.addActor(wall);
     }
 
