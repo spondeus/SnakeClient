@@ -18,6 +18,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.Timer;
 import pentasnake.client.InputHandler;
 import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.Snake;
@@ -56,6 +57,8 @@ public class PlayScreen implements Screen {
     List<String> pickupCons;
 
     ClientSocket socket;
+
+    SnapshotArray<Snake> diedSnakes=new SnapshotArray<>();
 
 
     private SpriteBatch batch = new SpriteBatch();
@@ -346,9 +349,18 @@ public class PlayScreen implements Screen {
                     return;
                 } else if (msg instanceof Death) {  // kill the snake
                     int snakeId = msg.getId();
-                    snakeList.get(snakeId).setSpeed(0);
-                    snakeList.get(snakeId).setDeadSnake(true);
-                    mainStage.getActors().removeValue(snakeList.get(snakeId), true);
+                    Snake snake=snakeList.get(snakeId);
+                    snake.setSpeed(0);
+                    snake.setDeadSnake(true);
+                    uiStage.addActor(snake);
+                    diedSnakes.add(snake);
+                    mainStage.getActors().removeValue(snake, true);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            uiStage.getActors().removeValue(diedSnakes.get(0),true);
+                        }
+                    }, 5);
                 } else {
                     System.out.println("unknown playscreen msg type");
                 }
