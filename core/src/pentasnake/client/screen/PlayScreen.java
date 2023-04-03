@@ -314,6 +314,24 @@ public class PlayScreen implements Screen {
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
+                else if (msg instanceof TimedPickup){
+                    TimedPickup tp = (TimedPickup) msg;
+                    for(Snake snake: snakeList){
+                        if(snake.getId() == tp.getId())
+                            if(tp.isGhost())
+                                snake.setGhostModeActive(tp.isEffect());
+                            else{
+                                if(tp.isEffect()){
+                                    snake.setSpeed(0);
+                                    snake.getHead().setColor(Color.CYAN);
+                                }
+                                else {
+                                    snake.setSpeed(Snake.getDefaultSpeed());
+                                    snake.getHead().setColor(Color.ORANGE);
+                                }
+                            }
+                    }
+                }
                 else if (msg.getId() == gameEndCode) {
                     if (mainStage.getActors().contains(snakeList.get(myId), true)) {
                         snakeList.get(myId).setSpeed(0);
