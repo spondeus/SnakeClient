@@ -1,3 +1,5 @@
+import org.gradle.api.internal.specs.ExplainingSpecs
+
 buildscript {
 
 
@@ -7,12 +9,13 @@ buildscript {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
+        gradlePluginPortal()
+
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.1.16'
         classpath 'org.gretty:gretty:3.0.7'
         classpath 'com.android.tools.build:gradle:7.2.2'
-
 
     }
 }
@@ -44,6 +47,7 @@ allprojects {
             url 'https://repo.clojars.org'
             name 'Clojars'
         }
+        gradlePluginPortal()
     }
 }
 
@@ -96,8 +100,7 @@ project(":core") {
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
 
-        implementation 'org.java-websocket:java-websocket:1.3.3'
-
+        implementation group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.5.3'
         implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 
         implementation group: 'org.json', name: 'json', version: '20230227'
@@ -106,7 +109,4 @@ project(":core") {
     }
 }
 
-dependencies {
-
-}
 

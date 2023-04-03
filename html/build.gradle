@@ -14,6 +14,8 @@ gwt {
     }
 }
 
+
+
 import org.wisepersist.gradle.plugins.gwt.GwtSuperDev
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 
