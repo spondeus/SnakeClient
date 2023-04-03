@@ -1,11 +1,22 @@
 package pentasnake.client.entities.score;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
 public class ResultClass {
     String name;
     Float result;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public Float getResult()
+    {
+        return result;
+    }
+
+    public ResultClass(String name, Float result)
+    {
+        this.name = name;
+        this.result = result;
+    }
 }

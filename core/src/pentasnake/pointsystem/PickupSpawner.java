@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
-import lombok.Getter;
 import pentasnake.client.entities.Wall;
 import pentasnake.client.entities.WallPart;
 import pentasnake.client.entities.WallPattern;
