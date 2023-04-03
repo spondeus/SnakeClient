@@ -294,7 +294,7 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
-        checkWallCollision(wall);
+
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {
@@ -360,6 +360,7 @@ public class PlayScreen implements Screen {
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();
 
         }
+//        checkWallCollision(wall);
     }
 
     private void placeWall(WallMessage msg) {
