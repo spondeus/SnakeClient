@@ -126,7 +126,6 @@ public class LobbyScreen implements Screen {
                 SnakeConstruct snakeConstruct = (SnakeConstruct) message;
                 Snake newSnake = new Snake(snakeConstruct.getX(), snakeConstruct.getY(), snakeConstruct.getRadius(),
                         snakeConstruct.getColor(), ind++);
-                newSnake.setSpeed(0);
                 snakes.add(newSnake);
             }
             if (message.getId() == -1){
