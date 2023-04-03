@@ -70,29 +70,13 @@ public class ScoreboardScreen implements Screen {
             TextButton labelScore = new TextButton(result.getResult().toString(), skin);
             tableScore.add(labelScore).width(300).height(60).padBottom(5);
             tableScore.row();
-//            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
-//            tableTime.add(labelTime).width(300).height(60).padBottom(5);
-//            tableTime.row();
         }
-
-//        for (int i = 0; i < 10; i++) {
-//            TextButton labelName = new TextButton("Anonymus" + (i + 1), skin);
-//            tableName.add(labelName).width(300).height(60).padBottom(5);
-//            tableName.row();
-//            TextButton labelScore = new TextButton(String.valueOf(10000 - (i * 1000)), skin);
-//            tableScore.add(labelScore).width(300).height(60).padBottom(5);
-//            tableScore.row();
-//            TextButton labelTime = new TextButton("01.01.1970 00:00:00", skin);
-//            tableTime.add(labelTime).width(300).height(60).padBottom(5);
-//            tableTime.row();
-//        }
-
-        tableScore.setPosition(Gdx.graphics.getWidth() / 2f - tableScore.getWidth() / 2, Gdx.graphics.getHeight() / 2f - tableScore.getHeight() / 2);
         tableName.setPosition(Gdx.graphics.getWidth() / 4f - tableName.getWidth() - 2, Gdx.graphics.getHeight() / 2f - tableName.getHeight() / 2);
-        tableTime.setPosition(Gdx.graphics.getWidth() / (4 / 3f) - tableScore.getWidth() - 2, Gdx.graphics.getHeight() / 2f - tableTime.getHeight() / 2);
+        tableScore.setPosition(Gdx.graphics.getWidth()/(4/3f)-tableName.getWidth()-2,Gdx.graphics.getHeight()/2f-tableScore.getHeight()/2 );
         stage.addActor(tableName);
         stage.addActor(tableScore);
         stage.addActor(tableTime);
+
 
         TextButton backButton = new TextButton("(B)ack to menu", skin);
         backButton.setPosition(Gdx.graphics.getWidth() / 2f - backButton.getWidth() / 2f, tableScore.getHeight());
@@ -102,6 +86,7 @@ public class ScoreboardScreen implements Screen {
                 game.setScreen(new MenuScreen((SnakeGame) game));
             }
         });
+
         stageBack.addActor(backButton);
         Gdx.input.setInputProcessor(stageBack);
 
