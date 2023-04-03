@@ -1,6 +1,7 @@
 package pentasnake.pickups;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -70,9 +71,9 @@ public class PickupSpawner implements PickupHandler {
         // checking pickup overlap
         float radius = 50f;
         for (Pickup pickup : pickupList) {
-            Rectangle rectangle = new Rectangle(pickup.getPosition().x, pickup.getPosition().y, pickup.getHeight(), pickup.getWidth());
-
-            if (distanceSquared < (radius + 30f) * (radius + 30f)) {
+            Rectangle rectangle1 = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
+            Rectangle rectangle2 = pickup.getBoundaryRectangle();
+            if (Intersector.overlaps(rectangle1, rectangle2)) {
                 return true;
             }
         }
@@ -91,7 +92,8 @@ public class PickupSpawner implements PickupHandler {
         public static Pickup createRandomPickup(float x, float y, Stage mainStage, MySnapshotArray pickups) {
             Type type = Type.getRandomType();
             Vector2 position = new Vector2(x, y);
-            return new Pickup(type, nextPickupId, position);
+            Pickup pickup = new Pickup(type, nextPickupId, position);
+            return pickup;
         }
     }
 }

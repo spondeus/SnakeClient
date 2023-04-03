@@ -315,6 +315,7 @@ public class PlayScreen implements Screen {
             default:
                 ;
         }
+        newPickup.setBoundaryRectangle();
         pickups.add(newPickup);
     }
 

@@ -1,5 +1,6 @@
 package pentasnake.client.messages;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import pentasnake.pickups.Type;
 
@@ -15,9 +16,15 @@ public class Pickup extends Message{
     public int getHeight() {
         return height;
     }
-
     public int getWidth() {
         return width;
+    }
+    private Rectangle boundaryRectangle;
+    public Rectangle getBoundaryRectangle() {
+        return boundaryRectangle;
+    }
+    public void setBoundaryRectangle(){
+        this.boundaryRectangle = new Rectangle(getPosition().x, getPosition().y, getWidth(), getHeight());
     }
 
     public Pickup(Type type, int id, Vector2 position){
