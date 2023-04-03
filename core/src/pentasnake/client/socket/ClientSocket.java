@@ -157,6 +157,11 @@ public class ClientSocket extends WebSocketClient {
                 pickupRemove.setId(id);
                 msgQueue.add(pickupRemove);
                 break;
+            case "pickupTimed":
+                dataStr = jsonObject.get("data").getAsString();
+                TimedPickup timedPickup = gson.fromJson(dataStr, TimedPickup.class);
+                timedPickup.setId(id);
+                msgQueue.add(timedPickup);
             default:
                 System.err.println("Unknown pickup message!");
                 break;

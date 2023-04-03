@@ -64,6 +64,10 @@ public class Snake extends Actor implements Comparable<Snake> {
     private int id;
 
 
+    public static int getDefaultSpeed(){
+        return DEFAULT_SPEED;
+    }
+
     public int getId() {
         return id;
     }
@@ -75,6 +79,10 @@ public class Snake extends Actor implements Comparable<Snake> {
     private boolean leftMove, rightMove;
 
     private boolean ghostModeActive;
+
+    public void setGhostModeActive(boolean ghostModeActive){
+        this.ghostModeActive = ghostModeActive;
+    }
 
     public boolean isGhostModeActive() {
         return ghostModeActive;

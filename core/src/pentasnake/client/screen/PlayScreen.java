@@ -97,6 +97,7 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(new InputHandler(x, localClient));
 //        mainStage.addActor(x);
         labelInitialize();
+
         labelSort(sortPoints());
         // refreshPoints();
 //        wallList = Wall.spawnWalls();
@@ -293,6 +294,7 @@ public class PlayScreen implements Screen {
 //            }
 //        }
 //        pickupSpawner.getPickups().end();
+        checkWallCollision(wall);
 
         if (localClient != null) {
             if (snakeList.get(myId).isLeftMove()) {
