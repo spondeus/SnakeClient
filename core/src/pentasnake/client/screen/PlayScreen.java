@@ -353,7 +353,7 @@ public class PlayScreen implements Screen {
                     System.out.println("unknown playscreen msg type");
                 }
             }
-            checkWallCollision(wall);
+            if(wall!=null) checkWallCollision(wall);
             checkSnakeCollision();
         } else {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
