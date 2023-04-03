@@ -1,5 +1,6 @@
 package pentasnake.client.Repository;
 
+import pentasnake.client.SnakeGame;
 import pentasnake.client.entities.score.ResultClass;
 
 import java.sql.*;
@@ -12,6 +13,14 @@ public class Repository {
     static final String DB_URL = System.getenv("URL");
     static final String USER = System.getenv("USER");
     static final String PASS = System.getenv("PASS");
+
+    public Repository(SnakeGame game) {
+        this.game = game;
+    }
+    public Repository(){};
+
+    SnakeGame game;
+
     static final String TOP10 = "" +
             "    SELECT p.name, s.score\n" +
             "    FROM snake_score s\n" +
@@ -147,6 +156,7 @@ static final String TOP10PONIT_RATE_DEATH_MATCH=""+"SELECT p.name,s.score / TIME
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+
         }
     }
     public List<ResultClass> getTop10TimeLimit() {
