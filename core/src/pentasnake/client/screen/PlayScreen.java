@@ -350,7 +350,6 @@ public class PlayScreen implements Screen {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    localClient.getWebsocketClient().close();
                     game.setScreen(new MenuScreen(game));
                     return;
                 } else if (msg instanceof Death) {  // kill the snake
