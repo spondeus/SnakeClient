@@ -360,7 +360,7 @@ public class PlayScreen implements Screen {
                         public void run() {
                             uiStage.getActors().removeValue(diedSnakes.get(0),true);
                         }
-                    }, 5);
+                    }, 3);
                 } else {
                     System.out.println("unknown playscreen msg type");
                 }
