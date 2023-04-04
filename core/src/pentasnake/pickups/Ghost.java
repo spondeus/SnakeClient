@@ -8,11 +8,7 @@ import pentasnake.client.entities.Snake;
 
 public class Ghost extends PickupItems {
 
-    Type type = Type.GHOST;
-    private static int count = 0;
-    public static int getCount() {
-        return count;
-    }
+    Type type;
 
     public Ghost(float x, float y, Stage stage, int id) {
         super(x, y, stage, id);

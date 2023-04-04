@@ -9,7 +9,6 @@ import pentasnake.client.entities.Snake;
 public class Food extends PickupItems {
 
     Type type;
-
     public Food(float x, float y, Stage stage) {
         super(x, y, stage, 0);
         setPoints(50);

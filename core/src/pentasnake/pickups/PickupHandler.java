@@ -5,6 +5,5 @@ import pentasnake.client.messages.Pickup;
 
 public interface PickupHandler {
 
-    Pickup getNewPickup(SnapshotArray<Pickup> pickupList);
-    void pickupCollected(PickupItems item);
+    Pickup getNewPickup();
 }

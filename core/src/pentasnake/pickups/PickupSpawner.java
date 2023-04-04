@@ -17,19 +17,7 @@ public class PickupSpawner implements PickupHandler {
     private static final SnapshotArray<Pickup> items = new SnapshotArray<>();
     private SnapshotArray<WallPattern> wallList;
     private final Stage mainStage;
-    public final int MAX_TOTAL_PICKUPS = 10;
-    public static int currentPickupsOnScreen;
-    public static int foodCount = 0;
-    public static int poisonCount = 0;
-    public static int drinkCount = 0;
-    public static int webCount = 0;
-    public static int iceCount = 0;
-    public static int ghostCount = 0;
     float padding = 60f;
-    private static final float INITIAL_SPAWN_DELAY = 3f; // first spawn in 3 seconds after game starts
-   // private static final float SPAWN_INTERVAL = 10f; // 10 seconds between pickups spawn
-    private static final int MAX_SPAWN_PER_INTERVAL = 1; // 1 pickup at a time
-    private float spawnDelay = INITIAL_SPAWN_DELAY;
 
     private static int pickupId = 0;
     private static int nextPickupId = pickupId++;
@@ -41,18 +29,14 @@ public class PickupSpawner implements PickupHandler {
     }
 
     @Override
-    public Pickup getNewPickup(SnapshotArray<Pickup> pickupList) {
+    public Pickup getNewPickup() {
 
         final float HEIGHT = Gdx.graphics.getHeight();
         final float WIDTH = Gdx.graphics.getWidth();
         float x,y;
 
-        do {
             x = MathUtils.random(padding, WIDTH - padding);
             y = MathUtils.random(padding, HEIGHT - padding);
-
-        } while (isOverlapping(x, y, pickupList));
-
 
         return PickupFactory.createRandomPickup(x, y, mainStage, pickups);
     }
@@ -61,19 +45,14 @@ public class PickupSpawner implements PickupHandler {
         return items;
     }
 
-    @Override
-    public void pickupCollected(PickupItems item) {
-        pickups.removeValue(item, true);
-        currentPickupsOnScreen--;
-    }
-
-    public boolean isOverlapping(float x, float y, SnapshotArray<Pickup> pickupList) {
+    /*public boolean isOverlapping(float x, float y) {
+        // checking pickup overlap
         // checking pickup overlap
         float radius = 50f;
         for (Pickup pickup : pickupList) {
-            Rectangle rectangle1 = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
-            Rectangle rectangle2 = pickup.getBoundaryRectangle();
-            if (Intersector.overlaps(rectangle1, rectangle2)) {
+            float distanceSquared = (x - pickup.getPosition().x) * (x - pickup.getPosition().x)
+                    + (y - pickup.getPosition().y) * (y - pickup.getPosition().y);
+            if (distanceSquared < (radius + 30f) * (radius + 30f)) {
                 return true;
             }
         }
@@ -86,7 +65,7 @@ public class PickupSpawner implements PickupHandler {
             }
         }
         return false;
-    }
+    }*/
 
     private static class PickupFactory {
         public static Pickup createRandomPickup(float x, float y, Stage mainStage, MySnapshotArray pickups) {

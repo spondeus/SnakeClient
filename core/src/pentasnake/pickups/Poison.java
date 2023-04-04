@@ -14,11 +14,6 @@ public class Poison extends PickupItems {
         setBoundaryRectangle();
         Type type = Type.POISON;
     }
-    private static int count = 0;
-    public static int getCount() {
-        return count;
-    }
-
     public Poison(float x, float y, Stage stage) {
         super(x, y, stage,0);
         setPoints(-100);
