@@ -55,14 +55,14 @@ public class TutorialScreen implements Screen {
                 table.left();
             }
         });
-        addButton("GOT IT, LET'S (P)LAY!", false).addListener(new ClickListener() {
+        /*addButton("GOT IT, LET'S (P)LAY!", false).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new LobbyScreen(game, true));
                 table.right();
                 game.setScreen(new LobbyScreen(game,true));
             }
-        });
+        });*/
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
@@ -75,14 +75,6 @@ public class TutorialScreen implements Screen {
 
         skin.add("tutorial", style);
 
-        /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/default.fnt"));
-        FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        params.size = 24;*/
-
-        /*BitmapFont titleFont = new BitmapFont(Gdx.files.internal("assets/skin/default.fnt"));
-        titleFont.getData().setScale(2f);*/
-
-        // A table to hold all the UI elements
         Table table = new Table();
         table.setFillParent(true);
         table.defaults().pad(1f);
@@ -151,7 +143,7 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "food.png"))));
         Image foodIcon = new Image(foodImage);
-        foodIcon.setScale(0.17f);
+        foodIcon.setScale(0.15f);
         pickupImages.addActor(foodIcon);
         stage.addActor(foodIcon);
         foodIcon.setPosition(CENTER_X + 95, CENTER_Y + 220);
@@ -162,7 +154,7 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "poison.png"))));
         Image poisonIcon = new Image(poisonImage);
-        poisonIcon.setScale(0.2f);
+        poisonIcon.setScale(0.15f);
         pickupImages.addActor(poisonIcon);
         stage.addActor(poisonIcon);
         poisonIcon.setPosition(CENTER_X + 85, CENTER_Y + 110);
@@ -173,7 +165,7 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "energydrink.png"))));
         Image energyDrinkIcon = new Image(energyDrinkImage);
-        energyDrinkIcon.setScale(0.2f);
+        energyDrinkIcon.setScale(0.15f);
         pickupImages.addActor(energyDrinkIcon);
         stage.addActor(energyDrinkIcon);
         energyDrinkIcon.setPosition(CENTER_X + 85, CENTER_Y);
@@ -184,10 +176,10 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "spiderweb.png"))));
         Image spiderWebIcon = new Image(spiderWebImage);
-        spiderWebIcon.setScale(0.2f);
+        spiderWebIcon.setScale(0.15f);
         pickupImages.addActor(spiderWebIcon);
         stage.addActor(spiderWebIcon);
-        spiderWebIcon.setPosition(CENTER_X + 80, CENTER_Y - 90);
+        spiderWebIcon.setPosition(CENTER_X + 80, CENTER_Y - 80);
 
         TextureRegionDrawable iceBlockImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -195,10 +187,10 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "iceblock.png"))));
         Image iceBlockIcon = new Image(iceBlockImage);
-        iceBlockIcon.setScale(0.17f);
+        iceBlockIcon.setScale(0.15f);
         pickupImages.addActor(iceBlockIcon);
         stage.addActor(iceBlockIcon);
-        iceBlockIcon.setPosition(CENTER_X + 90, CENTER_Y - 190);
+        iceBlockIcon.setPosition(CENTER_X + 90, CENTER_Y - 180);
 
         TextureRegionDrawable ghostImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -206,10 +198,10 @@ public class TutorialScreen implements Screen {
                                 Gdx.files.internal(
                                         "ghost.png"))));
         Image ghostIcon = new Image(ghostImage);
-        ghostIcon.setScale(0.18f);
+        ghostIcon.setScale(0.15f);
         pickupImages.addActor(ghostIcon);
         stage.addActor(ghostIcon);
-        ghostIcon.setPosition(CENTER_X + 90, CENTER_Y - 300);
+        ghostIcon.setPosition(CENTER_X + 90, CENTER_Y - 275);
 
         //VerticalGroup pickupDescriptionsGroup = new VerticalGroup();
 
@@ -219,7 +211,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         foodLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         foodLabel.setFontScale(1.2f);
-        foodLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 200);
+        foodLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 150);
         foodLabel.setAlignment(Align.left);
         table.add(foodLabel);
         stage.addActor(foodLabel);
@@ -230,7 +222,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         poisonLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         poisonLabel.setFontScale(1.2f);
-        poisonLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 300);
+        poisonLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 250);
         poisonLabel.setAlignment(Align.left);
         table.add(poisonLabel);
         stage.addActor(poisonLabel);
@@ -241,7 +233,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         drinkLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         drinkLabel.setFontScale(1.2f);
-        drinkLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 400);
+        drinkLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 350);
         drinkLabel.setAlignment(Align.left);
         table.add(drinkLabel);
         stage.addActor(drinkLabel);
@@ -252,7 +244,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         webLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         webLabel.setFontScale(1.2f);
-        webLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 500);
+        webLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 450);
         webLabel.setAlignment(Align.left);
         table.add(webLabel);
         stage.addActor(webLabel);
@@ -263,7 +255,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         iceLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         iceLabel.setFontScale(1.2f);
-        iceLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 600);
+        iceLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 550);
         iceLabel.setAlignment(Align.left);
         table.add(iceLabel);
         stage.addActor(iceLabel);
@@ -274,7 +266,7 @@ public class TutorialScreen implements Screen {
                 , Color.ORANGE));
         ghostLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         ghostLabel.setFontScale(1.2f);
-        ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 700);
+        ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 650);
         ghostLabel.setAlignment(Align.left);
         table.add(ghostLabel);
         stage.addActor(ghostLabel);
@@ -295,7 +287,7 @@ public class TutorialScreen implements Screen {
 
     public void update() {
         if (Gdx.input.isKeyPressed(Input.Keys.P)) game.setScreen(new LobbyScreen(game,true));
-        if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new MenuScreen(game));
+       // if (Gdx.input.isKeyPressed(Input.Keys.B)) game.setScreen(new MenuScreen(game));
     }
 
     @Override
