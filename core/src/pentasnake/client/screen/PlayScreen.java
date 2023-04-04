@@ -470,8 +470,10 @@ public class PlayScreen implements Screen {
                 } else {
                     pickup.collectItem(snake);
                     pickup.applyEffect(snake);
-                    if(pickup instanceof Food || pickup instanceof  Poison)
+                    if(pickup instanceof Food || pickup instanceof  Poison){
                         refreshPoints(snake.getId(),snake.getPoints());
+                        labelSort(sortPoints());
+                    }
                     pickups.removeValue(pickup, true);
                     socket.writeMsg(myId,
                             new PickupRemove(pickup.getId(), myId));
