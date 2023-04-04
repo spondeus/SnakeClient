@@ -332,13 +332,14 @@ public class PlayScreen implements Screen {
                         if(snake.getId() == tp.getId())
                             if(tp.isGhost()){
                                 snake.setGhostModeActive(tp.isEffect());
-                                if(tp.isEffect()){
-                                    snake.getHead().setColor(Color.WHITE);
+                                if(snake.isGhostModeActive()){
+                                    System.out.println("SNAKE HEAD COLOR: "+snake.getHead().getColor());
+                                    snake.getHead().setColor(Color.FIREBRICK);
                                 } else {
                                     snake.getHead().setColor(Color.ORANGE);
                                 }
                             }
-                            else{
+                            else {
                                 if(tp.isEffect()){
                                     snake.setSpeed(0);
                                     snake.getHead().setColor(Color.CYAN);
