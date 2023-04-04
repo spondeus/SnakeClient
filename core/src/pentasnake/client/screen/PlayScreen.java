@@ -455,8 +455,8 @@ public class PlayScreen implements Screen {
 
     private void checkPickupCollision() {
         for (PickupItems pickup : pickups) {
-//            for (Snake snake : snakeList) {
-            Snake snake = snakeList.get(myId);
+            for (Snake snake : snakeList) {
+//            Snake snake = snakeList.get(myId);
             float x2 = snake.getHead().x % Gdx.graphics.getWidth();
             if (x2 < 0) x2 += Gdx.graphics.getWidth();
             float y2 = snake.getHead().y % Gdx.graphics.getHeight();
@@ -479,7 +479,7 @@ public class PlayScreen implements Screen {
                             new PickupRemove(pickup.getId(), myId));
                 }
 //                    System.out.println("Pickup:" + pickup);
-//                }
+                }
             }
         }
     }
