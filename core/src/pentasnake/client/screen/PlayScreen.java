@@ -262,7 +262,7 @@ public class PlayScreen implements Screen {
         // Label frissítése
         int index = snakeList.indexOf(snake);
         Label optionalLabel = pointsLabel.get(index);
-        optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
+        optionalLabel.setText(snake.getPoints() + "p");
     }
 
 
