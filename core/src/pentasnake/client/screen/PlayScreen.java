@@ -330,8 +330,20 @@ public class PlayScreen implements Screen {
                     TimedPickup tp = (TimedPickup) msg;
                     for(Snake snake: snakeList){
                         if(snake.getId() == tp.getId())
-                            if(tp.isGhost())
+                            if(tp.isGhost()){
                                 snake.setGhostModeActive(tp.isEffect());
+                                if(snake.isGhostModeActive()){
+                                    for(SnakePart sp: snake.getParts()){
+                                        if(sp != snake.getHead())
+                                            sp.setColor(Color.WHITE);
+                                    }
+                                } else {
+                                    for(SnakePart sp: snake.getParts()){
+                                        if(sp != snake.getHead())
+                                            sp.setColor(game.getColor());
+                                    }
+                                }
+                            }
                             else{
                                 if(tp.isEffect()){
                                     snake.setSpeed(0);
