@@ -240,14 +240,18 @@ public class PlayScreen implements Screen {
         return assetManager;
     }
 
-    public void refreshPoints(String username, int pointChange) {
+    public void refreshPoints(int id, int pointChange) {
         // Kígyó keresése felhasználónév alapján
         Snake snake = null;
         for (Snake s : snakeList) {
-            if (s.getName().equals(username)) {
+            if (s.getId() == id){
                 snake = s;
                 break;
             }
+            /*if (s.getName().equals(username)) {
+                snake = s;
+                break;
+            }*/
         }
         if (snake == null) {
             // Az adott felhasználónévvel nem találtunk kígyót
@@ -460,7 +464,7 @@ public class PlayScreen implements Screen {
                     pickup.collectItem(snake);
                     pickup.applyEffect(snake);
                     if(pickup instanceof Food || pickup instanceof  Poison)
-                        refreshPoints(snake.getName(),pickup.getPoints());
+                        refreshPoints(snake.getId(),pickup.getPoints());
                     pickups.removeValue(pickup, true);
                     socket.writeMsg(myId,
                             new PickupRemove(pickup.getId(), myId));
