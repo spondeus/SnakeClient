@@ -291,11 +291,18 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     public void ghostMode() {
+        Color color = parts.get(0).getColor();
+        for(SnakePart sp: parts)
+            if(!sp.equals(head))
+                sp.setColor(Color.WHITE);
         ghostModeActive = true;
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 ghostModeActive = false;
+                for(SnakePart sp: parts)
+                    if(!sp.equals(head))
+                        sp.setColor(color);
             }
         }, 10);
     }
