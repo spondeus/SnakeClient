@@ -333,14 +333,12 @@ public class PlayScreen implements Screen {
                             if(tp.isGhost()){
                                 snake.setGhostModeActive(tp.isEffect());
                                 if(snake.isGhostModeActive()){
-                                    for(SnakePart sp: snake.getParts()){
-                                        if(sp != snake.getHead())
-                                            sp.setColor(Color.WHITE);
+                                    for (int i = 1; i < snake.getParts().size; i++){
+                                        snake.getParts().get(i).setColor(Color.WHITE);
                                     }
                                 } else {
-                                    for(SnakePart sp: snake.getParts()){
-                                        if(sp != snake.getHead())
-                                            sp.setColor(game.getColor());
+                                    for (int i = 1; i < snake.getParts().size; i++){
+                                        snake.getParts().get(i).setColor(game.getColor());
                                     }
                                 }
                             }
