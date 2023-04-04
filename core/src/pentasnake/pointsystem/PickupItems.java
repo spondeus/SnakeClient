@@ -1,18 +1,14 @@
 package pentasnake.pointsystem;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import pentasnake.client.entities.Snake;
-import pentasnake.temporaryclasses.BaseActorTEMP;
+import pentasnake.temporaryclasses.BaseActor;
 
-public abstract class PickupItems extends BaseActorTEMP {
+public abstract class PickupItems extends BaseActor {
 
     protected Type type;
 
