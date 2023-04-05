@@ -41,7 +41,7 @@ public class Snake extends Actor implements Comparable<Snake> {
     private static final int DEFAULT_SPEED = 400;
     private static final int MAX_SPEED = 800;
 
-    private static final int MIN_SPEED = 100;
+    private static final int MIN_SPEED = 200;
     private static final int SPEED_CHANGE = 100;
     private int points;
 
