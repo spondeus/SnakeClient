@@ -310,7 +310,7 @@ public class PlayScreen implements Screen {
 
 //        pickups.begin();
         checkPickupCollision();
-        myPoints.setText(snakeList.get(0).getPoints() + " p");
+        myPoints.setText(snakeList.get(myId).getPoints() + " p");
 //        pickups.end();
 
 //        if(localClient!=null) {
