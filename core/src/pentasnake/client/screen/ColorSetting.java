@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -42,6 +39,8 @@ public class ColorSetting implements Screen {
 
     Stage stage = new Stage(viewport);
 
+    private final Label colorLabel = new Label("COLOR", skin, "default-font", Color.WHITE);
+   // private final Label getColorLabel=new Label("Color",skin.getFont());
 
     public ColorSetting(SnakeGame game) {
         this.game = game;
@@ -50,6 +49,10 @@ public class ColorSetting implements Screen {
 
     @Override
     public void show() {
+        colorLabel.setPosition(Gdx.graphics.getWidth() / 2f - colorLabel.getWidth() / 2f-20, Gdx.graphics.getHeight() - colorLabel.getHeight());
+        colorLabel.setColor(game.getColor());
+        colorLabel.setFontScale(1.5f,1.5f);
+        stage.addActor(colorLabel);
 
         Gdx.input.setInputProcessor(stage);
         TextButton backButton = new TextButton("(B)ack to menu", skin);
@@ -100,6 +103,7 @@ public class ColorSetting implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println(color);
                 game.setColor(color);
+                colorLabel.setColor(color);
             }
         });
         stage.addActor(settingsButton);

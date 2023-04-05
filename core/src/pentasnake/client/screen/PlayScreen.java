@@ -239,6 +239,26 @@ public class PlayScreen implements Screen {
     public AssetManager getAssetManager() {
         return assetManager;
     }
+    public void refreshPoints(String username, int pointChange) {
+        // Kígyó keresése felhasználónév alapján
+        Snake snake = null;
+        for (Snake s : snakeList) {
+            if (s.getName().equals(username)) {
+                snake = s;
+                break;
+            }
+        }
+        if (snake == null) {
+            // Az adott felhasználónévvel nem találtunk kígyót
+            return;
+        }
+        // Kígyó pontjainak frissítése
+        snake.setPoints(snake.getPoints() + pointChange);
+        // Label frissítése
+        int index = snakeList.indexOf(snake);
+        Label optionalLabel = pointsLabel.get(index);
+        optionalLabel.setText(snake.getName() + ": " + snake.getPoints() + "p");
+    }
 
     public void refreshPoints(int id, int pointChange) {
         // Kígyó keresése felhasználónév alapján
