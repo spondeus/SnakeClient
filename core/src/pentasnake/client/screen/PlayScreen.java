@@ -277,8 +277,6 @@ public class PlayScreen implements Screen {
             // Az adott felhasználónévvel nem találtunk kígyót
             return;
         }
-        // Kígyó pontjainak frissítése
-//        snake.setPoints(snake.getPoints() + pointChange);
         // Label frissítése
         int index = snakeList.indexOf(snake);
         Label optionalLabel = pointsLabel.get(index);
