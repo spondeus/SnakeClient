@@ -157,7 +157,7 @@ public class TutorialScreen implements Screen {
         poisonIcon.setScale(0.15f);
         pickupImages.addActor(poisonIcon);
         stage.addActor(poisonIcon);
-        poisonIcon.setPosition(CENTER_X + 85, CENTER_Y + 110);
+        poisonIcon.setPosition(CENTER_X + 90, CENTER_Y + 115);
 
         TextureRegionDrawable energyDrinkImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -168,7 +168,7 @@ public class TutorialScreen implements Screen {
         energyDrinkIcon.setScale(0.15f);
         pickupImages.addActor(energyDrinkIcon);
         stage.addActor(energyDrinkIcon);
-        energyDrinkIcon.setPosition(CENTER_X + 85, CENTER_Y);
+        energyDrinkIcon.setPosition(CENTER_X + 92, CENTER_Y+5);
 
         TextureRegionDrawable spiderWebImage = new TextureRegionDrawable(
                 new TextureRegion(
@@ -179,7 +179,7 @@ public class TutorialScreen implements Screen {
         spiderWebIcon.setScale(0.15f);
         pickupImages.addActor(spiderWebIcon);
         stage.addActor(spiderWebIcon);
-        spiderWebIcon.setPosition(CENTER_X + 80, CENTER_Y - 80);
+        spiderWebIcon.setPosition(CENTER_X + 85, CENTER_Y - 80);
 
         TextureRegionDrawable iceBlockImage = new TextureRegionDrawable(
                 new TextureRegion(
