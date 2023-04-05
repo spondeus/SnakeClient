@@ -58,7 +58,7 @@ public class PlayScreen implements Screen {
 
     ClientSocket socket;
 
-    SnapshotArray<Snake> diedSnakes=new SnapshotArray<>();
+    SnapshotArray<Snake> diedSnakes = new SnapshotArray<>();
 
 
     private SpriteBatch batch = new SpriteBatch();
@@ -110,7 +110,8 @@ public class PlayScreen implements Screen {
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
             pickupSpawner.spawnPickups();
-            pickups = (MySnapshotArray) pickupSpawner.getPickups();
+            pickups = (MySnapshotArray) convertToRel((MySnapshotArray) pickupSpawner.getPickups(),
+                    Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         }
 
         for (int i = 0; i < snakeList.size(); i++) {
@@ -244,7 +245,7 @@ public class PlayScreen implements Screen {
         // Kígyó keresése felhasználónév alapján
         Snake snake = null;
         for (Snake s : snakeList) {
-            if (s.getId() == id){
+            if (s.getId() == id) {
                 snake = s;
                 break;
             }
@@ -326,33 +327,30 @@ public class PlayScreen implements Screen {
                 } else if (msg instanceof Pickup) putNewPickup((Pickup) msg);
                 else if (msg instanceof PickupRemove) removePickup((PickupRemove) msg);
                 else if (msg instanceof WallMessage) placeWall((WallMessage) msg);
-                else if (msg instanceof TimedPickup){
+                else if (msg instanceof TimedPickup) {
                     TimedPickup tp = (TimedPickup) msg;
-                    for(Snake snake: snakeList){
-                        if(snake.getId() == tp.getId())
-                            if(tp.isGhost()){
+                    for (Snake snake : snakeList) {
+                        if (snake.getId() == tp.getId())
+                            if (tp.isGhost()) {
                                 snake.setGhostModeActive(tp.isEffect());
-                                if(snake.isGhostModeActive()){
-                                    System.out.println("SNAKE HEAD COLOR: "+snake.getHead().getColor());
+                                if (snake.isGhostModeActive()) {
+                                    System.out.println("SNAKE HEAD COLOR: " + snake.getHead().getColor());
                                     snake.getHead().setColor(Color.FIREBRICK);
                                 } else {
                                     snake.getHead().setColor(Color.ORANGE);
                                 }
-                            }
-                            else {
-                                if(tp.isEffect()){
+                            } else {
+                                if (tp.isEffect()) {
                                     snake.setSpeed(0);
                                     snake.getHead().setColor(Color.CYAN);
-                                }
-                                else {
+                                } else {
                                     snake.setSpeed(Snake.getDefaultSpeed());
                                     snake.getHead().setColor(Color.ORANGE);
                                 }
                             }
                     }
-                }
-                else if (msg.getId() == gameEndCode) {
-                    for (Snake snake:snakeList ) {
+                } else if (msg.getId() == gameEndCode) {
+                    for (Snake snake : snakeList) {
                         snake.setSpeed(0);
                     }
 //                        dieMessage(myId, snakeList.get(myId));   // kill the last snake
@@ -360,7 +358,8 @@ public class PlayScreen implements Screen {
 //                            snake.setSpeed(0);
 //                        }
                 } else if (msg.getId() == gameEndCode + 1) {   // after 5 sec mainmenu
-                    if (mainStage.getActors().contains(snakeList.get(myId), true)) dieMessage(myId,snakeList.get(myId));
+                    if (mainStage.getActors().contains(snakeList.get(myId), true))
+                        dieMessage(myId, snakeList.get(myId));
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -370,7 +369,7 @@ public class PlayScreen implements Screen {
                     return;
                 } else if (msg instanceof Death) {  // kill the snake
                     int snakeId = msg.getId();
-                    Snake snake=snakeList.get(snakeId);
+                    Snake snake = snakeList.get(snakeId);
                     snake.setSpeed(0);
                     snake.setDeadSnake(true);
                     uiStage.addActor(snake);
@@ -379,14 +378,14 @@ public class PlayScreen implements Screen {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                            uiStage.getActors().removeValue(diedSnakes.get(0),true);
+                            uiStage.getActors().removeValue(diedSnakes.get(0), true);
                         }
                     }, 3);
                 } else {
                     System.out.println("unknown playscreen msg type");
                 }
             }
-            if(wall!=null) checkWallCollision(wall);
+            if (wall != null) checkWallCollision(wall);
             checkSnakeCollision();
         } else {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
@@ -398,7 +397,7 @@ public class PlayScreen implements Screen {
 
     private void placeWall(WallMessage msg) {
         wallList = msg.getWallList();
-        wall = new Wall(wallList,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        wall = new Wall(wallList, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         mainStage.addActor(wall);
     }
 
@@ -406,30 +405,43 @@ public class PlayScreen implements Screen {
         Pickup pickup = msg;
         Type type = pickup.getType();
         PickupItems newPickup = null;
+        int w=Gdx.graphics.getWidth();
+        int h=Gdx.graphics.getHeight();
         switch (type) {
             case FOOD:
                 newPickup = new Food(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new Food(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
                 break;
             case POISON:
                 newPickup = new Poison(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new Poison(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
+
                 break;
             case WEB:
                 newPickup = new SpiderWeb(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new SpiderWeb(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
+
                 break;
             case DRINK:
                 newPickup = new EnergyDrink(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new EnergyDrink(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
+
                 break;
             case ICE:
                 newPickup = new IceBlock(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new IceBlock(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
+
                 break;
             case GHOST:
                 newPickup = new Ghost(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
+                newPickup=new Ghost(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
+
                 break;
             default:
                 ;
@@ -470,8 +482,8 @@ public class PlayScreen implements Screen {
                 } else {
                     pickup.collectItem(snake);
                     pickup.applyEffect(snake);
-                    if(pickup instanceof Food || pickup instanceof  Poison){
-                        refreshPoints(snake.getId(),snake.getPoints());
+                    if (pickup instanceof Food || pickup instanceof Poison) {
+                        refreshPoints(snake.getId(), snake.getPoints());
                         labelSort(sortPoints());
                     }
                     pickups.removeValue(pickup, true);
@@ -525,5 +537,17 @@ public class PlayScreen implements Screen {
     public void dispose() {
     }
 
+    private MySnapshotArray convertToRel(MySnapshotArray patterns, int w, int h) {
+        MySnapshotArray newList = new MySnapshotArray();
+        for (PickupItems pattern : patterns) {
+            if(pattern instanceof Food) newList.add(new Food(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+            else if(pattern instanceof Poison) newList.add(new Poison(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+            else if(pattern instanceof EnergyDrink) newList.add(new EnergyDrink(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+            else if(pattern instanceof SpiderWeb) newList.add(new SpiderWeb(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+            else if(pattern instanceof IceBlock) newList.add(new IceBlock(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+            else if(pattern instanceof Ghost) newList.add(new Ghost(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
+        }
+        return newList;
+    }
 
 }
