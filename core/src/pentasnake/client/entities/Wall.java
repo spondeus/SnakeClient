@@ -22,6 +22,7 @@ public class Wall extends Actor {
 
     public Wall(SnapshotArray<WallPattern> patterns, int w, int h) {
         this.patterns = convertToRel(patterns, w, h);
+//        this.patterns = patterns;
     }
 
     private SnapshotArray<WallPattern> convertToRel(SnapshotArray<WallPattern> patterns, int w, int h) {

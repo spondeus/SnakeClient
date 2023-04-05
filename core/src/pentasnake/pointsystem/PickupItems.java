@@ -64,7 +64,7 @@ public abstract class PickupItems extends BaseActor {
 
     public void updatePlayerScore(Snake snake){
         if (collected) {
-            snake.setPoints(snake.getPoints()+getPoints());
+            if(this.getPoints()!=0) snake.setPoints(snake.getPoints()+getPoints());
         }
     }
 

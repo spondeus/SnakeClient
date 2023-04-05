@@ -32,6 +32,7 @@ public class Communication extends ApplicationAdapter {
 //            URI uri = new URI("ws://192.168.1.131:8080"); // Tamás home IP
 //            URI uri = new URI("ws://pentasnake.ddns.net:8080"); // Tamás dinamikus DNS IP
 //            URI uri = new URI("ws://192.168.1.84:8080");
+//            URI uri = new URI("ws://192.168.18.18:8080");   //  Ricsi Progmatic IP
             websocketClient = new ClientSocket(uri, game);
             snake = websocketClient.getSnake();
         } catch (URISyntaxException e) {
