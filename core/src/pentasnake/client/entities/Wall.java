@@ -51,29 +51,4 @@ public class Wall extends Actor {
         sr.end();
         batch.begin();
     }
-
-    public static SnapshotArray<WallPattern> spawnWalls() {
-
-        final int MAX_WALLS_TO_SPAWN = 4;
-        final int NUM_WALL_PATTERNS = 8;
-
-        SnapshotArray<WallPattern> wallPatterns = createWallPatterns();
-        SnapshotArray<WallPattern> randomlySelectedWalls = new SnapshotArray<>();
-
-        List<Integer> selectedIndices = new ArrayList<>();
-        Random random = new Random();
-        while (selectedIndices.size() < MAX_WALLS_TO_SPAWN) {
-            int i = random.nextInt(NUM_WALL_PATTERNS);
-            if (!selectedIndices.contains(i)) {
-                selectedIndices.add(i);
-            }
-        }
-        randomlySelectedWalls.add(wallPatterns.get(selectedIndices.get(0)));
-        randomlySelectedWalls.add(wallPatterns.get(selectedIndices.get(1)));
-        randomlySelectedWalls.add(wallPatterns.get(selectedIndices.get(2)));
-        randomlySelectedWalls.add(wallPatterns.get(selectedIndices.get(3)));
-
-        return randomlySelectedWalls;
-    }
-
 }

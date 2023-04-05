@@ -57,6 +57,10 @@ public class Snake extends Actor implements Comparable<Snake> {
 
     private SnapshotArray<SnakePart> colliders = new SnapshotArray<>();
 
+    public SnapshotArray<SnakePart> getColliders() {
+        return colliders;
+    }
+
     private static final float sqrt2 = (float) Math.pow(2, 0.5);
 
     private final Vector2 initialDirection = new Vector2(1, 0);
@@ -197,7 +201,6 @@ public class Snake extends Actor implements Comparable<Snake> {
     }
 
     public void act(float delta) {
-        if (selfCollision()) return;
         if (speed == 0) return;
         if (newSpeed != speed) {
             if (newSpeed > speed) speed++;

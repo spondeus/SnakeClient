@@ -1,7 +1,6 @@
 package pentasnake.client.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -9,12 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -67,7 +62,6 @@ public class PlayScreen implements Screen {
     public boolean collidedWithWall;
 
     private final int gameEndCode = 999;
-
 
     public PlayScreen(SnakeGame game, List<Snake> snakes, Communication localClient, boolean single) {
         this.single = single;
@@ -156,7 +150,28 @@ public class PlayScreen implements Screen {
                 }
             }
         }
-//        }
+    }
+
+    private void selfCollision() {
+        // checks for self collision
+        Snake snake = snakeList.get(myId);
+        if (!snake.isGhostModeActive()) {
+            for (int i = 0; i < snake.getParts().size; i++) {
+                for (int j = 0; j < snake.getParts().size; j++) {
+                    if (Math.abs(i - j) < 2) continue;
+                    if (snake.getParts().get(i).overlaps(snake.getParts().get(j))) {
+                        snake.getColliders().add(snake.getParts().get(i));
+                        snake.getColliders().add(snake.getParts().get(j));
+
+                        snake.setDeadSnake(true);
+                        dieMessage(myId, snake);
+                        snake.setSpeed(0);
+                        mainStage.getActors().removeValue(snake, true);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     private void dieMessage(int i, Snake snake) {
@@ -404,6 +419,7 @@ public class PlayScreen implements Screen {
             }
             if (wall != null) checkWallCollision(wall);
             checkSnakeCollision();
+            selfCollision();
         } else {
             if (snakeList.get(0).isLeftMove()) snakeList.get(0).turnLeft();
             else if (snakeList.get(0).isRightMove()) snakeList.get(0).turnRight();

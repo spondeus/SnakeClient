@@ -82,7 +82,7 @@ public class TutorialScreen implements Screen {
 
         Label titleLabel = new Label("HOW TO PLAY"
                 , new Label.LabelStyle(new BitmapFont()
-                , Color.GOLD));
+                , Color.ORANGE));
         titleLabel.setSize(COL_WIDTH * 2, ROW_HEIGHT * 2);
         titleLabel.setFontScale(2);
         titleLabel.setPosition(CENTER_X - titleLabel.getWidth() / 2, CENTER_Y + ROW_HEIGHT * 2 + 50);
@@ -103,7 +103,7 @@ public class TutorialScreen implements Screen {
         stage.addActor(goalLabel);
 
         Label controlsLabel = new Label(
-                "CONTROLS: \nPress A to turn left \nPress D to turn right."
+                "CONTROLS: \nPress A to turn left \nPress D to turn right.\nHold down button for continuous turning."
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.WHITE));
         controlsLabel.setSize(COL_WIDTH, ROW_HEIGHT);
@@ -119,7 +119,7 @@ public class TutorialScreen implements Screen {
                 , Color.RED));
         bewareLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         bewareLabel.setFontScale(1.2f);
-        bewareLabel.setPosition(50, CENTER_Y + 60);
+        bewareLabel.setPosition(50, CENTER_Y + 40);
         bewareLabel.setAlignment(Align.left);
         table.add(bewareLabel);
         stage.addActor(bewareLabel);
@@ -130,7 +130,7 @@ public class TutorialScreen implements Screen {
                 , Color.WHITE));
         pickupTypesLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         pickupTypesLabel.setFontScale(1.2f);
-        pickupTypesLabel.setPosition(50, CENTER_Y - 120);
+        pickupTypesLabel.setPosition(50, CENTER_Y - 140);
         pickupTypesLabel.setAlignment(Align.left);
         table.add(pickupTypesLabel);
         stage.addActor(pickupTypesLabel);
@@ -261,12 +261,13 @@ public class TutorialScreen implements Screen {
         stage.addActor(iceLabel);
 
         Label ghostLabel = new Label(
-                "Enables the snake to go through walls\nand other snakes for 10 seconds.\nIt's pretty rare so keep an eye out for it!"
+                "Enables the snake to go through walls, yourself\nand other snakes for 10 seconds." +
+                        " Colors your\nbody white, signaling its duration. Can't be stacked!"
                 , new Label.LabelStyle(new BitmapFont()
                 , Color.ORANGE));
         ghostLabel.setSize(COL_WIDTH, ROW_HEIGHT);
         ghostLabel.setFontScale(1.2f);
-        ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 650);
+        ghostLabel.setPosition(CENTER_X + 200, SCREEN_HEIGHT - 640);
         ghostLabel.setAlignment(Align.left);
         table.add(ghostLabel);
         stage.addActor(ghostLabel);
