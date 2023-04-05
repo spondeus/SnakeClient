@@ -110,8 +110,7 @@ public class PlayScreen implements Screen {
         if (localClient == null) {
             pickupSpawner = new PickupSpawner(mainStage, wallList);
             pickupSpawner.spawnPickups();
-            pickups = (MySnapshotArray) convertToRel((MySnapshotArray) pickupSpawner.getPickups(),
-                    Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+            pickups = (MySnapshotArray) pickupSpawner.getPickups();
         }
 
         for (int i = 0; i < snakeList.size(); i++) {
@@ -405,43 +404,30 @@ public class PlayScreen implements Screen {
         Pickup pickup = msg;
         Type type = pickup.getType();
         PickupItems newPickup = null;
-        int w=Gdx.graphics.getWidth();
-        int h=Gdx.graphics.getHeight();
         switch (type) {
             case FOOD:
                 newPickup = new Food(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new Food(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
                 break;
             case POISON:
                 newPickup = new Poison(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new Poison(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
-
                 break;
             case WEB:
                 newPickup = new SpiderWeb(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new SpiderWeb(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
-
                 break;
             case DRINK:
                 newPickup = new EnergyDrink(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new EnergyDrink(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
-
                 break;
             case ICE:
                 newPickup = new IceBlock(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new IceBlock(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
-
                 break;
             case GHOST:
                 newPickup = new Ghost(pickup.getPosition().x, pickup.getPosition().y,
                         mainStage, pickup.getPickUpId());
-                newPickup=new Ghost(newPickup.getX() / 1200 * w, newPickup.getY() / 800 * h,mainStage,newPickup.getId() );
-
                 break;
             default:
                 ;
@@ -537,17 +523,5 @@ public class PlayScreen implements Screen {
     public void dispose() {
     }
 
-    private MySnapshotArray convertToRel(MySnapshotArray patterns, int w, int h) {
-        MySnapshotArray newList = new MySnapshotArray();
-        for (PickupItems pattern : patterns) {
-            if(pattern instanceof Food) newList.add(new Food(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-            else if(pattern instanceof Poison) newList.add(new Poison(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-            else if(pattern instanceof EnergyDrink) newList.add(new EnergyDrink(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-            else if(pattern instanceof SpiderWeb) newList.add(new SpiderWeb(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-            else if(pattern instanceof IceBlock) newList.add(new IceBlock(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-            else if(pattern instanceof Ghost) newList.add(new Ghost(pattern.getX() / 1200 * w, pattern.getY() / 800 * h,mainStage,pattern.getId() ));
-        }
-        return newList;
-    }
 
 }
