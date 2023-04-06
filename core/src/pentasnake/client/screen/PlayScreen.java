@@ -438,29 +438,43 @@ public class PlayScreen implements Screen {
         Pickup pickup = msg;
         Type type = pickup.getType();
         PickupItems newPickup = null;
+        int w=Gdx.graphics.getWidth();
+        int h=Gdx.graphics.getHeight();
         switch (type) {
             case FOOD:
-                newPickup = new Food(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new Food(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+                newPickup = new Food(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             case POISON:
-                newPickup = new Poison(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new Poison(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+                newPickup = new Poison(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             case WEB:
-                newPickup = new SpiderWeb(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new SpiderWeb(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+            newPickup = new SpiderWeb(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             case DRINK:
-                newPickup = new EnergyDrink(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new EnergyDrink(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+                newPickup = new EnergyDrink(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             case ICE:
-                newPickup = new IceBlock(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new IceBlock(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+                newPickup = new IceBlock(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             case GHOST:
-                newPickup = new Ghost(pickup.getPosition().x, pickup.getPosition().y,
+//                newPickup = new Ghost(pickup.getPosition().x, pickup.getPosition().y,
+//                        mainStage, pickup.getPickUpId());
+                newPickup = new Ghost(pickup.getPosition().x/1200*w, pickup.getPosition().y/800*h,
                         mainStage, pickup.getPickUpId());
                 break;
             default:
