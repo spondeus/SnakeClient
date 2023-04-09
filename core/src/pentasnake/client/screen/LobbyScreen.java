@@ -55,7 +55,7 @@ public class LobbyScreen implements Screen {
             return;
         }
         waiting = new Label("Waiting", new Label.LabelStyle(new BitmapFont(), Color.GOLD));
-        waiting.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        waiting.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
 
         com = new Communication(game);
         final ClientSocket client = com.getWebsocketClient();
